@@ -26,9 +26,9 @@ export default function NavItems({
   }
 
   return (
-    <div className="fixed top-0 left-0 w-screen h-screen bg-transparent">
+    <>
       {/* Top-left buttons */}
-      <div className="absolute top-6 left-6 flex flex-col gap-3">
+      <div className="fixed top-6 left-6 flex flex-col gap-3">
         <Image
           className="cursor-pointer"
           src="/image/home/Setting_Button.png"
@@ -60,7 +60,7 @@ export default function NavItems({
 
       {/* Energy bar */}
       <Image
-        className="absolute top-0 right-0 cursor-pointer"
+        className="fixed top-0 right-0 cursor-pointer"
         src="/image/home/Energy_Bar.png"
         alt="energy-bar"
         width={340}
@@ -70,7 +70,7 @@ export default function NavItems({
       />
 
       {/* Bottom-right buttons */}
-      <div className="flex items-center absolute bottom-2 right-6 gap-1">
+      <div className="flex items-center fixed bottom-2 right-6 gap-1">
         <Image
           className="cursor-pointer"
           src="/image/home/Island_Button.png"
@@ -90,6 +90,6 @@ export default function NavItems({
           onClick={getShipsClicked}
         />
       </div>
-    </div>
+    </>
   );
 }

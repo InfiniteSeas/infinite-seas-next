@@ -58,7 +58,7 @@ export default function GameWindow() {
   }
 
   return (
-    <main>
+    <>
       <NavItems getIslandClicked={handleIslandClicked} getShipsClicked={handleShipsClicked} />
 
       {/* Island Menu */}
@@ -82,6 +82,6 @@ export default function GameWindow() {
       {shipsMenuFlag && <ShipsMenu closeShipsMenu={() => setShipsMenuFlag(false)} />}
 
       <GameCanvas islandClickedFlag={islandMenuFlag} getIslandClicked={handleIslandClicked} />
-    </main>
+    </>
   );
 }

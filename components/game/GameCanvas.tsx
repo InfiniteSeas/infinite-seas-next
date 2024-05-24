@@ -17,7 +17,8 @@ export default function GameCanvas({
   const camera = useRef<THREE.OrthographicCamera | null>(null);
   const islandPlains = useRef<THREE.Mesh[]>([]);
 
-  const lastMousePosition = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const isGrabbing = useRef<boolean>(false);
+  const cursorStartPosition = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const cameraMoveDirection = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const mouseSpeedFactor = useRef<number>(0.03);
 
@@ -36,9 +37,12 @@ export default function GameCanvas({
 
   // Island clicked watcher, since we want to reset camera and factor
   useEffect(() => {
+    if (!camera.current) return;
+
     if (islandClickedFlag) {
+      camera.current.zoom = 1;
+      camera.current.position.set(0, 0, 5);
       mouseSpeedFactor.current = 0;
-      camera.current?.position.set(0, 0, 5);
     } else mouseSpeedFactor.current = 0.03;
   }, [islandClickedFlag]);
 
@@ -57,7 +61,7 @@ export default function GameCanvas({
     // Camera
     const aspect = htmlEleRef.current.clientWidth / htmlEleRef.current.clientHeight;
     camera.current = new THREE.OrthographicCamera(-aspect / 2, aspect / 2, 0.5, -0.5, 1, 1000);
-    camera.current.position.set(0, 0, 5);
+    camera.current.position.set(0, 0, 10);
 
     // Generate Ocean
     const oceanTexture = new THREE.TextureLoader().load("/image/Ocean/OceanTemplateMVP_version.png");
@@ -126,59 +130,61 @@ export default function GameCanvas({
   }
 
   function handleDragCanvas(e: any) {
-    console.log(234456);
     if (!camera.current || !htmlEleRef.current) return;
 
-    let deltaX = e.clientX - lastMousePosition.current.x;
-    let deltaY = e.clientY - lastMousePosition.current.y;
+    const deltaX = e.clientX - cursorStartPosition.current.x;
+    const deltaY = e.clientY - cursorStartPosition.current.y;
 
     camera.current.position.x -= deltaX / htmlEleRef.current.clientWidth;
     camera.current.position.y += deltaY / htmlEleRef.current.clientHeight;
 
-    lastMousePosition.current.x = e.clientX;
-    lastMousePosition.current.y = e.clientY;
-  }
-
-  function handleScrollCanvas(e: any) {
-    if (!camera.current || !htmlEleRef.current) return;
-
-    let zoomSpeed = 0.1;
-
-    if (e.deltaY > 0) camera.current.zoom -= zoomSpeed;
-    else if (e.deltaY < 0) camera.current.zoom += zoomSpeed;
-
-    let minZoom = Math.min(htmlEleRef.current.clientWidth / htmlEleRef.current.clientHeight);
-    let maxZoom = 2;
-
-    camera.current.zoom = Math.max(minZoom, Math.min(maxZoom, camera.current.zoom));
-    camera.current.updateProjectionMatrix();
+    cursorStartPosition.current.x = e.clientX;
+    cursorStartPosition.current.y = e.clientY;
   }
 
   function handleMouseMove(e: any) {
     if (!htmlEleRef.current) return;
 
-    const awayFromEdge = 10;
+    if (isGrabbing.current) handleDragCanvas(e);
+    else {
+      const awayFromEdge = 30;
 
-    if (e.clientX < awayFromEdge) cameraMoveDirection.current.x = -1 + (e.clientX / awayFromEdge - 1);
-    else if (e.clientX > htmlEleRef.current.clientWidth - awayFromEdge)
-      cameraMoveDirection.current.x = 1 - ((htmlEleRef.current.clientWidth - e.clientX) / awayFromEdge - 1);
-    else cameraMoveDirection.current.x = 0;
+      if (e.clientX < awayFromEdge) cameraMoveDirection.current.x = -1 + (e.clientX / awayFromEdge - 1);
+      else if (e.clientX > htmlEleRef.current.clientWidth - awayFromEdge)
+        cameraMoveDirection.current.x = 1 - ((htmlEleRef.current.clientWidth - e.clientX) / awayFromEdge - 1);
+      else cameraMoveDirection.current.x = 0;
 
-    if (e.clientY < awayFromEdge) cameraMoveDirection.current.y = 1 - e.clientY / awayFromEdge;
-    else if (e.clientY > htmlEleRef.current.clientHeight - awayFromEdge)
-      cameraMoveDirection.current.y = -1 + (htmlEleRef.current.clientHeight - e.clientY) / awayFromEdge;
-    else cameraMoveDirection.current.y = 0;
+      if (e.clientY < awayFromEdge) cameraMoveDirection.current.y = 1 - e.clientY / awayFromEdge;
+      else if (e.clientY > htmlEleRef.current.clientHeight - awayFromEdge)
+        cameraMoveDirection.current.y = -1 + (htmlEleRef.current.clientHeight - e.clientY) / awayFromEdge;
+      else cameraMoveDirection.current.y = 0;
+    }
+  }
+
+  function handleScrollCanvas(e: any) {
+    if (!camera.current || !htmlEleRef.current) return;
+
+    const zoomSpeed = 0.1;
+
+    if (e.deltaY > 0 && camera.current.zoom > 0.3) camera.current.zoom -= zoomSpeed;
+    else if (e.deltaY < 0 && camera.current.zoom < 5) camera.current.zoom += zoomSpeed;
+
+    camera.current.updateProjectionMatrix();
   }
 
   return (
     <div
-      className="w-screen h-screen"
-      draggable
+      className="w-screen h-screen cursor-grab active:cursor-grabbing"
       ref={htmlEleRef}
       onClick={handleClickCanvas}
-      onDrag={handleDragCanvas}
-      onWheel={handleScrollCanvas}
+      onMouseDown={(e) => {
+        isGrabbing.current = true;
+        cursorStartPosition.current.x = e.clientX;
+        cursorStartPosition.current.y = e.clientY;
+      }}
       onMouseMove={handleMouseMove}
+      onMouseUp={() => (isGrabbing.current = false)}
+      onWheel={handleScrollCanvas}
     />
   );
 }
