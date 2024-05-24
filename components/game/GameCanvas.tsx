@@ -68,14 +68,13 @@ export default function GameCanvas({
     oceanTexture.wrapS = THREE.RepeatWrapping;
     oceanTexture.wrapT = THREE.RepeatWrapping;
     oceanTexture.repeat.set(100, 100);
-
+    const oceanMat = new THREE.MeshBasicMaterial({ map: oceanTexture, side: THREE.DoubleSide });
     const oceanGeo = new THREE.PlaneGeometry(
       htmlEleRef.current.clientWidth / 10,
       htmlEleRef.current.clientHeight / 10,
       1,
       1
     );
-    const oceanMat = new THREE.MeshBasicMaterial({ map: oceanTexture, side: THREE.DoubleSide });
     const oceanPlain = new THREE.Mesh(oceanGeo, oceanMat);
     scene.current?.add(oceanPlain);
 
