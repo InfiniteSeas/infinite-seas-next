@@ -8,17 +8,19 @@ export default function ActionQueue() {
   ];
 
   return (
-    <div className="w-[265px] h-[202px] absolute top-1/2 -left-[22%] -translate-y-1/2 bg-white p-4">
-      <h1 className="text-center text-xl font-bold">action queue</h1>
+    <div className="absolute top-1/2 -left-[29%] -translate-y-1/2 bg-white p-4">
+      <div className="flex flex-col gap-4">
+        <h1 className="text-center text-xl font-bold">action queue</h1>
 
-      {queueData.map((data) => (
-        <div key={data.id} className="flex justify-between items-center gap-2">
-          <span>{data.action}</span>
-          <span>{data.count}</span>
-          <span>{data.resource}</span>
-          <span>{data.timeLeft}s</span>
-        </div>
-      ))}
+        {queueData.map((data) => (
+          <div key={data.id} className="flex justify-between items-center gap-2">
+            <span>{data.action}</span>
+            <span>{data.count}</span>
+            <span>{data.resource}</span>
+            <span>{data.timeLeft}s</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

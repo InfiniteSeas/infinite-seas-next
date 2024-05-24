@@ -52,7 +52,7 @@ export default function GameWindow() {
 
       {/* Island Menu */}
       {islandMenuFlag && (
-        <div className="fixed top-0 left-0 w-2/3 h-screen flex flex-col justify-between ml-[15%] mr-[20%]">
+        <div className="fixed top-0 left-0 w-3/5 h-screen flex flex-col justify-between ml-[18%] mr-[20%] pt-8">
           <IslandTopbar />
 
           <div className="flex-1 relative">
