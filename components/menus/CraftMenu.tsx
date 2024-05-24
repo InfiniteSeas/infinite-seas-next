@@ -123,9 +123,9 @@ export default function CraftMenu() {
 
         {modalFlag && (
           <div className="w-[270px] h-[180px] flex flex-col justify-between items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white text-lg p-4">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2">
               <span>small ship</span>
-              <input type="text" value="1" disabled />
+              <input className="w-[45px] border-[1px] text-center rounded-md" type="text" value="1" disabled />
             </div>
             <p>costs 5 energy token</p>
             <p>15 seconds time duration</p>
