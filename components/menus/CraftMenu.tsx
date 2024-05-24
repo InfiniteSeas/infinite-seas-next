@@ -76,7 +76,7 @@ export default function CraftMenu() {
 
   return (
     <div className="w-full h-full flex absolute">
-      <div className="w-1/5 flex flex-col items-center bg-[#232A35] gap-4">
+      <div className="w-1/5 flex flex-col items-center bg-[#232A35] py-6 gap-4">
         {sidebarTitle.map((title, index) => (
           <p key={title} className={`h-[45px] ${index === 0 ? "text-[#B30000]" : "text-white"} cursor-pointer`}>
             {title}
@@ -84,10 +84,10 @@ export default function CraftMenu() {
         ))}
       </div>
 
-      <div className="flex-1 flex flex-col bg-[#D9D9D9] gap-4">
-        <h1 className="text-center text-3xl font-bold py-2">Crafting</h1>
+      <div className="flex-1 flex flex-col items-center bg-[#D9D9D9] gap-6 py-6 px-10">
+        <h1 className="text-3xl font-bold py-2">Crafting</h1>
 
-        <div className="flex justify-between items-center">
+        <div className="w-full flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Image src="/image/Ocean/Boat_small.png" alt="small-boat" width={60} height={100} priority />
             <div className="text-xl font-bold">small ship</div>
@@ -100,26 +100,23 @@ export default function CraftMenu() {
           </div>
         </div>
 
-        <div className="grid grid-cols-7 gap-4 text-xl">
-          <div className="w-[54px] h-[54px] bg-[#A1A1A1]" onClick={removeIron}>
+        <div className="w-full grid grid-cols-7 gap-4 text-xl">
+          <div className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" onClick={removeIron}>
             iron required x{shipIron}
           </div>
-          <div className="w-[54px] h-[54px] bg-[#A1A1A1]" onClick={removeWood}>
+          <div className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" onClick={removeWood}>
             wood required x{shipWood}
           </div>
-          <div className="w-[54px] h-[54px] bg-[#A1A1A1]" onClick={removeCotton}>
+          <div className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" onClick={removeCotton}>
             cotton required x{shipCotton}
           </div>
           {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17].map((id) => (
-            <div key={id} className="w-[54px] h-[54px] bg-[#A1A1A1]" />
+            <div key={id} className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" />
           ))}
         </div>
 
-        <div className="flex justify-end">
-          <div
-            className="w-[72px] h-[36px] bg-[#A1A1A1] text-xl text-center cursor-pointer"
-            onClick={() => setModalFlag(true)}
-          >
+        <div className="w-full flex justify-end">
+          <div className="bg-[#A1A1A1] text-xl text-center cursor-pointer px-4 py-2" onClick={() => setModalFlag(true)}>
             Craft
           </div>
         </div>
@@ -148,32 +145,50 @@ export default function CraftMenu() {
         )}
       </div>
 
-      <div className="w-1/5 flex flex-col items-center bg-[#BEBEBE] gap-4">
+      <div className="w-1/5 flex flex-col items-center bg-[#BEBEBE] py-6 gap-4">
         <p className="text-xl">inventory</p>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="w-full grid grid-cols-3 px-6 gap-4">
           <div
-            className="w-[60px] h-[60px] relative border-2 border-transparent rounded-md text-white"
+            className="w-full aspect-[1] relative border-2 border-transparent rounded-md text-white"
+            style={{
+              borderImage: "linear-gradient(to bottom right, #c0c0c0, #4f4f4f);",
+              borderImageSlice: 1,
+              background: "radial-gradient(circle, rgb(84, 84, 84) 0%, rgb(63, 63, 63) 100%)",
+            }}
             onClick={addmining}
           >
             iron {inventoryIron}
           </div>
+
           <div
-            className="w-[60px] h-[60px] relative border-2 border-transparent rounded-md text-white"
+            className="w-full aspect-[1] relative border-2 border-transparent rounded-md text-white"
+            style={{
+              borderImage: "linear-gradient(to bottom right, #c0c0c0, #4f4f4f);",
+              borderImageSlice: 1,
+              background: "radial-gradient(circle, rgb(84, 84, 84) 0%, rgb(63, 63, 63) 100%)",
+            }}
             onClick={addWood}
           >
             Wood {inventoryWood}
           </div>
+
           <div
-            className="w-[60px] h-[60px] relative border-2 border-transparent rounded-md text-white"
+            className="w-full aspect-[1] relative border-2 border-transparent rounded-md text-white"
+            style={{
+              borderImage: "linear-gradient(to bottom right, #c0c0c0, #4f4f4f);",
+              borderImageSlice: 1,
+              background: "radial-gradient(circle, rgb(84, 84, 84) 0%, rgb(63, 63, 63) 100%)",
+            }}
             onClick={addcotton}
           >
             cotton {inventoryCotton}
           </div>
+
           {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
             <div
               key={id}
-              className="w-[60px] h-[60px] relative border-2 border-transparent rounded-md text-white"
+              className="w-full aspect-[1] relative border-2 border-transparent rounded-md text-white"
               style={{
                 borderImage: "linear-gradient(to bottom right, #c0c0c0, #4f4f4f);",
                 borderImageSlice: 1,

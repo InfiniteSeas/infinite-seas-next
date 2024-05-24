@@ -10,12 +10,12 @@ export default function IslandProductMenu({ productType }: { productType: string
 
   return (
     <div className="w-full h-full grid grid-cols-4 pt-4 gap-4">
-      <p className="w-1/5 h-[45%] bg-black text-white cursor-pointer" onClick={() => setModalFlag(true)}>
+      <p className="w-full h-full bg-black text-white cursor-pointer" onClick={() => setModalFlag(true)}>
         {productType}
       </p>
 
       {[2, 3, 4, 5, 6, 7, 8].map((id) => (
-        <p key={id} className="w-1/5 h-[45%] bg-black text-white cursor-pointer">
+        <p key={id} className="w-full h-full bg-black text-white cursor-pointer">
           {id}
         </p>
       ))}

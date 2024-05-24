@@ -33,17 +33,28 @@ export default function GameWindow() {
     setIslandMenuFlag(false);
   }
 
-  function handleButtonClick(flag: string) {
-    if (flag === productType) {
+  function handleIslandButtonClick(flag: string) {
+    if (["iron", "wood", "cotton"].includes(flag)) {
       setProductType(flag);
+
+      if (flag === productType) setIslandProductMenuFlag((prev) => !prev);
+      else setIslandProductMenuFlag(true);
+
+      setBagMenuFlag(false);
+      setCraftMenuFlag(false);
+    }
+
+    if (flag === "bag") {
+      setBagMenuFlag((prev) => !prev);
       setIslandProductMenuFlag(false);
-    } else setIslandProductMenuFlag(true);
+      setCraftMenuFlag(false);
+    }
 
-    if (flag === "bag") setBagMenuFlag(true);
-    else setBagMenuFlag(false);
-
-    if (flag === "craft") setCraftMenuFlag(true);
-    else setCraftMenuFlag(false);
+    if (flag === "craft") {
+      setCraftMenuFlag((prev) => !prev);
+      setIslandProductMenuFlag(false);
+      setBagMenuFlag(false);
+    }
   }
 
   return (
@@ -55,16 +66,15 @@ export default function GameWindow() {
         <div className="fixed top-0 left-0 w-3/5 h-screen flex flex-col justify-between ml-[18%] mr-[20%] pt-8">
           <IslandTopbar />
 
-          <div className="flex-1 relative">
+          <div className="flex-1 relative my-12">
             {islandProductMenuFlag && <IslandProductMenu productType={productType} />}
             {bagMenuFlag && <BagMenu maxSpace={20} />}
             {craftMenuFlag && <CraftMenu />}
           </div>
 
+          <IslandButtons handleButtonClick={handleIslandButtonClick} />
+
           <ActionQueue />
-
-          <IslandButtons handleButtonClick={handleButtonClick} />
-
           <RankList />
         </div>
       )}

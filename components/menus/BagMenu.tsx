@@ -19,7 +19,7 @@ export default function BagMenu({ maxSpace }: { maxSpace: number }) {
         </p>
       </div>
 
-      <div className="flex-1 grid grid-cols-10 bg-[#222A35] p-6">
+      <div className="flex-1 grid grid-cols-10 bg-[#222A35] p-6 gap-6">
         {bagSpaces.map((space) => (
           <div
             key={space.id}
@@ -31,7 +31,7 @@ export default function BagMenu({ maxSpace }: { maxSpace: number }) {
             }}
           >
             <p>{space.resource}</p>
-            <p className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 h-1/4 rounded-lg bg-white text-black text-sm text-center px-1">
+            <p className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 rounded-lg bg-white text-black text-sm text-center px-2">
               {space.count}
             </p>
           </div>
