@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Infinite seas is a on-chain game that... **(Edit the description here)** Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos odio ipsa in, quaerat ipsum, necessitatibus aspernatur, harum vel assumenda ut reprehenderit velit voluptate! Ab, deleniti ducimus? Dolor, voluptatibus eos. Debitis?
+Infinite seas is an on-chain game that... **(Edit the description here)** Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos odio ipsa in, quaerat ipsum, necessitatibus aspernatur, harum vel assumenda ut reprehenderit velit voluptate! Ab, deleniti ducimus? Dolor, voluptatibus eos. Debitis?
 
 ## Getting Started
 
@@ -52,7 +52,7 @@ The **actions** folder handles all server actions with data fetching and API cal
 
 The **utils** folder handles all util functions with the game and other tools.
 
-### API calls (backend & blockchain side)
+### API calls (blockchain side & backend)
 
 #### Sui API and GET methods
 
