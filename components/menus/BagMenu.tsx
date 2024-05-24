@@ -27,7 +27,7 @@ export default function BagMenu({ maxSpace }: { maxSpace: number }) {
             style={{
               borderImage: "linear-gradient(to bottom right, #c0c0c0, #4f4f4f);",
               borderImageSlice: 1,
-              background: "radial-gradient(circle, rgb(84, 84, 84) 0%, rgb(63, 63, 63) 100%);",
+              background: "radial-gradient(circle, rgb(84, 84, 84) 0%, rgb(63, 63, 63) 100%)",
             }}
           >
             <p>{space.resource}</p>

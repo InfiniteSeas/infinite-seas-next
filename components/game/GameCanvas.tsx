@@ -71,13 +71,13 @@ export default function GameCanvas({
       1,
       1
     );
-    const oceanMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+    const oceanMat = new THREE.MeshBasicMaterial({ map: oceanTexture, side: THREE.DoubleSide });
     const oceanPlain = new THREE.Mesh(oceanGeo, oceanMat);
     scene.current?.add(oceanPlain);
 
     // Generate Island
     const islandTexture = new THREE.TextureLoader().load("/image/Ocean/Main_Island.png");
-    const islandMat = new THREE.MeshBasicMaterial({ map: islandTexture, transparent: true, alphaTest: 0.5 });
+    const islandMat = new THREE.MeshBasicMaterial({ map: islandTexture, transparent: false, alphaTest: 0.8 });
     const islandGeo = new THREE.PlaneGeometry(0.5, 0.5);
     const islandPlain = new THREE.Mesh(islandGeo, islandMat);
     islandPlain.position.set(0, 0, 0);
@@ -126,6 +126,7 @@ export default function GameCanvas({
   }
 
   function handleDragCanvas(e: any) {
+    console.log(234456);
     if (!camera.current || !htmlEleRef.current) return;
 
     let deltaX = e.clientX - lastMousePosition.current.x;
@@ -172,6 +173,7 @@ export default function GameCanvas({
   return (
     <div
       className="w-screen h-screen"
+      draggable
       ref={htmlEleRef}
       onClick={handleClickCanvas}
       onDrag={handleDragCanvas}
