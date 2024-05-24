@@ -35,7 +35,7 @@ export default function ShipsMenu({ closeShipsMenu }: { closeShipsMenu: () => vo
             {shipsTopData.map((data) => (
               <div
                 key={data.id}
-                className="h-full flex items-center bg-contain text-white text-3xl cursor-pointer bg-[url('/image/btn/btn_frame.png')]"
+                className="h-full flex items-center bg-contain text-white text-3xl cursor-pointer bg-btn-frame"
               >
                 {data.title}
               </div>
@@ -74,7 +74,7 @@ export default function ShipsMenu({ closeShipsMenu }: { closeShipsMenu: () => vo
           ))}
 
           <div className="w-full h-[10%] flex justify-center items-center border-[1px] border-white">
-            <div className="w-[90px] h-[100px] text-4xl text-center text-white cursor-pointer bg-cotain bg-[url('/image/btn/btn_frame.png')]">
+            <div className="w-[90px] h-[100px] text-4xl text-center text-white cursor-pointer bg-cotain bg-btn-frame">
               +
             </div>
           </div>
@@ -83,9 +83,7 @@ export default function ShipsMenu({ closeShipsMenu }: { closeShipsMenu: () => vo
             ×
           </div>
 
-          <div className="absolute right-6 w-[144px] h-[77px] text-center text-white text-3xl bg-[url('/image/btn/btn_frame.png')]">
-            SAIL
-          </div>
+          <div className="absolute right-6 w-[144px] h-[77px] text-center text-white text-3xl bg-btn-frame">SAIL</div>
         </div>
       </div>
 
@@ -94,32 +92,27 @@ export default function ShipsMenu({ closeShipsMenu }: { closeShipsMenu: () => vo
           {shipInventories.map((inventory) => (
             <div key={inventory.id} className="flex flex-col items-center w-[26%] h-[80%] border-[1px] border-black">
               <div className="flex justify-evenly items-center border-[1px] border-white w-full h-[15%]">
-                <div className="w-[90px] h-[99px] bg-[url('/image/btn/btn_frame.png')] bg-contain">
+                <div className="w-[90px] h-[99px] bg-btn-frame bg-contain">
                   <Image className="w-full h-full scale-[60%]" src={inventory.iconUrl} alt="inventory-pic" />
                 </div>
                 {[0, 1, 2, 3, 4, 5, 6, 7].map((num) => (
-                  <div
-                    key={num}
-                    className="w-[180px] h-[56px] bg-[url('/image/btn/btn_frame.png')] bg-contain text-white text-center"
-                  >
+                  <div key={num} className="w-[180px] h-[56px] bg-btn-frame bg-contain text-white text-center">
                     {inventory.name}
                   </div>
                 ))}
               </div>
 
               <div className="w-[85%] flex flex-col items-center bg-[#fffbe7] px-4 py-3">
-                <div className="w-[270px] h-[72px] text-2xl text-white text-center bg-[url('/image/btn/btn_frame.png')]">
-                  SHIP INVENTORY
-                </div>
+                <div className="w-[270px] h-[72px] text-2xl text-white text-center bg-btn-frame">SHIP INVENTORY</div>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="w-[90px] h-[99px] bg-[url('/image/btn/btn_frame.png')] bg-contain" />
+                  <div className="w-[90px] h-[99px] bg-btn-frame bg-contain" />
                 </div>
               </div>
             </div>
           ))}
 
           <div
-            className="w-[135px] h-[72px] absolute bottom-1 right-5 text-white text-center text-3xl cursor-pointer bg-[url('/image/btn/btn_frame.png')] bg-contain"
+            className="w-[135px] h-[72px] absolute bottom-1 right-5 text-white text-center text-3xl cursor-pointer bg-btn-frame bg-contain"
             onClick={() => setShipsBagBackg(false)}
           >
             back

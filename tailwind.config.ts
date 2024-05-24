@@ -9,9 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "btn-frame": "url('/image/btn/btn_frame.png')",
+        "ranking-text": "url('/image/Ranking/Ranking_text.png')",
       },
     },
   },

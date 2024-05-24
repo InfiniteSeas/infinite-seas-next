@@ -11,10 +11,7 @@ export default function IslandButtons({ handleButtonClick }: { handleButtonClick
 
   return (
     <div className="w-full h-1/5 flex justify-between items-center">
-      <div
-        className="w-[14%] h-full relative cursor-pointer bg-[url('/image/btn/btn_frame.png'}]"
-        onClick={() => handleButtonClick("bag")}
-      >
+      <div className="w-[14%] h-full relative cursor-pointer bg-btn-frame" onClick={() => handleButtonClick("bag")}>
         <Image
           className="absolute top-1/2 left-1/2 w-[60%] h-[60%] -translate-x-1/2 -translate-y-1/2"
           src="/image/btn/Inventory.png"
@@ -29,7 +26,7 @@ export default function IslandButtons({ handleButtonClick }: { handleButtonClick
         {products.map((product) => (
           <div
             key={product.id}
-            className="w-[14%] h-full relative cursor-pointer bg-[url('/image/btn/btn_frame.png'}]"
+            className="w-[14%] h-full relative cursor-pointer bg-btn-frame"
             onClick={() => handleButtonClick(product.flag)}
           >
             <Image
@@ -44,10 +41,7 @@ export default function IslandButtons({ handleButtonClick }: { handleButtonClick
         ))}
       </div>
 
-      <div
-        className="w-[14%] h-full relative cursor-pointer bg-[url('/image/btn/btn_frame.png'}]"
-        onClick={() => handleButtonClick("craft")}
-      >
+      <div className="w-[14%] h-full relative cursor-pointer bg-btn-frame" onClick={() => handleButtonClick("craft")}>
         <Image
           className="absolute top-1/2 left-1/2 w-[60%] h-[60%] -translate-x-1/2 -translate-y-1/2"
           src="/image/topMenu/Crafting.png"
