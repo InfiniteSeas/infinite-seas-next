@@ -1,3 +1,6 @@
+export const SUI_TESTNET_JSON_RPC_URL = "https://sui-testnet.nodeinfra.com/?apikey=A5hM76oO0ZzZtWa0jigeEgBWECIAuosG";
+// export const MOVEMENT_M2_DEVNET_JSON_RPC_URL = "https://sui.devnet.m2.movementlabs.xyz:443";
+
 export const coinPackageId = "0xc88d834617796a46ad9076bb7c7929f20e2e4395441d6529b995ee4c6d91e1ab";
 export const commonPackageId = "0x60199eae5d0ae8e867fc64548eb7d01ff08b741d265adacb3f40cda17ec80aec";
 export const energyTokenId = "0xcc301d760ca2af0f383cb3cb730337a88c9f86cae47d6700d90ffab4a611e9d7";

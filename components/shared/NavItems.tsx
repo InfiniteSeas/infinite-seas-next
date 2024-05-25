@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 
+import ConnectWalletBtn from "@/components/wallet/ConnectWalletBtn";
+
 export default function NavItems({
   getIslandClicked,
   getShipsClicked,
@@ -38,15 +40,7 @@ export default function NavItems({
           priority
           onClick={handleSettingButton}
         />
-        <Image
-          className="cursor-pointer"
-          src="/image/home/Wallet_Button.png"
-          alt="wallet-button"
-          width={50}
-          height={50}
-          priority
-          onClick={handleWalletButton}
-        />
+        <ConnectWalletBtn />
         <Image
           className="cursor-pointer"
           src="/image/home/Points-Button.png"

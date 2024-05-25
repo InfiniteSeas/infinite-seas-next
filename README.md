@@ -175,7 +175,7 @@ animate();
 
 ### Decentralized wallet connection
 
-You may find a component named **ConnectWalletBtn** in the **components/ui/** directory. It is also a client-side component capable of accessing the browser-injected provider, checking connection status, and invoking methods for connecting and disconnecting.
+You may find a component named **ConnectWalletBtn** in the **components/wallet/** directory. It is also a client-side component capable of accessing the browser-injected provider, checking connection status, and invoking methods for connecting and disconnecting.
 
 ### Styling with Tailwindcss
 

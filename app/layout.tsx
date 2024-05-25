@@ -1,3 +1,4 @@
+import SuiKit from "@/components/wallet/SuiKit";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SuiKit>{children}</SuiKit>
+      </body>
     </html>
   );
 }
