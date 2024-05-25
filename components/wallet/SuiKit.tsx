@@ -6,6 +6,7 @@ import { createNetworkConfig, SuiClientProvider, WalletProvider } from "@mysten/
 const queryClient = new QueryClient();
 
 // Config options for the networks you want to connect to
+// @ts-ignore
 const { networkConfig } = createNetworkConfig({
   suiTestnet: { url: "SUI_TESTNET_JSON_RPC_URL" },
 });
