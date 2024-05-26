@@ -2,7 +2,47 @@
 
 ## Introduction
 
-Infinite seas is an on-chain game that... **(Edit the description here)** Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos odio ipsa in, quaerat ipsum, necessitatibus aspernatur, harum vel assumenda ut reprehenderit velit voluptate! Ab, deleniti ducimus? Dolor, voluptatibus eos. Debitis?
+We are creating a maritime trading, managing, and battling diplomatic fully on-chain game.
+we believe the best fully onchain games should be fun and infinite (define by games that are non-session and infinitely large map) with an open economy design.
+![image](https://hackmd.io/_uploads/H1yiNQVkA.jpg)
+
+### why open economy?
+
+- blockchain offers a great environment for microtransactions between players. We aim to create a game that players are encouraged to trade game assets with each other just like real world maritime trading between ports and ports. Ports trading are building with our AMM infrastructure.
+- players are required to stake chain native coins to get ownership of islands. Players can make diplomatic treaty with others to join the alliance. Winners take the orignal stakes of the loser stakes. and game continues.
+- The game is designed with mmorpg elements in mind. Our goal is to create a world that players want to live in. We have planting, mining, fishing, cooking, crafting, smithing, building for the pve parts, as well as trading, battling, thieving, and sailing for the pvp parts.
+
+![WechatIMG189-2](https://hackmd.io/_uploads/Hk2vS7V1R.jpg)
+
+### why infnite game?
+
+- non-session: blockchain as a autonomous backend should be used to create games that are running continously and in a trustless way.
+- infinitely big map: infinite big map works like cross-sever games in traditional gaming. Infinitely big map is the cornerstone of creating a new-comer friendly open world pvp game. New-comers are able to join games anywhere on the map. they can choose a island coordinates that they feel secure to start the journey.
+
+![WechatIMG181-2](https://hackmd.io/_uploads/S1P5HmVkC.jpg)
+
+### What types of players fit into our game?
+
+- achievers, motivated mainly by increasing their skill levels, achieving goals, and collecting craftables.
+- explorers, motivated by exploring the game world and learning how it works. They may interested in thieving which involves to explore hidden information.
+- socializers, motivated by trading, working with other players, joining alliance, creating treaty
+- killers, motivated by competition, victory, domination, and also trolling
+
+![image](https://hackmd.io/_uploads/H1qdwXEkC.png)
+
+### what's fun about our game?
+
+- we believe the fun comes from 4 aspects: inter-player social, backstabbing, hidden information, randomness, and deep game system
+
+- social elements: the core game loop is truly "diplomatic" game, by which we mean one in which negotiation and alliances are vital important during play. Because the infinite map and all the islands are roughly equal resources and power at the start, **no player can reasonably expect to conquer the entire island section alone. To overcome another power, player need an ally**. And because units may support moves by other players, alliances are effective.
+
+- Backstabbing: The game also supports backstabbing. **Players can break the alliance treaty at any time with a cost.** Thus, gamers can never be certain that, one the next move, the ally will do as he has promised.
+
+- Hidden Information: When the player A arrives on players B island or ships, they can choose from 3 game actions - battle, trade, and thieve. Among the 3 pvp actions, thieving is the most cost efficient way of gaining resources; **thieving records are hidden information; however, if thieving is failed, it will reveal the record and increase aggression.**
+
+- randomness. The game introduce randomness to enhance the player UX. **The production of finished product has a failure rate. The failure rate can be reduced with more practices of the skills and better equipments.** In the PVP part, **the randomness inherent in the system makes it uncertain**: players might still win against odds, or lose despite them. Consequently, warfare, except when there is a major technological disparity between the opponents, is always tense. **It is implemented with block hash**
+
+- **The depth and variety of the game system make achieving the objectives uncertain**. While information about the economy is exposed, it is often difficult to judge what to build in an island next, what skill sets will develop next. As players gain experience, they learn the ins and outs of the system, but it is still sufficiently complex to be hard to master.
 
 ## Getting Started
 
