@@ -20,8 +20,9 @@ export default function WalletMenu() {
 
       // Before create a new, let's check if it already has
       const user = await getUserInfo({ owner: accounts[0].address });
+      if (user.length > 0) return toast.success("Wallet connected!");
 
-      if (user.length > 0) return toast.error("You cannot create more than one user");
+      toast.success("Creating a new user object, please wait a sec...");
 
       const txb = new TransactionBlock();
 
@@ -35,7 +36,7 @@ export default function WalletMenu() {
       const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
       toast.custom(<TxToast title="New user created successfully!" digest={digest} />);
     } catch (error: any) {
-      toast.error(`Failed to create a new user: ${error.message}`);
+      toast.error(`Failed to create a new user: ${error.message}!`);
     }
   }
 

@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 
+import ClaimIslandForm from "@/components/form/ClaimIslandForm";
+
 export default function IslandTopbar() {
   const resources = [
     { id: 0, title: "wood", count: 200, iconUrl: "/image/topMenu/wood_icon.png" },
@@ -21,6 +23,7 @@ export default function IslandTopbar() {
           <Image src="/image/topMenu/points-icon.png" alt="points-icon" width={50} height={50} priority />
           <p className="text-white">points：0</p>
         </div>
+        <ClaimIslandForm />
       </div>
 
       <div className="w-full h-1/2 flex justify-evenly items-center gap-4">
