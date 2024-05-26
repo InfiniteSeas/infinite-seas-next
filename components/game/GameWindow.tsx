@@ -25,9 +25,13 @@ export default function GameWindow() {
   const [craftMenuFlag, setCraftMenuFlag] = useState<boolean>(false);
   const [productType, setProductType] = useState<string>("ore");
 
+  const [islandOwnerName, setIslandOwnerName] = useState<string>("");
+  const [islandOwnerExp, setIslandOwnerExp] = useState<number>(0);
+  const [islandOwnerLevel, setIslandOwnerLevel] = useState<number>(0);
   const [oreLeft, setOreLeft] = useState<number>(0);
   const [woodLeft, setWoodLeft] = useState<number>(0);
   const [seedsLeft, setSeedsLeft] = useState<number>(0);
+
   const [skillProcesses, setSkillProcesses] = useState<any[]>([]);
 
   async function handleIslandClicked() {
@@ -39,6 +43,9 @@ export default function GameWindow() {
     const player = await getPlayerInfo({
       owner: "0xf94d322ddf060d4dc9a9bee56d61ed119f39e17b5a1098d62254a10e37a86cf9", // TODO: change to island owner
     });
+    setIslandOwnerName(player.name);
+    setIslandOwnerExp(player.experience);
+    setIslandOwnerLevel(player.level);
     player.inventory.forEach((inv: { itemId: number; quantity: number }) => {
       if (inv.itemId === 2000000003) setOreLeft(inv.quantity);
       if (inv.itemId === 2000000001) setWoodLeft(inv.quantity);
@@ -87,7 +94,14 @@ export default function GameWindow() {
       {/* Island Menu */}
       {islandMenuFlag && (
         <div className="fixed top-0 left-0 w-3/5 h-screen flex flex-col justify-between ml-[18%] mr-[20%] pt-8">
-          <IslandTopbar oreLeft={oreLeft} woodLeft={woodLeft} seedsLeft={seedsLeft} />
+          <IslandTopbar
+            islandOwnerExp={islandOwnerExp}
+            islandOwnerName={islandOwnerName}
+            islandOwnerLevel={islandOwnerLevel}
+            oreLeft={oreLeft}
+            woodLeft={woodLeft}
+            seedsLeft={seedsLeft}
+          />
 
           <div className="flex-1 relative my-12">
             {islandProductMenuFlag && <IslandProductMenu productType={productType} skillProcesses={skillProcesses} />}

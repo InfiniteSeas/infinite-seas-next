@@ -5,10 +5,16 @@ import Image from "next/image";
 import ClaimIslandForm from "@/components/form/ClaimIslandForm";
 
 export default function IslandTopbar({
+  islandOwnerName,
+  islandOwnerExp,
+  islandOwnerLevel,
   oreLeft,
   woodLeft,
   seedsLeft,
 }: {
+  islandOwnerName: string;
+  islandOwnerExp: number;
+  islandOwnerLevel: number;
   oreLeft: number;
   woodLeft: number;
   seedsLeft: number;
@@ -25,11 +31,15 @@ export default function IslandTopbar({
       <div className="flex justify-between items-center w-full h-1/2">
         <div className="flex items-center gap-2">
           <Image src="/image/topMenu/Avatar_pic.png" alt="avatar-pic" width={60} height={60} priority />
-          <div className="text-xl text-white">John&apos;s island</div>
+          <div className="text-xl text-white">{islandOwnerName}&apos;s island</div>
         </div>
         <div className="flex items-center gap-2">
           <Image src="/image/topMenu/points-icon.png" alt="points-icon" width={50} height={50} priority />
-          <p className="text-white">points：0</p>
+          <p className="text-white">Exp: {islandOwnerExp}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Image src="/image/topMenu/points-icon.png" alt="points-icon" width={50} height={50} priority />
+          <p className="text-white">Level: {islandOwnerLevel}</p>
         </div>
         <ClaimIslandForm />
       </div>
