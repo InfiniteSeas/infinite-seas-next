@@ -2,6 +2,9 @@
 
 import axios from "axios";
 
+import { INDEXER_BASE_URL } from "@/constant";
+
 export async function getUserInfo({ owner }: { owner: string }) {
-  return await axios.get(`http://{domin:port}/api/Players?owner=${owner}`);
+  const { data } = await axios.get(`${INDEXER_BASE_URL}/Players?owner=${owner}`);
+  return data;
 }

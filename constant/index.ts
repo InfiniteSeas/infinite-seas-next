@@ -1,8 +1,10 @@
 export const SUI_TESTNET_JSON_RPC_URL = "https://sui-testnet.nodeinfra.com/?apikey=A5hM76oO0ZzZtWa0jigeEgBWECIAuosG";
 // export const MOVEMENT_M2_DEVNET_JSON_RPC_URL = "https://sui.devnet.m2.movementlabs.xyz:443";
+export const INDEXER_BASE_URL = "http://47.96.81.197:8809/api";
 
-export const COIN_PACKAGE_Id = "0xc88d834617796a46ad9076bb7c7929f20e2e4395441d6529b995ee4c6d91e1ab";
-export const COMMON_PACKAGE_Id = "0x60199eae5d0ae8e867fc64548eb7d01ff08b741d265adacb3f40cda17ec80aec";
+export const MAIN_PACKAGE_ID = "0x8d4b0f3b3be41e525ec63e252f14b52e149ead9b2904f55a8b3878044999b56b";
+export const COIN_PACKAGE_ID = "0xc88d834617796a46ad9076bb7c7929f20e2e4395441d6529b995ee4c6d91e1ab";
+export const COMMON_PACKAGE_ID = "0x60199eae5d0ae8e867fc64548eb7d01ff08b741d265adacb3f40cda17ec80aec";
 export const ENERGY_TOKEN_ID = "0xcc301d760ca2af0f383cb3cb730337a88c9f86cae47d6700d90ffab4a611e9d7";
 export const MAP_ID = "0xc9bcf6235d0e24a1fbeaa565c0830d203f66122a86acf653ee96c5e8254c22ac";
 

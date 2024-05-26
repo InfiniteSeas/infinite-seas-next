@@ -1,19 +1,42 @@
 "use client";
 
 import Image from "next/image";
-import { useConnectWallet, useWallets } from "@mysten/dapp-kit";
+import { useConnectWallet, useSignAndExecuteTransactionBlock, useWallets } from "@mysten/dapp-kit";
+import { TransactionBlock } from "@mysten/sui.js/transactions";
+import toast from "react-hot-toast";
+
+import TxToast from "@/components/shared/TxToast";
+import { getUserInfo } from "@/actions/user.action";
+import { MAIN_PACKAGE_ID } from "@/constant";
 
 export default function WalletMenu() {
   const wallets = useWallets();
-  const { mutate: connect } = useConnectWallet();
+  const { mutateAsync: connectAsync } = useConnectWallet();
+  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
-  function handleConnect() {
-    connect(
-      { wallet: wallets[0] },
-      {
-        onSuccess: () => console.log("connected"),
-      }
-    );
+  async function connectAndCreateUserAction() {
+    try {
+      const { accounts } = await connectAsync({ wallet: wallets[0] });
+
+      // Before create a new, let's check if it already has
+      const user = await getUserInfo({ owner: accounts[0].address });
+
+      if (user.length === 0) return;
+
+      const txb = new TransactionBlock();
+
+      txb.setGasBudget(11000000);
+
+      txb.moveCall({
+        target: `${MAIN_PACKAGE_ID}::player_aggregate::create`,
+        arguments: [txb.pure.string("Sunrise")],
+      });
+
+      const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
+      toast.custom(<TxToast title="New user created successfully!" digest={digest} />);
+    } catch (error: any) {
+      toast.error(`Failed to create a new user: ${error.message}`);
+    }
   }
 
   return (
@@ -24,7 +47,7 @@ export default function WalletMenu() {
       width={50}
       height={50}
       priority
-      onClick={handleConnect}
+      onClick={connectAndCreateUserAction}
     />
   );
 }

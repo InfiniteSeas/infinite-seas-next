@@ -1,6 +1,8 @@
-import SuiKit from "@/components/wallet/SuiKit";
 import type { Metadata } from "next";
 import "./globals.css";
+
+import SuiKit from "@/components/wallet/SuiKit";
+import AppToaster from "@/components/shared/AppToaster";
 
 export const metadata: Metadata = {
   title: "Infinite Seas Demo Next",
@@ -15,7 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SuiKit>{children}</SuiKit>
+        <SuiKit>
+          {children}
+          <AppToaster />
+        </SuiKit>
       </body>
     </html>
   );

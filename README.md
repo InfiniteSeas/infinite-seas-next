@@ -133,9 +133,8 @@ async function someAction(formData: FormData) {
       typeArguments: [someType],
     });
 
-    const res = await signAndExecuteTransactionBlock({
-      transactionBlock: txb as any,
-    });
+    const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
+    toast.custom(<TxToast title="Something done successfully!" digest={digest} />);
   } catch (error: any) {
     // Popup some err msg
   }
