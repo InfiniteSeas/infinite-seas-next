@@ -6,7 +6,7 @@ import { INDEXER_BASE_URL } from "@/constant";
 
 export async function getPlayerInfo({ owner }: { owner: string }) {
   const { data } = await axios.get(`${INDEXER_BASE_URL}/Players?owner=${owner}`);
-  return data;
+  return data[0];
 }
 
 export async function getPlayerRosters({ playerId }: { playerId: string }) {

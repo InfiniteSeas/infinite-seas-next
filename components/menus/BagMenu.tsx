@@ -6,9 +6,9 @@ export default function BagMenu({ maxSpace }: { maxSpace: number }) {
   const [occupied, setOccupied] = useState<number>(0);
 
   const bagSpaces = [
-    { id: 0, resource: "Iron", count: 0, iconUrl: "" },
+    { id: 0, resource: "Ore", count: 0, iconUrl: "" },
     { id: 1, resource: "Wood", count: 0, iconUrl: "" },
-    { id: 2, resource: "Cotton", count: 0, iconUrl: "" },
+    { id: 2, resource: "Seed", count: 0, iconUrl: "" },
   ];
 
   return (

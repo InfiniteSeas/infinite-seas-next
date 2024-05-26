@@ -5,9 +5,9 @@ import Image from "next/image";
 export default function IslandButtons({ handleButtonClick }: { handleButtonClick: (flag: string) => void }) {
   const buttonData = [
     { id: 0, flag: "bag", count: "", iconUrl: "/image/btn/Inventory.png" },
-    { id: 1, flag: "iron", count: "7/99", iconUrl: "/image/btn/mining.png" },
+    { id: 1, flag: "ore", count: "7/99", iconUrl: "/image/btn/mining.png" },
     { id: 2, flag: "wood", count: "29/99", iconUrl: "/image/btn/wood-cutting.png" },
-    { id: 3, flag: "cotton", count: "30/99", iconUrl: "/image/btn/Planting.png" },
+    { id: 3, flag: "seed", count: "30/99", iconUrl: "/image/btn/Planting.png" },
     { id: 4, flag: "craft", count: "", iconUrl: "/image/btn/Crafting.png" },
   ];
 

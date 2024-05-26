@@ -4,12 +4,20 @@ import Image from "next/image";
 
 import ClaimIslandForm from "@/components/form/ClaimIslandForm";
 
-export default function IslandTopbar() {
+export default function IslandTopbar({
+  oreLeft,
+  woodLeft,
+  seedsLeft,
+}: {
+  oreLeft: number;
+  woodLeft: number;
+  seedsLeft: number;
+}) {
   const resources = [
-    { id: 0, title: "wood", count: 200, iconUrl: "/image/topMenu/wood_icon.png" },
-    { id: 1, title: "ore", count: 80, iconUrl: "/image/topMenu/ore_icon.png" },
-    { id: 2, title: "seeds", count: 200, iconUrl: "/image/topMenu/seeds_icon.png" },
-    { id: 3, title: "boats", count: 0, iconUrl: "/image/topMenu/boats_icon.png" },
+    { id: 1, title: "Ore", count: woodLeft, iconUrl: "/image/topMenu/ore_icon.png" },
+    { id: 0, title: "Wood", count: oreLeft, iconUrl: "/image/topMenu/wood_icon.png" },
+    { id: 2, title: "Seeds", count: seedsLeft, iconUrl: "/image/topMenu/seeds_icon.png" },
+    { id: 3, title: "Boats", count: 0, iconUrl: "/image/topMenu/boats_icon.png" },
   ];
 
   return (

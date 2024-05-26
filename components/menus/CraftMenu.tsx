@@ -6,15 +6,15 @@ import Image from "next/image";
 export default function CraftMenu() {
   const [modalFlag, setModalFlag] = useState<boolean>(false);
 
-  const [shipIron, setShipIron] = useState<number>(3);
+  const [shipOre, setShipOre] = useState<number>(3);
   const [shipWood, setShipWood] = useState<number>(3);
-  const [shipCotton, setShipCotton] = useState<number>(3);
+  const [shipSeed, setShipSeed] = useState<number>(3);
   const [attack, setAttack] = useState<number>(6);
   const [protection, setProtection] = useState<number>(5);
   const [speed, setSpeed] = useState<number>(4);
-  const [inventoryIron, setInventoryIron] = useState<number>(0);
+  const [inventoryOre, setInventoryOre] = useState<number>(0);
   const [inventoryWood, setInventoryWood] = useState<number>(0);
-  const [inventoryCotton, setInventoryCotton] = useState<number>(0);
+  const [inventorySeed, setInventorySeed] = useState<number>(0);
 
   const sidebarTitle = [
     "small ship",
@@ -28,34 +28,34 @@ export default function CraftMenu() {
   function createCraft() {}
 
   function addmining() {
-    if (shipIron + shipWood + shipCotton >= 15 || inventoryIron === 0) return;
+    if (shipOre + shipWood + shipSeed >= 15 || inventoryOre === 0) return;
 
-    setShipIron((prev) => ++prev);
+    setShipOre((prev) => ++prev);
     setAttack((prev) => ++prev);
-    setInventoryIron((prev) => --prev);
+    setInventoryOre((prev) => --prev);
   }
 
   function addWood() {
-    if (shipIron + shipWood + shipCotton >= 15 || inventoryWood === 0) return;
+    if (shipOre + shipWood + shipSeed >= 15 || inventoryWood === 0) return;
 
     setShipWood((prev) => ++prev);
     setProtection((prev) => ++prev);
     setInventoryWood((prev) => --prev);
   }
-  function addcotton() {
-    if (shipIron + shipWood + shipCotton >= 15 || inventoryCotton === 0) return;
+  function addSeed() {
+    if (shipOre + shipWood + shipSeed >= 15 || inventorySeed === 0) return;
 
-    setShipCotton((prev) => ++prev);
+    setShipSeed((prev) => ++prev);
     setSpeed((prev) => ++prev);
-    setInventoryCotton((prev) => --prev);
+    setInventorySeed((prev) => --prev);
   }
 
-  function removeIron() {
-    if (shipIron <= 3) return;
+  function removeOre() {
+    if (shipOre <= 3) return;
 
-    setShipIron((prev) => --prev);
+    setShipOre((prev) => --prev);
     setAttack((prev) => --prev);
-    setInventoryIron((prev) => ++prev);
+    setInventoryOre((prev) => ++prev);
   }
 
   function removeWood() {
@@ -66,12 +66,12 @@ export default function CraftMenu() {
     setInventoryWood((prev) => ++prev);
   }
 
-  function removeCotton() {
-    if (shipCotton <= 3) return;
+  function removeSeed() {
+    if (shipSeed <= 3) return;
 
-    setShipCotton((prev) => --prev);
+    setShipSeed((prev) => --prev);
     setSpeed((prev) => --prev);
-    setInventoryCotton((prev) => ++prev);
+    setInventorySeed((prev) => ++prev);
   }
 
   return (
@@ -101,14 +101,14 @@ export default function CraftMenu() {
         </div>
 
         <div className="w-full grid grid-cols-7 gap-4 text-xl">
-          <div className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" onClick={removeIron}>
-            iron required x{shipIron}
+          <div className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" onClick={removeOre}>
+            ore required x{shipOre}
           </div>
           <div className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" onClick={removeWood}>
             wood required x{shipWood}
           </div>
-          <div className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" onClick={removeCotton}>
-            cotton required x{shipCotton}
+          <div className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" onClick={removeSeed}>
+            seed required x{shipSeed}
           </div>
           {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17].map((id) => (
             <div key={id} className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" />
@@ -158,7 +158,7 @@ export default function CraftMenu() {
             }}
             onClick={addmining}
           >
-            iron {inventoryIron}
+            ore {inventoryOre}
           </div>
 
           <div
@@ -180,9 +180,9 @@ export default function CraftMenu() {
               borderImageSlice: 1,
               background: "radial-gradient(circle, rgb(84, 84, 84) 0%, rgb(63, 63, 63) 100%)",
             }}
-            onClick={addcotton}
+            onClick={addSeed}
           >
-            cotton {inventoryCotton}
+            seed {inventorySeed}
           </div>
 
           {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((id) => (

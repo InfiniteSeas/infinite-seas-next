@@ -3,7 +3,7 @@ export default function ActionQueue() {
     { id: 0, action: "Mining", count: 0, resource: "Copper Ores ---------", timeLeft: 0 },
     { id: 1, action: "Crafting", count: 0, resource: "Small Ship ---------", timeLeft: 0 },
     { id: 2, action: "Wood Cutting", count: 0, resource: "Normal Trees ---------", timeLeft: 0 },
-    { id: 3, action: "Planting", count: 0, resource: "Cotton Seeds ---------", timeLeft: 0 },
+    { id: 3, action: "Planting", count: 0, resource: "Seed Seeds ---------", timeLeft: 0 },
     { id: 4, action: "sailing Roster", count: 0, resource: "---------", timeLeft: 0 },
   ];
 

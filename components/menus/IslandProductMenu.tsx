@@ -1,12 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function IslandProductMenu({ productType }: { productType: string }) {
+import StartCreationForm from "@/components/form/StartCreationForm";
+
+export default function IslandProductMenu({
+  productType,
+  skillProcesses,
+}: {
+  productType: string;
+  skillProcesses: any[];
+}) {
   const [modalFlag, setModalFlag] = useState<boolean>(false);
-  const [energyTokenCost, setEnergyTokenCost] = useState<string>("0");
-
-  function handleProductCreate() {}
 
   return (
     <div className="w-full h-full grid grid-cols-4 pt-4 gap-4">
@@ -21,47 +26,11 @@ export default function IslandProductMenu({ productType }: { productType: string
       ))}
 
       {modalFlag && (
-        <div className="w-[270px] h-[180px] flex flex-col justify-between items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white text-lg p-4">
-          <div className="flex items-center gap-2">
-            <span>{productType}</span>
-            <input
-              className="w-[45px] border-[1px] border-black text-center rounded-md"
-              type="text"
-              value={energyTokenCost}
-              onChange={(e) => setEnergyTokenCost(e.target.value)}
-            />
-          </div>
-
-          <p>costs {energyTokenCost} energy token</p>
-
-          <p>
-            {productType === "iron"
-              ? Number(energyTokenCost) * 3
-              : productType === "wood"
-              ? Number(energyTokenCost) * 8
-              : Number(energyTokenCost) * 36}{" "}
-            seconds time duration
-          </p>
-
-          <div className="flex w-4/5 justify-evenly items-center">
-            <div
-              className="hover:bg-[#e9e9e9] border-[1px] border-black rounded-md px-2 cursor-pointer"
-              onClick={handleProductCreate}
-            >
-              Create
-            </div>
-
-            <div
-              className="hover:bg-[#e9e9e9] border-[1px] border-black rounded-md px-2 cursor-pointer"
-              onClick={() => {
-                setModalFlag(false);
-                setEnergyTokenCost("");
-              }}
-            >
-              Cancel
-            </div>
-          </div>
-        </div>
+        <StartCreationForm
+          productType={productType}
+          skillProcesses={skillProcesses}
+          handleCloseModal={() => setModalFlag(false)}
+        />
       )}
     </div>
   );
