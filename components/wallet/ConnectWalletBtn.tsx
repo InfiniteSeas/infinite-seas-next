@@ -21,7 +21,7 @@ export default function WalletMenu() {
       // Before create a new, let's check if it already has
       const user = await getUserInfo({ owner: accounts[0].address });
 
-      if (user.length === 0) return;
+      if (user.length > 0) return toast.error("You cannot create more than one user");
 
       const txb = new TransactionBlock();
 
