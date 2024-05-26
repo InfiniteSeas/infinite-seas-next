@@ -6,7 +6,7 @@ import { TransactionBlock } from "@mysten/sui.js/transactions";
 import toast from "react-hot-toast";
 
 import TxToast from "@/components/shared/TxToast";
-import { getUserInfo } from "@/actions/user.action";
+import { getPlayerInfo } from "@/actions/player.action";
 import { MAIN_PACKAGE_ID } from "@/constant";
 
 export default function WalletMenu() {
@@ -14,15 +14,15 @@ export default function WalletMenu() {
   const { mutateAsync: connectAsync } = useConnectWallet();
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
-  async function connectAndCreateUserAction() {
+  async function connectAndCreatePlayerAction() {
     try {
       const { accounts } = await connectAsync({ wallet: wallets[0] });
 
       // Before create a new, let's check if it already has
-      const user = await getUserInfo({ owner: accounts[0].address });
-      if (user.length > 0) return toast.success("Wallet connected!");
+      const player = await getPlayerInfo({ owner: accounts[0].address });
+      if (player.length > 0) return toast.success("Wallet connected!");
 
-      toast.success("Creating a new user object, please wait a sec...");
+      toast.success("Creating a new player object, please wait a sec...");
 
       const txb = new TransactionBlock();
 
@@ -34,9 +34,9 @@ export default function WalletMenu() {
       });
 
       const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
-      toast.custom(<TxToast title="New user created successfully!" digest={digest} />);
+      toast.custom(<TxToast title="New player created successfully!" digest={digest} />);
     } catch (error: any) {
-      toast.error(`Failed to create a new user: ${error.message}!`);
+      toast.error(`Failed to create a new player: ${error.message}!`);
     }
   }
 
@@ -48,7 +48,7 @@ export default function WalletMenu() {
       width={50}
       height={50}
       priority
-      onClick={connectAndCreateUserAction}
+      onClick={connectAndCreatePlayerAction}
     />
   );
 }
