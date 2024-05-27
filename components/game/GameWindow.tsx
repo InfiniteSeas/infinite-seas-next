@@ -17,45 +17,34 @@ import CraftMenu from "@/components/menus/CraftMenu";
 import GameCanvas from "@/components/game/GameCanvas";
 import { getPlayerInfo, getPlayerSkillProcesses } from "@/actions/player.action";
 
-export default function GameWindow() {
+export default function GameWindow({
+  islandOwnerName,
+  islandOwnerExp,
+  islandOwnerLevel,
+  oreLeft,
+  woodLeft,
+  seedsLeft,
+  skillProcesses,
+}: {
+  islandOwnerName: string;
+  islandOwnerExp: number;
+  islandOwnerLevel: number;
+  oreLeft: number;
+  woodLeft: number;
+  seedsLeft: number;
+  skillProcesses: any[];
+}) {
   const [islandMenuFlag, setIslandMenuFlag] = useState<boolean>(false);
   const [shipsMenuFlag, setShipsMenuFlag] = useState<boolean>(false);
   const [islandProductMenuFlag, setIslandProductMenuFlag] = useState<boolean>(false);
   const [bagMenuFlag, setBagMenuFlag] = useState<boolean>(false);
   const [craftMenuFlag, setCraftMenuFlag] = useState<boolean>(false);
+  
   const [productType, setProductType] = useState<string>("ore");
-
-  const [islandOwnerName, setIslandOwnerName] = useState<string>("");
-  const [islandOwnerExp, setIslandOwnerExp] = useState<number>(0);
-  const [islandOwnerLevel, setIslandOwnerLevel] = useState<number>(0);
-  const [oreLeft, setOreLeft] = useState<number>(0);
-  const [woodLeft, setWoodLeft] = useState<number>(0);
-  const [seedsLeft, setSeedsLeft] = useState<number>(0);
-
-  const [skillProcesses, setSkillProcesses] = useState<any[]>([]);
 
   async function handleIslandClicked() {
     setIslandMenuFlag((prev) => !prev);
     setShipsMenuFlag(false);
-
-    if (islandMenuFlag) return;
-
-    const player = await getPlayerInfo({
-      owner: "0xf94d322ddf060d4dc9a9bee56d61ed119f39e17b5a1098d62254a10e37a86cf9", // TODO: change to island owner
-    });
-    setIslandOwnerName(player.name);
-    setIslandOwnerExp(player.experience);
-    setIslandOwnerLevel(player.level);
-    player.inventory.forEach((inv: { itemId: number; quantity: number }) => {
-      if (inv.itemId === 2000000003) setOreLeft(inv.quantity);
-      if (inv.itemId === 2000000001) setWoodLeft(inv.quantity);
-      if (inv.itemId === 2) setSeedsLeft(inv.quantity);
-    });
-
-    const processes = await getPlayerSkillProcesses({
-      playerId: player.id,
-    });
-    setSkillProcesses(processes);
   }
 
   function handleShipsClicked() {
@@ -119,7 +108,7 @@ export default function GameWindow() {
 
           <IslandButtons handleButtonClick={handleIslandButtonClick} />
 
-          <ActionQueue />
+          <ActionQueue skillProcesses={skillProcesses} />
 
           <RankList />
         </div>

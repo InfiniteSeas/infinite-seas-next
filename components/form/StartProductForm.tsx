@@ -6,8 +6,11 @@ import { TransactionBlock } from "@mysten/sui.js/transactions";
 import toast from "react-hot-toast";
 
 import TxToast from "@/components/shared/TxToast";
-import { ITEM_CREATION_MINING, ITEM_CREATION_WOODING, ITEM_PRODUCTION_FARMING, MAIN_PACKAGE_ID } from "@/constant";
+
 import { suixEnergyCoins } from "@/actions/coin.action";
+import { revalidateGame } from "@/actions/system.action";
+
+import { ITEM_CREATION_MINING, ITEM_CREATION_WOODING, ITEM_PRODUCTION_FARMING, MAIN_PACKAGE_ID } from "@/constant";
 
 export default function StartProductForm({
   productType,
@@ -29,7 +32,7 @@ export default function StartProductForm({
   const currentAccount = useCurrentAccount();
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
-  async function startCreationAction() {
+  async function startProductAction() {
     if (!currentAccount) return toast.error("Please login first!");
 
     let functionName = "";
@@ -78,7 +81,7 @@ export default function StartProductForm({
     const energyCoins = await suixEnergyCoins({ owner: currentAccount.address });
     if (energyCoins.length === 0) return toast.error("You don't have enough energy coin, please buy some first!");
 
-    toast.success("Starting creation, please sign by your wallet...");
+    toast.success("Starting creation, please approve with your wallet...");
 
     try {
       const txb = new TransactionBlock();
@@ -99,6 +102,8 @@ export default function StartProductForm({
 
       const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
       toast.custom(<TxToast title="Creation started successfully!" digest={digest} />);
+
+      revalidateGame();
     } catch (error: any) {
       toast.error(`Failed to start creation: ${error.message}!`);
     }
@@ -130,7 +135,7 @@ export default function StartProductForm({
       <div className="flex w-4/5 justify-evenly items-center">
         <div
           className="hover:bg-[#e9e9e9] border-[1px] border-black rounded-md px-2 cursor-pointer"
-          onClick={startCreationAction}
+          onClick={startProductAction}
         >
           Create
         </div>

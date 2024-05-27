@@ -1,10 +1,13 @@
-export default function ActionQueue() {
+import HarvestProductForm from "@/components/form/HarvestProductForm";
+
+export default function ActionQueue({ skillProcesses }: { skillProcesses: any[] }) {
   const queueData = [
-    { id: 0, action: "Mining", count: 0, resource: "Copper Ores ---------", timeLeft: 0 },
-    { id: 1, action: "Crafting", count: 0, resource: "Small Ship ---------", timeLeft: 0 },
-    { id: 2, action: "Wood Cutting", count: 0, resource: "Normal Trees ---------", timeLeft: 0 },
-    { id: 3, action: "Planting", count: 0, resource: "Seed Seeds ---------", timeLeft: 0 },
-    { id: 4, action: "sailing Roster", count: 0, resource: "---------", timeLeft: 0 },
+    { id: 0, action: "Mining", count: 0, resource: "Copper Ores", timeLeft: 0, productType: "ore" },
+    { id: 1, action: "Wood Cutting", count: 0, resource: "Normal Trees", timeLeft: 0, productType: "wood" },
+    { id: 2, action: "Planting", count: 0, resource: "Cotton Seeds", timeLeft: 0, productType: "seed1" },
+    { id: 3, action: "Planting", count: 0, resource: "Cotton Seeds", timeLeft: 0, productType: "seed2" },
+    { id: 4, action: "Crafting", count: 0, resource: "Small Ship", timeLeft: 0, productType: "craft" },
+    { id: 5, action: "Sailing Roster", count: 0, resource: "", timeLeft: 0, productType: "" },
   ];
 
   return (
@@ -18,6 +21,7 @@ export default function ActionQueue() {
             <span>{data.count}</span>
             <span>{data.resource}</span>
             <span>{data.timeLeft}s</span>
+            {data.productType && <HarvestProductForm productType={data.productType} skillProcesses={skillProcesses} />}
           </div>
         ))}
       </div>

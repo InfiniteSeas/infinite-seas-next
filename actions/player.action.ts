@@ -9,12 +9,12 @@ export async function getPlayerInfo({ owner }: { owner: string }) {
   return data[0];
 }
 
-export async function getPlayerRosters({ playerId }: { playerId: string }) {
-  const { data } = await axios.get(`${INDEXER_BASE_URL}/Rosters?rosterId.playerId=${playerId}`);
+export async function getPlayerSkillProcesses({ playerId }: { playerId: string }) {
+  const { data } = await axios.get(`${INDEXER_BASE_URL}/SkillProcesses?skillProcessId.playerId=${playerId}`);
   return data;
 }
 
-export async function getPlayerSkillProcesses({ playerId }: { playerId: string }) {
-  const { data } = await axios.get(`${INDEXER_BASE_URL}/SkillProcesses?skillProcessId.playerId=${playerId}`);
+export async function getPlayerRosters({ playerId }: { playerId: string }) {
+  const { data } = await axios.get(`${INDEXER_BASE_URL}/Rosters?rosterId.playerId=${playerId}`);
   return data;
 }
