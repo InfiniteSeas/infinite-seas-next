@@ -11,7 +11,7 @@ export default function ClaimIslandForm() {
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
   async function claimIslandAction() {
-    toast.success("Claiming the island, please wait a sec...");
+    toast.success("Claiming the island, please sign by your wallet...");
 
     try {
       const txb = new TransactionBlock();

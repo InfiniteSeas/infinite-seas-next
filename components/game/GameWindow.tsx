@@ -104,7 +104,15 @@ export default function GameWindow() {
           />
 
           <div className="flex-1 relative my-12">
-            {islandProductMenuFlag && <IslandProductMenu productType={productType} skillProcesses={skillProcesses} />}
+            {islandProductMenuFlag && (
+              <IslandProductMenu
+                productType={productType}
+                skillProcesses={skillProcesses}
+                oreLeft={oreLeft}
+                woodLeft={woodLeft}
+                seedsLeft={seedsLeft}
+              />
+            )}
             {bagMenuFlag && <BagMenu maxSpace={20} />}
             {craftMenuFlag && <CraftMenu />}
           </div>
@@ -112,6 +120,7 @@ export default function GameWindow() {
           <IslandButtons handleButtonClick={handleIslandButtonClick} />
 
           <ActionQueue />
+
           <RankList />
         </div>
       )}

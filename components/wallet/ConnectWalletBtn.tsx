@@ -22,7 +22,7 @@ export default function WalletMenu() {
       const player = await getPlayerInfo({ owner: accounts[0].address });
       if (player) return toast.success("Wallet connected!");
 
-      toast.success("Creating a new player object, please wait a sec...");
+      toast.success("Creating a new player object, please sign by your wallet...");
 
       const txb = new TransactionBlock();
 
