@@ -27,7 +27,7 @@ export default function IslandTopbar({
   ];
 
   return (
-    <div className="w-full h-1/6 px-12 py-6 bg-no-repeat bg-contain" style={{background:`url("/image/16-Mining_Wood_Cutting_Planting/Top_frame.png")`}}>
+    <div className="w-full h-1/6 px-12 py-6 bg-no-repeat bg-contain" style={{background:`url("/image/16-Mining_Wood_Cutting_Planting/Top_frame.png")`,backgroundSize:"100% 100%"}}>
       <div className="flex justify-between items-center w-full h-1/2">
         <div className="flex items-center gap-2">
           <Image src="/image/topMenu/Avatar_pic.png" alt="avatar-pic" width={60} height={60} priority />
