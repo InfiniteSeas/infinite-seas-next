@@ -295,7 +295,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mysten/bcs@npm:0.11.1":
+"@mysten/bcs@npm:0.11.1, @mysten/bcs@npm:^0.11.1":
   version: 0.11.1
   resolution: "@mysten/bcs@npm:0.11.1"
   dependencies:
@@ -3191,6 +3191,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "infinite-seas-next@workspace:."
   dependencies:
+    "@mysten/bcs": "npm:^0.11.1"
     "@mysten/dapp-kit": "npm:^0.13.2"
     "@mysten/sui.js": "npm:^0.54.1"
     "@tanstack/react-query": "npm:^5.37.1"

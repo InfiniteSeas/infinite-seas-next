@@ -20,7 +20,7 @@ export default function WalletMenu() {
 
       // Before create a new, let's check if it already has
       const player = await getPlayerInfo({ owner: accounts[0].address });
-      if (player) return toast.success("Wallet connected!");
+      if (!!player) return toast.success("Wallet connected!");
 
       toast.success("Creating a new player object, please approve with your wallet...");
 

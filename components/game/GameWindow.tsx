@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useCurrentAccount } from "@mysten/dapp-kit";
 
 import NavItems from "@/components/shared/NavItems";
 import IslandTopbar from "@/components/shared/IslandTopbar";
@@ -15,7 +14,6 @@ import BagMenu from "@/components/menus/BagMenu";
 import CraftMenu from "@/components/menus/CraftMenu";
 
 import GameCanvas from "@/components/game/GameCanvas";
-import { getPlayerInfo, getPlayerSkillProcesses } from "@/actions/player.action";
 
 export default function GameWindow({
   islandOwnerName,
@@ -25,6 +23,9 @@ export default function GameWindow({
   woodLeft,
   seedsLeft,
   skillProcesses,
+  copperLeft,
+  logLeft,
+  cottonLeft,
 }: {
   islandOwnerName: string;
   islandOwnerExp: number;
@@ -33,13 +34,16 @@ export default function GameWindow({
   woodLeft: number;
   seedsLeft: number;
   skillProcesses: any[];
+  copperLeft: number;
+  logLeft: number;
+  cottonLeft: number;
 }) {
   const [islandMenuFlag, setIslandMenuFlag] = useState<boolean>(false);
   const [shipsMenuFlag, setShipsMenuFlag] = useState<boolean>(false);
   const [islandProductMenuFlag, setIslandProductMenuFlag] = useState<boolean>(false);
   const [bagMenuFlag, setBagMenuFlag] = useState<boolean>(false);
   const [craftMenuFlag, setCraftMenuFlag] = useState<boolean>(false);
-  
+
   const [productType, setProductType] = useState<string>("ore");
 
   async function handleIslandClicked() {
@@ -103,7 +107,14 @@ export default function GameWindow({
               />
             )}
             {bagMenuFlag && <BagMenu maxSpace={20} />}
-            {craftMenuFlag && <CraftMenu />}
+            {craftMenuFlag && (
+              <CraftMenu
+                copperLeft={copperLeft}
+                logLeft={logLeft}
+                cottonLeft={cottonLeft}
+                skillProcesses={skillProcesses}
+              />
+            )}
           </div>
 
           <IslandButtons handleButtonClick={handleIslandButtonClick} />

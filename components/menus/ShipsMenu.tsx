@@ -71,7 +71,7 @@ export default function ShipsMenu({ closeShipsMenu }: { closeShipsMenu: () => vo
                   className="w-1/5 h-full flex justify-center items-center text-white text-2xl cursor-pointer"
                   onClick={() => setShipsBagBackg(true)}
                 >
-                  TransFer Inventory
+                  Transfer Inventory
                 </div>
               </div>
             </div>

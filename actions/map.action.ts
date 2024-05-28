@@ -5,20 +5,12 @@ import { SuiClient } from "@mysten/sui.js/client";
 
 import { INDEXER_BASE_URL, MAP_ID, SUI_TESTNET_JSON_RPC } from "@/constant";
 
-// create a client connected to devnet
 const client = new SuiClient({ url: SUI_TESTNET_JSON_RPC });
-
-export async function getAllIslandsInfo() {
-  const { data } = await axios.get(`${INDEXER_BASE_URL}/Maps/${MAP_ID}`);
-  return data.locations;
-}
 
 export async function suiAllIslandsInfo() {
   const map = await client.getObject({
     id: MAP_ID,
-    options: {
-      showContent: true,
-    },
+    options: { showContent: true },
   });
 
   // @ts-ignore
@@ -33,9 +25,7 @@ export async function suiAllIslandsInfo() {
   for (let i = 0; i < locationObjects.length; i++) {
     const locationInfo = await client.getObject({
       id: locationObjects[i].objectId,
-      options: {
-        showContent: true,
-      },
+      options: { showContent: true },
     });
 
     // @ts-ignore
@@ -43,4 +33,9 @@ export async function suiAllIslandsInfo() {
   }
 
   return islandInfos;
+}
+
+export async function getAllIslandsInfo() {
+  const { data } = await axios.get(`${INDEXER_BASE_URL}/Maps/${MAP_ID}`);
+  return data.locations;
 }

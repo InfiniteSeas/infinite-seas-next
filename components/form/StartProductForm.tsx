@@ -21,10 +21,10 @@ export default function StartProductForm({
   handleCloseModal,
 }: {
   productType: string;
-  skillProcesses: any[];
   oreLeft: number;
   woodLeft: number;
   seedsLeft: number;
+  skillProcesses: any[];
   handleCloseModal: () => void;
 }) {
   const [batchSize, setBatchSize] = useState<string>("0");
@@ -78,12 +78,12 @@ export default function StartProductForm({
       itemFormulaId = ITEM_PRODUCTION_FARMING;
     }
 
-    const energyCoins = await suixEnergyCoins({ owner: currentAccount.address });
-    if (energyCoins.length === 0) return toast.error("You don't have enough energy coin, please buy some first!");
-
-    toast.success("Starting creation, please approve with your wallet...");
-
     try {
+      const energyCoins = await suixEnergyCoins({ owner: currentAccount.address });
+      if (energyCoins.length === 0) return toast.error("You don't have enough energy coin, please buy some first!");
+
+      toast.success("Starting creation, please approve with your wallet...");
+
       const txb = new TransactionBlock();
 
       txb.setGasBudget(11000000);
