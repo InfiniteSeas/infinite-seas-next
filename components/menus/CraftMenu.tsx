@@ -75,49 +75,60 @@ export default function CraftMenu() {
   }
 
   return (
-    <div className="w-full h-full flex absolute">
-      <div className="w-1/5 flex flex-col items-center bg-[#232A35] py-6 gap-4">
+    <div className="w-full h-full flex absolute" style={{height:"112%"}}>
+      <div className="w-1/5 flex flex-col items-center py-6 gap-4 " style={{background:`url("/image/15-Crafting/background_height.png")`,backgroundSize:"100% 100%",lineHeight:"45px",padding:"20px"}}>
         {sidebarTitle.map((title, index) => (
-          <p key={title} className={`h-[45px] ${index === 0 ? "text-[#B30000]" : "text-white"} cursor-pointer`}>
+          <p key={title} className={`h-[45px] ${index === 0 ? "text-[#B30000]" : "text-white"} cursor-pointer text-center`} style={{background:`url("/image/15-Crafting/left_box.png")`,backgroundSize:"100% 100%",width:"100%",height:"50px"}}>
             {title}
           </p>
         ))}
       </div>
 
-      <div className="flex-1 flex flex-col items-center bg-[#D9D9D9] gap-6 py-6 px-10">
-        <h1 className="text-3xl font-bold py-2">Crafting</h1>
+      <div className="flex-1 flex flex-col items-center gap-6 py-6 px-10" style={{background:`url("/image/15-Crafting/background_width.png")`,backgroundSize:"100% 100%"}}>
+        {/* <h1 className="text-3xl font-bold py-2">Crafting</h1> */}
 
         <div className="w-full flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Image src="/image/Ocean/Boat_small.png" alt="small-boat" width={60} height={100} priority />
-            <div className="text-xl font-bold">small ship</div>
+            <div className="flex justify-center items-center" style={{background:`url("/image/15-Crafting/center_box2.png")`,backgroundSize:"100% 100%",width:"170px",height:"170px"}}><Image src="/image/Ocean/Boat_small.png" alt="small-boat" width={60} height={100} priority /></div> 
           </div>
 
-          <div className="text-xl">
-            <p>attack: {attack}</p>
-            <p>protection: {protection}</p>
-            <p>speed: {speed}</p>
+          <div className="text-sm  text-white flex justify-between items-center" style={{background:`url("/image/15-Crafting/center_box.png")`,width:"60%",height:"140px",backgroundSize:"100% 100%",padding:"20px 30px"}}>
+            <div className="font-bold flex flex-col justify-evenly" style={{height:"100%"}}>
+              <p className="text-xl">small ship<img src="/image/15-Crafting/center_line.png"/></p>              
+              <p>Require : 15 Resources</p>
+              <p>Cost : 5 Energy</p>
+    
+            </div>
+            <div>
+              <p><img src="/image/15-Crafting/ATK_icon.png" style={{height:"15px",width:"15px",display:"inline-block"}} /> attack: {attack}</p>
+              <p><img src="/image/15-Crafting/DEF_icon.png" style={{height:"15px",width:"15px",display:"inline-block"}}/>protection: {protection}</p>
+              <p><img src="/image/15-Crafting/speed_icon.png" style={{height:"15px",width:"15px",display:"inline-block"}}/>speed: {speed}</p>
+            </div>
+
           </div>
         </div>
 
-        <div className="w-full grid grid-cols-7 gap-4 text-xl">
-          <div className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" onClick={removeOre}>
-            ore required x{shipOre}
+        <div className="w-full flex text-xl text-white justify-center" style={{flexWrap:"wrap"}}>
+          <div className="w-full aspect-[1] cursor-pointer flex relative justify-center items-center" onClick={removeOre} style={{background:`url("/image/15-Crafting/center_box2.png")`,backgroundSize:"100% 100%",padding:"0 15px",height:"100px",width:"105px"}}>
+            <img src="/image/15-Crafting/ore_icon.png" style={{height:"60%"}}/>
+            <p className="absolute" style={{right:"20px",bottom:"10px"}}>{shipOre}</p>
           </div>
-          <div className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" onClick={removeWood}>
-            wood required x{shipWood}
+          <div className="w-full aspect-[1] cursor-pointer flex relative justify-center items-center" onClick={removeWood} style={{background:`url("/image/15-Crafting/center_box2.png")`,backgroundSize:"100% 100%",padding:"0 15px",height:"100px",width:"105px"}}>
+            <img src="/image/15-Crafting/wood_icon.png" style={{height:"50%"}}/>
+            <p className="absolute" style={{right:"20px",bottom:"10px"}}>{shipWood}</p>
           </div>
-          <div className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" onClick={removeSeed}>
-            seed required x{shipSeed}
+          <div className="w-full aspect-[1] cursor-pointer flex relative justify-center items-center" onClick={removeSeed} style={{background:`url("/image/15-Crafting/center_box2.png")`,backgroundSize:"100% 100%",padding:"0 15px",height:"100px",width:"105px"}}>
+            <img src="/image/15-Crafting/Cotton_Unlocked.png" style={{height:"50%"}}/>
+            <p className="absolute" style={{right:"20px",bottom:"10px"}}>{shipSeed}</p>
           </div>
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17].map((id) => (
-            <div key={id} className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" />
+          {[0, 1, 2, 3, 4, 5, 6].map((id) => (
+            <div key={id} className="w-full aspect-[1]  cursor-pointer" style={{background:`url("/image/15-Crafting/center_box2.png")`,backgroundSize:"100% 100%",padding:"0 15px",height:"100px",width:"105px"}}/>
           ))}
         </div>
 
         <div className="w-full flex justify-end">
-          <div className="bg-[#A1A1A1] text-xl text-center cursor-pointer px-4 py-2" onClick={() => setModalFlag(true)}>
-            Craft
+          <div className="text-xl text-center cursor-pointer px-4 py-2 " onClick={() => setModalFlag(true)} style={{background:`url('/image/15-Crafting/Craft.png') no-repeat`,backgroundSize:"100% 100%",width:"200px",height:"60px"}}>
+            
           </div>
         </div>
 
@@ -145,54 +156,60 @@ export default function CraftMenu() {
         )}
       </div>
 
-      <div className="w-1/5 flex flex-col items-center bg-[#BEBEBE] py-6 gap-4">
-        <p className="text-xl">inventory</p>
+      <div className="w-1/5 flex flex-col items-center py-6 gap-4" style={{background:`url("/image/15-Crafting/background_height.png")`,backgroundSize:"100% 100%"}}>
+        <p className="text-xl text-white text-center" style={{background:`url("/image/15-Crafting/center_box.png")`,width:"60%",height:"50px",backgroundSize:"100% 100%",lineHeight:'50px'}}>inventory</p>
 
-        <div className="w-full grid grid-cols-3 px-6 gap-4">
+        <div className="w-full grid  px-6 gap-4" style={{gridTemplateColumns: 'repeat(2, minmax(0, 1fr))'}}>
           <div
-            className="w-full aspect-[1] relative border-2 border-transparent rounded-md text-white"
+            className="w-full  relative   text-white flex justify-center items-center"
             style={{
-              borderImage: "linear-gradient(to bottom right, #c0c0c0, #4f4f4f);",
-              borderImageSlice: 1,
-              background: "radial-gradient(circle, rgb(84, 84, 84) 0%, rgb(63, 63, 63) 100%)",
+              borderImageSlice: 1,              
+              background: `url("/image/15-Crafting/center_box2.png")`,
+              backgroundSize:"100% 100%",
             }}
             onClick={addmining}
           >
-            ore {inventoryOre}
+            <img src="/image/15-Crafting/ore_icon.png" style={{height:"60%"}}/>
+            <p className="absolute" style={{right:"20px",bottom:"10px"}}>{inventoryOre}</p>
+             
           </div>
 
           <div
-            className="w-full aspect-[1] relative border-2 border-transparent rounded-md text-white"
+            className="w-full aspect-[1] relative rounded-md text-white flex justify-center items-center"
             style={{
-              borderImage: "linear-gradient(to bottom right, #c0c0c0, #4f4f4f);",
-              borderImageSlice: 1,
-              background: "radial-gradient(circle, rgb(84, 84, 84) 0%, rgb(63, 63, 63) 100%)",
+              borderImageSlice: 1,              
+              background: `url("/image/15-Crafting/center_box2.png")`,
+              backgroundSize:"100% 100%",
             }}
             onClick={addWood}
           >
-            Wood {inventoryWood}
+            <img src="/image/15-Crafting/wood_icon.png" style={{height:"50%"}}/>
+            <p className="absolute" style={{right:"20px",bottom:"10px"}}>{inventoryWood}</p>
+            
           </div>
 
           <div
-            className="w-full aspect-[1] relative border-2 border-transparent rounded-md text-white"
+            className="w-full aspect-[1] relative  rounded-md text-white flex justify-center items-center"
             style={{
-              borderImage: "linear-gradient(to bottom right, #c0c0c0, #4f4f4f);",
               borderImageSlice: 1,
-              background: "radial-gradient(circle, rgb(84, 84, 84) 0%, rgb(63, 63, 63) 100%)",
+              background: `url("/image/15-Crafting/center_box2.png")`,
+              backgroundSize:"100% 100%",
             }}
             onClick={addSeed}
           >
-            seed {inventorySeed}
+            <img src="/image/15-Crafting/Cotton_Unlocked.png" style={{height:"50%"}}/>
+            <p className="absolute" style={{right:"20px",bottom:"10px"}}>{inventorySeed}</p>
+            
           </div>
 
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
+          {[0, 1, 2, 3, 4].map((id) => (
             <div
               key={id}
-              className="w-full aspect-[1] relative border-2 border-transparent rounded-md text-white"
+              className="w-full aspect-[1] relative rounded-md text-white flex justify-center items-center"
               style={{
-                borderImage: "linear-gradient(to bottom right, #c0c0c0, #4f4f4f);",
                 borderImageSlice: 1,
-                background: "radial-gradient(circle, rgb(84, 84, 84) 0%, rgb(63, 63, 63) 100%)",
+                background: `url("/image/15-Crafting/center_box2.png")`,
+                backgroundSize:"100% 100%",
               }}
             />
           ))}

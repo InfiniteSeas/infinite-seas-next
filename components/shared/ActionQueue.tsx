@@ -8,7 +8,7 @@ export default function ActionQueue() {
   ];
 
   return (
-    <div className="absolute top-1/2 -left-[29%] -translate-y-1/2 bg-white p-4">
+    <div className="absolute top-1/2 -left-[29%] -translate-y-1/2 p-4 text-white bg-no-repeat bg-contain " style={{background:`url("/image/16-Mining_Wood_Cutting_Planting/Large_box.png")`,backgroundSize:"100% 100%"}} >
       <div className="flex flex-col gap-4">
         <h1 className="text-center text-xl font-bold">action queue</h1>
 
