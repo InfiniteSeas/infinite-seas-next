@@ -6,7 +6,10 @@ import { TransactionBlock } from "@mysten/sui.js/transactions";
 import toast from "react-hot-toast";
 
 import TxToast from "@/components/shared/TxToast";
-import { getPlayerInfo } from "@/actions/player.action";
+
+import { getPlayerId } from "@/actions/player.action";
+import { revalidateGame } from "@/actions/system.action";
+
 import { MAIN_PACKAGE_ID } from "@/constant";
 
 export default function WalletMenu() {
@@ -19,10 +22,10 @@ export default function WalletMenu() {
       const { accounts } = await connectAsync({ wallet: wallets[0] });
 
       // Before create a new, let's check if it already has
-      const player = await getPlayerInfo({ owner: accounts[0].address });
-      if (!!player) return toast.success("Wallet connected!");
+      const playerId = await getPlayerId({ owner: accounts[0].address });
+      if (playerId) return toast.success("Wallet connected!");
 
-      toast.success("Creating a new player object, please approve with your wallet...");
+      toast.success("Creating a new player, please approve with your wallet...");
 
       const txb = new TransactionBlock();
 
@@ -34,7 +37,9 @@ export default function WalletMenu() {
       });
 
       const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
-      toast.custom(<TxToast title="New player created successfully!" digest={digest} />);
+      toast.custom(<TxToast title="New player created and connected successfully!" digest={digest} />);
+
+      revalidateGame();
     } catch (error: any) {
       toast.error(`Failed to create a new player: ${error.message}!`);
     }

@@ -3,13 +3,13 @@
 import axios from "axios";
 import { SuiClient } from "@mysten/sui.js/client";
 
-import { INDEXER_BASE_URL, MAP_ID, SUI_TESTNET_JSON_RPC } from "@/constant";
+import { INDEXER_BASE_URL, MAP, SUI_TESTNET_JSON_RPC } from "@/constant";
 
 const client = new SuiClient({ url: SUI_TESTNET_JSON_RPC });
 
 export async function suiAllIslandsInfo() {
   const map = await client.getObject({
-    id: MAP_ID,
+    id: MAP,
     options: { showContent: true },
   });
 
@@ -36,6 +36,6 @@ export async function suiAllIslandsInfo() {
 }
 
 export async function getAllIslandsInfo() {
-  const { data } = await axios.get(`${INDEXER_BASE_URL}/Maps/${MAP_ID}`);
+  const { data } = await axios.get(`${INDEXER_BASE_URL}/Maps/${MAP}`);
   return data.locations;
 }

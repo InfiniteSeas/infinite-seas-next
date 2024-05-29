@@ -8,6 +8,9 @@ export default function IslandTopbar({
   islandOwnerName,
   islandOwnerExp,
   islandOwnerLevel,
+  islandCoordinateX,
+  islandCoordinateY,
+  islandFreeFlag,
   oreLeft,
   woodLeft,
   seedsLeft,
@@ -15,6 +18,9 @@ export default function IslandTopbar({
   islandOwnerName: string;
   islandOwnerExp: number;
   islandOwnerLevel: number;
+  islandCoordinateX: number;
+  islandCoordinateY: number;
+  islandFreeFlag: boolean;
   oreLeft: number;
   woodLeft: number;
   seedsLeft: number;
@@ -29,19 +35,24 @@ export default function IslandTopbar({
   return (
     <div className="w-full h-1/6 bg-black px-12 py-6">
       <div className="flex justify-between items-center w-full h-1/2">
-        <div className="flex items-center gap-2">
-          <Image src="/image/topMenu/Avatar_pic.png" alt="avatar-pic" width={60} height={60} priority />
-          <div className="text-xl text-white">{islandOwnerName}&apos;s island</div>
-        </div>
+        {islandOwnerName && (
+          <div className="flex items-center gap-2">
+            <Image src="/image/topMenu/Avatar_pic.png" alt="avatar-pic" width={60} height={60} priority />
+            <div className="text-xl text-white">{islandOwnerName}&apos;s island</div>
+          </div>
+        )}
+
         <div className="flex items-center gap-2">
           <Image src="/image/topMenu/points-icon.png" alt="points-icon" width={50} height={50} priority />
           <p className="text-white">Exp: {islandOwnerExp}</p>
         </div>
+
         <div className="flex items-center gap-2">
           <Image src="/image/topMenu/points-icon.png" alt="points-icon" width={50} height={50} priority />
           <p className="text-white">Level: {islandOwnerLevel}</p>
         </div>
-        <ClaimIslandForm />
+
+        {islandFreeFlag && <ClaimIslandForm coordinateX={islandCoordinateX} coordinateY={islandCoordinateY} />}
       </div>
 
       <div className="w-full h-1/2 flex justify-evenly items-center gap-4">

@@ -4,11 +4,16 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 export default function GameCanvas({
+  islandsInfo,
   islandClickedFlag,
   getIslandClicked,
 }: {
+  islandsInfo: {
+    occupiedBy: string;
+    coordinates: { x: any; y: any };
+  }[];
   islandClickedFlag: boolean;
-  getIslandClicked: () => void;
+  getIslandClicked: (x: number, y: number) => void;
 }) {
   const htmlEleRef = useRef<HTMLDivElement | null>(null);
 
@@ -20,7 +25,7 @@ export default function GameCanvas({
   const isGrabbing = useRef<boolean>(false);
   const cursorStartPosition = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const cameraMoveDirection = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const mouseSpeedFactor = useRef<number>(0.03);
+  const mouseSpeedFactor = useRef<number>(0.2);
 
   // Mounted
   useEffect(() => {
@@ -40,10 +45,10 @@ export default function GameCanvas({
     if (!camera.current) return;
 
     if (islandClickedFlag) {
-      camera.current.zoom = 1;
-      camera.current.position.set(0, 0, 5);
+      camera.current.zoom = 0.05;
+      camera.current.position.set(0, 0, 10);
       mouseSpeedFactor.current = 0;
-    } else mouseSpeedFactor.current = 0.03;
+    } else mouseSpeedFactor.current = 0.2;
   }, [islandClickedFlag]);
 
   function init() {
@@ -61,7 +66,10 @@ export default function GameCanvas({
     // Camera
     const aspect = htmlEleRef.current.clientWidth / htmlEleRef.current.clientHeight;
     camera.current = new THREE.OrthographicCamera(-aspect / 2, aspect / 2, 0.5, -0.5, 1, 1000);
-    camera.current.position.set(0, 0, 10);
+    camera.current.zoom = 0.05;
+    camera.current.position.set(50, 50, 10);
+    camera.current.updateProjectionMatrix();
+    scene.current.add(camera.current);
 
     // Generate Ocean
     const oceanTexture = new THREE.TextureLoader().load("/image/Ocean/OceanTemplateMVP_version.png");
@@ -69,23 +77,20 @@ export default function GameCanvas({
     oceanTexture.wrapT = THREE.RepeatWrapping;
     oceanTexture.repeat.set(100, 100);
     const oceanMat = new THREE.MeshBasicMaterial({ map: oceanTexture, side: THREE.DoubleSide });
-    const oceanGeo = new THREE.PlaneGeometry(
-      htmlEleRef.current.clientWidth / 10,
-      htmlEleRef.current.clientHeight / 10,
-      1,
-      1
-    );
+    const oceanGeo = new THREE.PlaneGeometry(htmlEleRef.current.clientWidth, htmlEleRef.current.clientHeight);
     const oceanPlain = new THREE.Mesh(oceanGeo, oceanMat);
-    scene.current?.add(oceanPlain);
+    scene.current.add(oceanPlain);
 
-    // Generate Island
-    const islandTexture = new THREE.TextureLoader().load("/image/Ocean/Main_Island.png");
-    const islandMat = new THREE.MeshBasicMaterial({ map: islandTexture, transparent: false, alphaTest: 0.8 });
-    const islandGeo = new THREE.PlaneGeometry(0.5, 0.5);
-    const islandPlain = new THREE.Mesh(islandGeo, islandMat);
-    islandPlain.position.set(0, 0, 0);
-    islandPlains.current.push(islandPlain);
-    scene.current?.add(islandPlain);
+    // Generate Islands
+    islandsInfo.map(({ coordinates }) => {
+      const islandTexture = new THREE.TextureLoader().load("/image/Ocean/Main_Island.png");
+      const islandMat = new THREE.MeshBasicMaterial({ map: islandTexture, transparent: false, alphaTest: 0.8 });
+      const islandGeo = new THREE.PlaneGeometry(10, 10);
+      const islandPlain = new THREE.Mesh(islandGeo, islandMat);
+      islandPlain.position.set(coordinates.x, coordinates.y, 0);
+      islandPlains.current.push(islandPlain);
+      scene.current?.add(islandPlain);
+    });
 
     animate();
   }
@@ -125,7 +130,7 @@ export default function GameCanvas({
     raycaster.setFromCamera(mouse, camera.current);
     const intersects = raycaster.intersectObjects(islandPlains.current);
 
-    if (intersects.length > 0) getIslandClicked();
+    if (intersects.length > 0) getIslandClicked(intersects[0].object.position.x, intersects[0].object.position.y);
   }
 
   function handleDragCanvas(e: any) {
@@ -134,8 +139,8 @@ export default function GameCanvas({
     const deltaX = e.clientX - cursorStartPosition.current.x;
     const deltaY = e.clientY - cursorStartPosition.current.y;
 
-    camera.current.position.x -= deltaX / htmlEleRef.current.clientWidth;
-    camera.current.position.y += deltaY / htmlEleRef.current.clientHeight;
+    camera.current.position.x -= (deltaX * 30) / htmlEleRef.current.clientWidth;
+    camera.current.position.y += (deltaY * 30) / htmlEleRef.current.clientHeight;
 
     cursorStartPosition.current.x = e.clientX;
     cursorStartPosition.current.y = e.clientY;
@@ -146,7 +151,7 @@ export default function GameCanvas({
 
     if (isGrabbing.current) handleDragCanvas(e);
     else {
-      const awayFromEdge = 1;
+      const awayFromEdge = 30;
 
       if (e.clientX < awayFromEdge) cameraMoveDirection.current.x = -1 + (e.clientX / awayFromEdge - 1);
       else if (e.clientX > htmlEleRef.current.clientWidth - awayFromEdge)
@@ -163,10 +168,10 @@ export default function GameCanvas({
   function handleScrollCanvas(e: any) {
     if (!camera.current || !htmlEleRef.current) return;
 
-    const zoomSpeed = 0.1;
+    const zoomSpeed = 0.002;
 
-    if (e.deltaY > 0 && camera.current.zoom > 0.3) camera.current.zoom -= zoomSpeed;
-    else if (e.deltaY < 0 && camera.current.zoom < 5) camera.current.zoom += zoomSpeed;
+    if (e.deltaY > 0 && camera.current.zoom > 0.003) camera.current.zoom -= zoomSpeed;
+    else if (e.deltaY < 0 && camera.current.zoom < 0.1) camera.current.zoom += zoomSpeed;
 
     camera.current.updateProjectionMatrix();
   }
