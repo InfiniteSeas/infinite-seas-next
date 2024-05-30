@@ -51,6 +51,7 @@ export default function GameWindow({
 
   const [productType, setProductType] = useState<string>("ore");
   const [skillProcesses, setSkillProcesses] = useState<any[]>([]);
+  const [unassignedRosterId, setUnassignedRosterId] = useState<string>("");
 
   const currentAccount = useCurrentAccount();
 
@@ -120,12 +121,15 @@ export default function GameWindow({
       else if (inv.fields.item_id === 102) setCottonLeft(inv.fields.quantity);
     });
 
+    // console.log(currentPlayer.claimed_island.type);
+
     // Get player's skill processes
     const processes = await getPlayerSkillProcesses({ playerId: currentPlayer.id.id });
     setSkillProcesses(processes);
 
     // Get player's rosters
     const rosters = await getPlayerRosters({ playerId: currentPlayer.id.id });
+    setUnassignedRosterId(rosters[0].id_);
   }
 
   function handleShipsClicked() {
@@ -217,7 +221,7 @@ export default function GameWindow({
 
           <IslandButtons handleButtonClick={handleIslandButtonClick} />
 
-          <ActionQueue skillProcesses={skillProcesses} />
+          <ActionQueue skillProcesses={skillProcesses} unassignedRosterId={unassignedRosterId} />
 
           <RankList />
         </div>

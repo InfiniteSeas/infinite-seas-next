@@ -5,21 +5,27 @@ import { TransactionBlock } from "@mysten/sui.js/transactions";
 import toast from "react-hot-toast";
 
 import TxToast from "@/components/shared/TxToast";
+
+import { getPlayerId } from "@/actions/player.action";
+import { revalidateGame } from "@/actions/system.action";
+
 import {
   EXPERIENCE_TABLE,
   ITEM_CREATION_MINING,
   ITEM_CREATION_WOODING,
+  ITEM_PRODUCTION_CRAFTING,
   ITEM_PRODUCTION_FARMING,
   MAIN_PACKAGE_ID,
 } from "@/constant";
-import { revalidateGame } from "@/actions/system.action";
 
 export default function HarvestProductForm({
   productType,
   skillProcesses,
+  unassignedRosterId,
 }: {
   productType: string;
   skillProcesses: any[];
+  unassignedRosterId: string;
 }) {
   const currentAccount = useCurrentAccount();
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
@@ -31,7 +37,7 @@ export default function HarvestProductForm({
     let skillProcessId = "";
     let itemFormulaId = "";
 
-    // If the player harvest ore
+    // If the player harvests ore
     if (productType === "ore") {
       const miningProcess = skillProcesses.filter((process) => process.skillProcessId.skillType === 3)[0];
       if (miningProcess.completed) return toast.error("No ore to havest, please start mining first!");
@@ -41,7 +47,7 @@ export default function HarvestProductForm({
       itemFormulaId = ITEM_CREATION_MINING;
     }
 
-    // If the player does harvest wood
+    // If the player harvests wood
     else if (productType === "wood") {
       const woodCuttingProcess = skillProcesses.filter((process) => process.skillProcessId.skillType === 1)[0];
       if (woodCuttingProcess.completed) return toast.error("No wood to havest, please start wood cutting first!");
@@ -51,7 +57,7 @@ export default function HarvestProductForm({
       itemFormulaId = ITEM_CREATION_WOODING;
     }
 
-    // If the player harvest cotton seeds from process 1
+    // If the player harvests cotton seeds from process 1
     else if (productType === "seed1") {
       const seedingProcess = skillProcesses.filter((process) => process.skillProcessId.skillType === 0)[0];
       if (seedingProcess.completed) return toast.error("No cotton to harvest, please start seeding cotton first!");
@@ -61,7 +67,7 @@ export default function HarvestProductForm({
       itemFormulaId = ITEM_PRODUCTION_FARMING;
     }
 
-    // If the player harvest cotton seeds from process 2
+    // If the player harvests cotton seeds from process 2
     else if (productType === "seed2") {
       const seedingProcess = skillProcesses.filter((process) => process.skillProcessId.skillType === 0)[1];
       if (seedingProcess.completed) return toast.error("No cotton to harvest, please start seeding cotton first!");
@@ -71,22 +77,44 @@ export default function HarvestProductForm({
       itemFormulaId = ITEM_PRODUCTION_FARMING;
     }
 
-    toast.success("Harvesting creation, please approve with your wallet...");
+    // If the player harvests craft
+    else if (productType === "craft") {
+      const craftingProcess = skillProcesses.filter((process) => process.skillProcessId.skillType === 6)[0];
+      if (craftingProcess.completed) return toast.error("No ship to havest, please start crafting first!");
+
+      functionName = "complete_ship_production";
+      skillProcessId = craftingProcess.id_;
+      itemFormulaId = ITEM_PRODUCTION_CRAFTING;
+    }
 
     try {
+      const playerId = await getPlayerId({ owner: currentAccount.address });
+
+      toast.success("Harvesting creation, please approve with your wallet...");
+
       const txb = new TransactionBlock();
 
       txb.setGasBudget(42000000);
 
       txb.moveCall({
         target: `${MAIN_PACKAGE_ID}::skill_process_aggregate::${functionName}`,
-        arguments: [
-          txb.object(skillProcessId),
-          txb.object("0xe031a5d2793e9aed44cf9f9f4789d7a00194f42184cb77483a10819ba193d8d6"), // TODO: need to change
-          txb.object(itemFormulaId),
-          txb.object(EXPERIENCE_TABLE),
-          txb.object("0x6"),
-        ],
+        arguments:
+          productType === "craft"
+            ? [
+                txb.object(skillProcessId),
+                txb.object(unassignedRosterId),
+                txb.object(playerId),
+                txb.object(itemFormulaId),
+                txb.object(EXPERIENCE_TABLE),
+                txb.object("0x6"),
+              ]
+            : [
+                txb.object(skillProcessId),
+                txb.object(playerId),
+                txb.object(itemFormulaId),
+                txb.object(EXPERIENCE_TABLE),
+                txb.object("0x6"),
+              ],
       });
 
       const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });

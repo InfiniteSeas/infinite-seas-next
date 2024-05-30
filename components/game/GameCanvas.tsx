@@ -151,7 +151,7 @@ export default function GameCanvas({
 
     if (isGrabbing.current) handleDragCanvas(e);
     else {
-      const awayFromEdge = 30;
+      const awayFromEdge = 10;
 
       if (e.clientX < awayFromEdge) cameraMoveDirection.current.x = -1 + (e.clientX / awayFromEdge - 1);
       else if (e.clientX > htmlEleRef.current.clientWidth - awayFromEdge)

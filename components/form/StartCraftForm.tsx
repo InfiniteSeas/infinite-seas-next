@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import TxToast from "@/components/shared/TxToast";
 
 import { suixEnergyCoins } from "@/actions/coin.action";
+import { getPlayerId } from "@/actions/player.action";
 import { revalidateGame } from "@/actions/system.action";
 
 import { ITEM_PRODUCTION_CRAFTING, MAIN_PACKAGE_ID } from "@/constant";
@@ -44,6 +45,8 @@ export default function StartCraftForm({
 
       toast.success("Starting crafting, please approve with your wallet...");
 
+      const playerId = await getPlayerId({ owner: currentAccount.address });
+
       const txb = new TransactionBlock();
 
       txb.setGasBudget(42000000);
@@ -57,7 +60,7 @@ export default function StartCraftForm({
           txb.object(processId),
           txb.pure(resources),
           txb.pure(quantities),
-          txb.object("0xe031a5d2793e9aed44cf9f9f4789d7a00194f42184cb77483a10819ba193d8d6"), // TODO: need to change
+          txb.object(playerId),
           txb.object(ITEM_PRODUCTION_CRAFTING),
           txb.object("0x6"),
           txb.object(energyCoins[0].coinObjectId),

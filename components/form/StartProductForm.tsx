@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import TxToast from "@/components/shared/TxToast";
 
 import { suixEnergyCoins } from "@/actions/coin.action";
+import { getPlayerId } from "@/actions/player.action";
 import { revalidateGame } from "@/actions/system.action";
 
 import { ITEM_CREATION_MINING, ITEM_CREATION_WOODING, ITEM_PRODUCTION_FARMING, MAIN_PACKAGE_ID } from "@/constant";
@@ -82,6 +83,8 @@ export default function StartProductForm({
       const energyCoins = await suixEnergyCoins({ owner: currentAccount.address });
       if (energyCoins.length === 0) return toast.error("You don't have enough energy coin, please buy some first!");
 
+      const playerId = await getPlayerId({ owner: currentAccount.address });
+
       toast.success("Starting creation, please approve with your wallet...");
 
       const txb = new TransactionBlock();
@@ -93,7 +96,7 @@ export default function StartProductForm({
         arguments: [
           txb.object(skillProcessId),
           txb.pure.u32(Number(batchSize)),
-          txb.object("0xe031a5d2793e9aed44cf9f9f4789d7a00194f42184cb77483a10819ba193d8d6"), // TODO: need to change
+          txb.object(playerId),
           txb.object(itemFormulaId),
           txb.object("0x6"),
           txb.object(energyCoins[0].coinObjectId),
