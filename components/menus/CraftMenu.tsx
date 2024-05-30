@@ -99,7 +99,7 @@ export default function CraftMenu({
 
         <div className="w-full flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Image src="/image/Ocean/Boat_small.png" alt="small-boat" width={60} height={100} priority />
+            <Image src="/image/ocean/Boat_small.png" alt="small-boat" width={60} height={100} priority />
             <div className="text-xl font-bold">small ship</div>
           </div>
 

@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 import NavItems from "@/components/shared/NavItems";
 import IslandTopbar from "@/components/shared/IslandTopbar";
-import IslandButtons from "@/components/shared/IslandButtons";
+import ActionButtons from "@/components/shared/ActionButtons";
 import RankList from "@/components/shared/RankList";
 import ActionQueue from "@/components/shared/ActionQueue";
 import IslandProductMenu from "@/components/menus/IslandProductMenu";
@@ -47,6 +47,8 @@ export default function GameWindow({
   const [bagMenuFlag, setBagMenuFlag] = useState<boolean>(false);
   const [craftMenuFlag, setCraftMenuFlag] = useState<boolean>(false);
   const [islandTopbarFlag, setIslandTopbarFlag] = useState<boolean>(false);
+  const [actionQueueFlag, setActionQueueFlag] = useState<boolean>(false);
+  const [rankListFlag, setRankListFlag] = useState<boolean>(false);
   const [islandFreeFlag, setIslandFreeFlag] = useState<boolean>(false);
 
   const [productType, setProductType] = useState<string>("ore");
@@ -138,7 +140,7 @@ export default function GameWindow({
     setIslandTopbarFlag(false);
   }
 
-  function handleIslandButtonClick(flag: string) {
+  function handleActionClick(flag: string) {
     if (["ore", "wood", "seed"].includes(flag)) {
       setProductType(flag);
 
@@ -168,7 +170,7 @@ export default function GameWindow({
 
       {/* Single topbar for checking other island */}
       {islandTopbarFlag && (
-        <div className="fixed top-0 left-0 w-3/5 flex flex-col justify-between ml-[18%] mr-[20%] pt-8">
+        <div className="fixed top-0 left-0 w-3/5 flex flex-col justify-between ml-[18%] mr-[20%] pt-4">
           <IslandTopbar
             islandOwnerName={islandOwnerName}
             islandOwnerExp={islandOwnerExp}
@@ -185,7 +187,7 @@ export default function GameWindow({
 
       {/* Island Menu */}
       {islandMenuFlag && (
-        <div className="fixed top-0 left-0 w-3/5 h-screen flex flex-col justify-between ml-[18%] mr-[20%] pt-8">
+        <div className="fixed top-0 left-0 w-3/5 h-screen flex flex-col justify-between ml-[18%] mr-[20%] py-4">
           <IslandTopbar
             islandOwnerName={islandOwnerName}
             islandOwnerExp={islandOwnerExp}
@@ -198,7 +200,7 @@ export default function GameWindow({
             seedsLeft={seedsLeft}
           />
 
-          <div className="flex-1 relative my-12">
+          <div className="flex-1 relative my-4">
             {islandProductMenuFlag && (
               <IslandProductMenu
                 productType={productType}
@@ -208,7 +210,9 @@ export default function GameWindow({
                 seedsLeft={seedsLeft}
               />
             )}
+
             {bagMenuFlag && <BagMenu maxSpace={20} />}
+
             {craftMenuFlag && (
               <CraftMenu
                 copperLeft={copperLeft}
@@ -219,13 +223,13 @@ export default function GameWindow({
             )}
           </div>
 
-          <IslandButtons handleButtonClick={handleIslandButtonClick} />
-
-          <ActionQueue skillProcesses={skillProcesses} unassignedRosterId={unassignedRosterId} />
-
-          <RankList />
+          <ActionButtons handleActionClick={handleActionClick} />
         </div>
       )}
+
+      {actionQueueFlag && <ActionQueue skillProcesses={skillProcesses} unassignedRosterId={unassignedRosterId} />}
+
+      {rankListFlag && <RankList />}
 
       {shipsMenuFlag && <ShipsMenu closeShipsMenu={() => setShipsMenuFlag(false)} />}
 

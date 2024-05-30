@@ -9,8 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        "btn-frame": "url('/image/btn/btn_frame.png')",
-        "ranking-text": "url('/image/Ranking/Ranking_text.png')",
+        "lg-frame": "url('/image/large_frame.png')",
+        "btn-frame": "url('/image/button/btn_frame.png')",
+        "top-menu-frame": "url('/image/top-menu/Top_frame.png')",
+        "bag-bg": "url('/image/inventory/inventory_bg.png')",
+        "bag-frame": "url('/image/inventory/inventory_frame.png')",
+        "ranking-text": "url('/image/ranking/Ranking_text.png')",
       },
     },
   },

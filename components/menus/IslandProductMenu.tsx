@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Image from "next/image";
 
 import StartProductForm from "@/components/form/StartProductForm";
 
@@ -19,15 +20,86 @@ export default function IslandProductMenu({
 }) {
   const [modalFlag, setModalFlag] = useState<boolean>(false);
 
-  return (
-    <div className="w-full h-full grid grid-cols-4 pt-4 gap-4">
-      <p className="w-full h-full bg-black text-white cursor-pointer" onClick={() => setModalFlag(true)}>
-        {productType}
-      </p>
+  const productImgs = {
+    ore: "/image/product-menu/Mine_Unlocked.png",
+    wood: "/image/product-menu/Tree_Unlocked.png",
+    seed: "/image/product-menu/Cotton_Unlocked.png",
+  } as any;
 
-      {[2, 3, 4, 5, 6, 7, 8].map((id) => (
-        <p key={id} className="w-full h-full bg-black text-white cursor-pointer">
-          {id}
+  const unlockedProductImgs = {
+    ore: "/image/product-menu/Mine_Not_unlocked.png",
+    wood: "/image/product-menu/Tree_Not_unlocked.png",
+    seed: "/image/product-menu/Cotton_Not_unlocked.png",
+  } as any;
+
+  return (
+    <div className="w-full h-full grid grid-cols-4 gap-4">
+      <div
+        className="flex flex-col justify-center items-center bg-center bg-no-repeat bg-lg-frame bg-[length:100%_100%] text-white cursor-pointer gap-3"
+        onClick={() => setModalFlag(true)}
+      >
+        {productType === "ore" && (
+          <>
+            <p className="text-lg">Mine Copper Ore</p>
+            <div className="flex items-center gap-2">
+              <p>10 XP /</p>
+              <Image src="/image/product-menu/clock.png" alt="clock-icon" width={20} height={20} priority />
+              <p>3 Seconds</p>
+            </div>
+          </>
+        )}
+        {productType === "wood" && (
+          <>
+            <p className="text-lg">Cut Normal Wood</p>
+            <div className="flex items-center gap-2">
+              <p>10 XP /</p>
+              <Image src="/image/product-menu/clock.png" alt="clock-icon" width={20} height={20} priority />
+              <p>3 Seconds</p>
+            </div>
+          </>
+        )}
+        {productType === "seed" && (
+          <>
+            <p className="text-lg">Plant Cotton Seeds</p>
+            <div className="flex items-center gap-2">
+              <p>10 XP /</p>
+              <Image src="/image/product-menu/clock.png" alt="clock-icon" width={20} height={20} priority />
+              <p>3 Seconds</p>
+            </div>
+          </>
+        )}
+
+        <Image src={productImgs[productType]} alt="product-icon" width={75} height={75} priority />
+
+        <div className="text-center">
+          <p>0 / 500</p>
+
+          <div className="flex justify-between items-center gap-2">
+            <Image src="/image/product-menu/trophy.png" alt="trophy-icon" width={20} height={20} priority />
+            <Image
+              src="/image/product-menu/Progressbar_Background.png"
+              alt="progress-bg"
+              width={150}
+              height={10}
+              priority
+            />
+          </div>
+        </div>
+      </div>
+
+      {[10, 20, 30, 40, 50, 60, 70].map((id) => (
+        <p
+          key={id}
+          className="flex flex-col justify-center items-center bg-center bg-no-repeat bg-lg-frame bg-[length:100%_100%] text-white cursor-pointer gap-6"
+        >
+          <div className="flex items-center gap-2">
+            <Image src="/image/product-menu/Lock.png" alt="lock-icon" width={30} height={30} priority />
+            <p className="text-2xl">Locked</p>
+          </div>
+
+          <Image src={unlockedProductImgs[productType]} alt="product-icon" width={75} height={75} priority />
+
+          <p className="text-2xl">Level {id}</p>
         </p>
       ))}
 

@@ -54,11 +54,11 @@ export default function NavItems({
 
       {/* Energy bar */}
       <Image
-        className="fixed top-0 right-0 cursor-pointer"
+        className="fixed top-4 right-4 cursor-pointer"
         src="/image/home/Energy_Bar.png"
         alt="energy-bar"
-        width={340}
-        height={200}
+        width={240}
+        height={120}
         priority
         onClick={handleEnergyBar}
       />

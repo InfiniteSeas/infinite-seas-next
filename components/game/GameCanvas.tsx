@@ -72,7 +72,7 @@ export default function GameCanvas({
     scene.current.add(camera.current);
 
     // Generate Ocean
-    const oceanTexture = new THREE.TextureLoader().load("/image/Ocean/OceanTemplateMVP_version.png");
+    const oceanTexture = new THREE.TextureLoader().load("/image/ocean/oceanTemplateMVP_version.png");
     oceanTexture.wrapS = THREE.RepeatWrapping;
     oceanTexture.wrapT = THREE.RepeatWrapping;
     oceanTexture.repeat.set(100, 100);
@@ -83,7 +83,7 @@ export default function GameCanvas({
 
     // Generate Islands
     islandsInfo.map(({ coordinates }) => {
-      const islandTexture = new THREE.TextureLoader().load("/image/Ocean/Main_Island.png");
+      const islandTexture = new THREE.TextureLoader().load("/image/ocean/Main_Island.png");
       const islandMat = new THREE.MeshBasicMaterial({ map: islandTexture, transparent: false, alphaTest: 0.8 });
       const islandGeo = new THREE.PlaneGeometry(10, 10);
       const islandPlain = new THREE.Mesh(islandGeo, islandMat);

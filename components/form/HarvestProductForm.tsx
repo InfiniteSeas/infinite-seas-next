@@ -133,8 +133,12 @@ export default function HarvestProductForm({
   }
 
   return (
-    <div className="text-sm border-[1px] rounded-md cursor-pointer" onClick={harvestProductAction}>
-      Harvest
-    </div>
+    <button
+      className="text-sm border-[1px] border-white text-white rounded-md cursor-pointer px-1"
+      type="button"
+      onClick={harvestProductAction}
+    >
+      GET
+    </button>
   );
 }
