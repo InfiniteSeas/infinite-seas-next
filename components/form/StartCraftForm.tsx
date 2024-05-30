@@ -9,7 +9,7 @@ import TxToast from "@/components/shared/TxToast";
 
 import { suixEnergyCoins } from "@/actions/coin.action";
 import { getPlayerId } from "@/actions/player.action";
-import { revalidateGame } from "@/actions/system.action";
+import { revalidateGame, waitForReceipt } from "@/actions/system.action";
 
 import { ITEM_PRODUCTION_CRAFTING, MAIN_PACKAGE_ID } from "@/constant";
 
@@ -68,7 +68,13 @@ export default function StartCraftForm({
       });
 
       const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
-      toast.custom(<TxToast title="Craft started successfully!" digest={digest} />);
+      toast.success("The transaction is sent to the block chain, please wait a sec for result...");
+
+      const receipt = await waitForReceipt({ digest });
+
+      if (receipt.effects?.status.status === "success")
+        toast.custom(<TxToast title="Craft started successfully!" digest={digest} />);
+      else toast.error(`Failed to start crafting: ${receipt.effects?.status.error}`);
 
       revalidateGame();
     } catch (error: any) {

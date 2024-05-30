@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import TxToast from "@/components/shared/TxToast";
 
 import { getPlayerId } from "@/actions/player.action";
-import { revalidateGame } from "@/actions/system.action";
+import { revalidateGame, waitForReceipt } from "@/actions/system.action";
 
 import { MAIN_PACKAGE_ID } from "@/constant";
 
@@ -37,11 +37,17 @@ export default function WalletMenu() {
       });
 
       const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
-      toast.custom(<TxToast title="New player created and connected successfully!" digest={digest} />);
+      toast.success("The transaction is sent to the block chain, please wait a sec for result...");
+
+      const receipt = await waitForReceipt({ digest });
+
+      if (receipt.effects?.status.status === "success")
+        toast.custom(<TxToast title="New player created and connected successfully!" digest={digest} />);
+      else toast.error(`Failed to create new player: ${receipt.effects?.status.error}`);
 
       revalidateGame();
     } catch (error: any) {
-      toast.error(`Failed to create a new player: ${error.message}!`);
+      toast.error(`Failed to create new player: ${error.message}!`);
     }
   }
 

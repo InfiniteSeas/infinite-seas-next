@@ -8,10 +8,7 @@ import { INDEXER_BASE_URL, SUI_TESTNET_JSON_RPC } from "@/constant";
 const client = new SuiClient({ url: SUI_TESTNET_JSON_RPC });
 
 export async function suiPlayerInfo({ playerId }: { playerId: string }) {
-  const player = await client.getObject({
-    id: playerId,
-    options: { showContent: true },
-  });
+  const player = await client.getObject({ id: playerId, options: { showContent: true } });
 
   // @ts-ignore
   return player.data?.content.fields;

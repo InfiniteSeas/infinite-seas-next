@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 import TxToast from "@/components/shared/TxToast";
 
-import { revalidateGame } from "@/actions/system.action";
+import { revalidateGame, waitForReceipt } from "@/actions/system.action";
 import { getPlayerId } from "@/actions/player.action";
 
 import { MAIN_PACKAGE_ID, MAP, ROSTER_TABLE, SKILL_PROCESS_TABLE } from "@/constant";
@@ -40,7 +40,13 @@ export default function ClaimIslandForm({ coordinateX, coordinateY }: { coordina
       });
 
       const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
-      toast.custom(<TxToast title="Island claimed successfully!" digest={digest} />);
+      toast.success("The transaction is sent to the block chain, please wait a sec for result...");
+
+      const receipt = await waitForReceipt({ digest });
+
+      if (receipt.effects?.status.status === "success")
+        toast.custom(<TxToast title="Island claimed successfully!" digest={digest} />);
+      else toast.error(`Failed to claim island: ${receipt.effects?.status.error}`);
 
       revalidateGame();
     } catch (error: any) {
