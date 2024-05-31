@@ -33,7 +33,7 @@ export default function IslandTopbar({
   ];
 
   return (
-    <div className="w-full h-[160px] flex flex-col bg-top-menu-frame bg-center bg-no-repeat bg-cotain bg-[length:100%_100%] px-16 py-8 gap-6">
+    <div className="fixed top-2 left-1/2 -translate-x-1/2 w-3/5 h-[150px] flex flex-col bg-frame-topbar bg-center bg-no-repeat bg-cotain bg-[length:100%_100%] px-16 py-8 gap-6">
       <div className="flex justify-between items-center w-full h-1/2">
         {islandOwnerName && (
           <div className="flex items-center gap-2">

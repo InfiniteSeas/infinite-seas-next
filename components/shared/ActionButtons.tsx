@@ -12,11 +12,11 @@ export default function ActionButtons({ handleActionClick }: { handleActionClick
   ];
 
   return (
-    <div className="w-full flex justify-end items-center gap-3">
+    <div className="fixed bottom-2 left-1/2 -translate-x-1/2 w-3/5 flex justify-end items-center gap-3">
       {buttonData.map((data) => (
         <div
           key={data.id}
-          className="w-[110px] h-[110px] relative cursor-pointer bg-btn-frame bg-center bg-no-repeat bg-contain"
+          className="w-[120px] h-[120px] relative cursor-pointer bg-frame-normal bg-center bg-no-repeat bg-contain"
           onClick={() => handleActionClick(data.flag)}
         >
           <Image

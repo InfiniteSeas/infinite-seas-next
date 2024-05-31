@@ -47,8 +47,8 @@ export default function GameWindow({
   const [bagMenuFlag, setBagMenuFlag] = useState<boolean>(false);
   const [craftMenuFlag, setCraftMenuFlag] = useState<boolean>(false);
   const [islandTopbarFlag, setIslandTopbarFlag] = useState<boolean>(false);
-  const [actionQueueFlag, setActionQueueFlag] = useState<boolean>(false);
-  const [rankListFlag, setRankListFlag] = useState<boolean>(false);
+  const [actionQueueFlag, setActionQueueFlag] = useState<boolean>(true);
+  const [rankListFlag, setRankListFlag] = useState<boolean>(true);
   const [islandFreeFlag, setIslandFreeFlag] = useState<boolean>(false);
 
   const [productType, setProductType] = useState<string>("ore");
@@ -70,6 +70,17 @@ export default function GameWindow({
     getCurrentPlayer();
   }, [currentAccount]);
 
+  useEffect(() => {
+    if (!islandMenuFlag && !shipsMenuFlag) {
+      setActionQueueFlag(true);
+      setRankListFlag(true);
+    } else {
+      setActionQueueFlag(false);
+      setRankListFlag(false);
+    }
+  }, [islandMenuFlag, shipsMenuFlag]);
+
+  // Click island on the game canvas
   async function handleIslandClicked(x: number, y: number) {
     setIslandTopbarFlag(true);
     setIslandMenuFlag(false);
@@ -101,6 +112,7 @@ export default function GameWindow({
     }
   }
 
+  // Click island card
   async function handleIslandCardClicked() {
     if (!currentPlayer) return toast.error("Please login first!");
 
@@ -134,12 +146,14 @@ export default function GameWindow({
     setUnassignedRosterId(rosters[0].id_);
   }
 
+  // Click ships card
   function handleShipsClicked() {
     setShipsMenuFlag((prev) => !prev);
     setIslandMenuFlag(false);
     setIslandTopbarFlag(false);
   }
 
+  // Click action buttons
   function handleActionClick(flag: string) {
     if (["ore", "wood", "seed"].includes(flag)) {
       setProductType(flag);
@@ -169,62 +183,46 @@ export default function GameWindow({
       <NavItems getIslandClicked={handleIslandCardClicked} getShipsClicked={handleShipsClicked} />
 
       {/* Single topbar for checking other island */}
-      {islandTopbarFlag && (
-        <div className="fixed top-0 left-0 w-3/5 flex flex-col justify-between ml-[18%] mr-[20%] pt-4">
-          <IslandTopbar
-            islandOwnerName={islandOwnerName}
-            islandOwnerExp={islandOwnerExp}
-            islandOwnerLevel={islandOwnerLevel}
-            islandCoordinateX={islandCoordinateX}
-            islandCoordinateY={islandCoordinateY}
-            islandFreeFlag={islandFreeFlag}
-            oreLeft={oreLeft}
-            woodLeft={woodLeft}
-            seedsLeft={seedsLeft}
-          />
-        </div>
+      {(islandMenuFlag || islandTopbarFlag) && (
+        <IslandTopbar
+          islandOwnerName={islandOwnerName}
+          islandOwnerExp={islandOwnerExp}
+          islandOwnerLevel={islandOwnerLevel}
+          islandCoordinateX={islandCoordinateX}
+          islandCoordinateY={islandCoordinateY}
+          islandFreeFlag={islandFreeFlag}
+          oreLeft={oreLeft}
+          woodLeft={woodLeft}
+          seedsLeft={seedsLeft}
+        />
       )}
 
       {/* Island Menu */}
       {islandMenuFlag && (
-        <div className="fixed top-0 left-0 w-3/5 h-screen flex flex-col justify-between ml-[18%] mr-[20%] py-4">
-          <IslandTopbar
-            islandOwnerName={islandOwnerName}
-            islandOwnerExp={islandOwnerExp}
-            islandOwnerLevel={islandOwnerLevel}
-            islandCoordinateX={islandCoordinateX}
-            islandCoordinateY={islandCoordinateY}
-            islandFreeFlag={islandFreeFlag}
-            oreLeft={oreLeft}
-            woodLeft={woodLeft}
-            seedsLeft={seedsLeft}
-          />
+        <>
+          {islandProductMenuFlag && (
+            <IslandProductMenu
+              productType={productType}
+              skillProcesses={skillProcesses}
+              oreLeft={oreLeft}
+              woodLeft={woodLeft}
+              seedsLeft={seedsLeft}
+            />
+          )}
 
-          <div className="flex-1 relative my-4">
-            {islandProductMenuFlag && (
-              <IslandProductMenu
-                productType={productType}
-                skillProcesses={skillProcesses}
-                oreLeft={oreLeft}
-                woodLeft={woodLeft}
-                seedsLeft={seedsLeft}
-              />
-            )}
+          {bagMenuFlag && <BagMenu maxSpace={20} />}
 
-            {bagMenuFlag && <BagMenu maxSpace={20} />}
-
-            {craftMenuFlag && (
-              <CraftMenu
-                copperLeft={copperLeft}
-                logLeft={logLeft}
-                cottonLeft={cottonLeft}
-                skillProcesses={skillProcesses}
-              />
-            )}
-          </div>
+          {craftMenuFlag && (
+            <CraftMenu
+              copperLeft={copperLeft}
+              logLeft={logLeft}
+              cottonLeft={cottonLeft}
+              skillProcesses={skillProcesses}
+            />
+          )}
 
           <ActionButtons handleActionClick={handleActionClick} />
-        </div>
+        </>
       )}
 
       {actionQueueFlag && <ActionQueue skillProcesses={skillProcesses} unassignedRosterId={unassignedRosterId} />}

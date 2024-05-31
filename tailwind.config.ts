@@ -9,12 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        "lg-frame": "url('/image/large_frame.png')",
-        "btn-frame": "url('/image/button/btn_frame.png')",
-        "top-menu-frame": "url('/image/top-menu/Top_frame.png')",
-        "bag-bg": "url('/image/inventory/inventory_bg.png')",
-        "bag-frame": "url('/image/inventory/inventory_frame.png')",
-        "ranking-text": "url('/image/ranking/Ranking_text.png')",
+        "frame-lg": "url('/image/frame/large-frame.png')",
+        "frame-sm": "url('/image/frame/small-frame.png')",
+        "frame-normal": "url('/image/frame/normal-frame.png')",
+        "frame-width": "url('/image/frame/width-frame.png')",
+        "frame-text": "url('/image/frame/text-frame.png')",
+        "paper-row": "url('/image/frame/paper-frame-row.png')",
+        "paper-col": "url('/image/frame/paper-frame-col.png')",
+        "frame-topbar": "url('/image/frame/topbar-frame.png')",
+        ranking: "url('/image/ranking/Ranking_text.png')",
       },
     },
   },

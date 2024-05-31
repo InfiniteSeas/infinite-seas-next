@@ -33,9 +33,9 @@ export default function IslandProductMenu({
   } as any;
 
   return (
-    <div className="w-full h-full grid grid-cols-4 gap-4">
+    <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/5 h-3/5 z-40 grid grid-cols-4 gap-4">
       <div
-        className="flex flex-col justify-center items-center bg-center bg-no-repeat bg-lg-frame bg-[length:100%_100%] text-white cursor-pointer gap-3"
+        className="flex flex-col justify-center items-center bg-center bg-no-repeat bg-frame-lg bg-[length:100%_100%] text-white cursor-pointer gap-3"
         onClick={() => setModalFlag(true)}
       >
         {productType === "ore" && (
@@ -90,7 +90,7 @@ export default function IslandProductMenu({
       {[10, 20, 30, 40, 50, 60, 70].map((id) => (
         <p
           key={id}
-          className="flex flex-col justify-center items-center bg-center bg-no-repeat bg-lg-frame bg-[length:100%_100%] text-white cursor-pointer gap-6"
+          className="flex flex-col justify-center items-center bg-center bg-no-repeat bg-frame-lg bg-[length:100%_100%] text-white cursor-pointer gap-6"
         >
           <div className="flex items-center gap-2">
             <Image src="/image/product-menu/Lock.png" alt="lock-icon" width={30} height={30} priority />

@@ -29,11 +29,11 @@ export default function BagMenu({ maxSpace }: { maxSpace: number }) {
   ];
 
   return (
-    <div className="w-2/3 absolute left-1/2 -translate-x-1/2 h-full flex flex-col bg-center bg-no-repeat bg-bag-bg bg-[length:100%_100%] text-white flex-1 grid grid-cols-5 gap-6 p-12">
+    <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/5 z-40 flex flex-col bg-center bg-no-repeat bg-paper-row bg-[length:100%_100%] text-white flex-1 grid grid-cols-5 gap-6 p-12">
       {bagSpaces.map((space) => (
         <div
           key={space.id}
-          className="w-full aspect-[1] relative border-2 border-transparent bg-center bg-no-repeat bg-bag-frame bg-[length:100%_100%] cursor-pointer"
+          className="w-full aspect-[1] relative border-2 border-transparent bg-center bg-no-repeat bg-frame-sm bg-[length:100%_100%] cursor-pointer"
         >
           <p className="absolute left-1/2 bottom-1 -translate-x-1/2 translate-y-1/2 rounded-full bg-zinc-600 text-xs text-center px-2">
             {space.count}

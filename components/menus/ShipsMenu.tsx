@@ -39,7 +39,7 @@ export default function ShipsMenu({ closeShipsMenu }: { closeShipsMenu: () => vo
             {shipsTopData.map((data) => (
               <div
                 key={data.id}
-                className="w-64 h-16 flex justify-center items-center text-white text-3xl cursor-pointer bg-btn-frame bg-center bg-no-repeat bg-[length:100%_100%]"
+                className="w-64 h-16 flex justify-center items-center text-white text-3xl cursor-pointer bg-frame-normal bg-center bg-no-repeat bg-[length:100%_100%]"
               >
                 {data.title}
               </div>
@@ -78,11 +78,11 @@ export default function ShipsMenu({ closeShipsMenu }: { closeShipsMenu: () => vo
           ))}
 
           <div className="w-full flex justify-end items-center gap-4">
-            <div className="w-[90px] aspect-[1] text-center text-7xl text-white cursor-pointer bg-btn-frame bg-center bg-no-repeat bg-[length:100%_100%]">
+            <div className="w-[90px] aspect-[1] text-center text-7xl text-white cursor-pointer bg-frame-normal bg-center bg-no-repeat bg-[length:100%_100%]">
               +
             </div>
 
-            <div className="w-[144px] h-[70px] flex justify-center items-center text-white text-3xl cursor-pointer bg-btn-frame bg-center bg-no-repeat bg-[length:100%_100%]">
+            <div className="w-[144px] h-[70px] flex justify-center items-center text-white text-3xl cursor-pointer bg-frame-normal bg-center bg-no-repeat bg-[length:100%_100%]">
               SAIL
             </div>
           </div>
@@ -94,7 +94,7 @@ export default function ShipsMenu({ closeShipsMenu }: { closeShipsMenu: () => vo
           {shipInventories.map((inventory) => (
             <div key={inventory.id} className="flex flex-col items-center w-[26%] h-[80%] bg-[#343A40]">
               <div className="flex justify-evenly items-center w-full h-[15%]">
-                <div className="w-[120px] h-[120px] bg-btn-frame bg-center bg-no-repeat bg-[length:100%_100%]">
+                <div className="w-[120px] h-[120px] bg-frame-normal bg-center bg-no-repeat bg-[length:100%_100%]">
                   <Image
                     className="w-full h-full scale-[60%]"
                     src={inventory.iconUrl}
@@ -105,14 +105,14 @@ export default function ShipsMenu({ closeShipsMenu }: { closeShipsMenu: () => vo
                   />
                 </div>
 
-                <div className="flex justify-center items-center bg-btn-frame bg-center bg-no-repeat bg-[length:100%_100%] text-white text-center px-12 py-3">
+                <div className="flex justify-center items-center bg-frame-normal bg-center bg-no-repeat bg-[length:100%_100%] text-white text-center px-12 py-3">
                   {inventory.name}
                 </div>
 
                 {/* {[0, 1, 2, 3, 4, 5, 6, 7].map((num) => (
                   <div
                     key={num}
-                    className="w-[180px] h-[56px] bg-btn-frame bg-center bg-no-repeat bg-[length:100%_100%] text-white text-center"
+                    className="w-[180px] h-[56px] bg-frame-normal bg-center bg-no-repeat bg-[length:100%_100%] text-white text-center"
                   >
                     {inventory.name}
                   </div>
@@ -120,7 +120,7 @@ export default function ShipsMenu({ closeShipsMenu }: { closeShipsMenu: () => vo
               </div>
 
               <div className="w-[85%] flex flex-col items-center bg-[#fffbe7] p-4 gap-4">
-                <div className="text-xl text-white text-center bg-btn-frame bg-center bg-no-repeat bg-[length:100%_100%] px-16 py-3">
+                <div className="text-xl text-white text-center bg-frame-normal bg-center bg-no-repeat bg-[length:100%_100%] px-16 py-3">
                   SHIP INVENTORY
                 </div>
 
@@ -128,7 +128,7 @@ export default function ShipsMenu({ closeShipsMenu }: { closeShipsMenu: () => vo
                   {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
                     <div
                       key={num}
-                      className="w-full aspect-[1] bg-btn-frame bg-center bg-no-repeat bg-[length:100%_100%]"
+                      className="w-full aspect-[1] bg-frame-normal bg-center bg-no-repeat bg-[length:100%_100%]"
                     />
                   ))}
                 </div>
@@ -137,7 +137,7 @@ export default function ShipsMenu({ closeShipsMenu }: { closeShipsMenu: () => vo
           ))}
 
           <div
-            className="w-[135px] h-[72px] absolute bottom-10 right-0 text-white flex justify-center items-center text-3xl cursor-pointer bg-btn-frame bg-center bg-no-repeat bg-[length:100%_100%]"
+            className="w-[135px] h-[72px] absolute bottom-10 right-0 text-white flex justify-center items-center text-3xl cursor-pointer bg-frame-normal bg-center bg-no-repeat bg-[length:100%_100%]"
             onClick={() => setShipsBagBackg(false)}
           >
             back

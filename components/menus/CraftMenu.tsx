@@ -24,18 +24,11 @@ export default function CraftMenu({
   const [attack, setAttack] = useState<number>(6);
   const [protection, setProtection] = useState<number>(5);
   const [speed, setSpeed] = useState<number>(4);
-  const [inventoryCopper, setInventoryCopper] = useState<number>(copperLeft);
-  const [inventoryLog, setInventoryLog] = useState<number>(logLeft);
-  const [inventoryCotton, setInventoryCotton] = useState<number>(cottonLeft);
+  const [inventoryCopper, setInventoryCopper] = useState<number>(copperLeft - 3);
+  const [inventoryLog, setInventoryLog] = useState<number>(logLeft - 3);
+  const [inventoryCotton, setInventoryCotton] = useState<number>(cottonLeft - 3);
 
-  const sidebarTitle = [
-    "small ship",
-    "Unlocked at Level 9",
-    "Unlocked at Level 14",
-    "Unlocked at Level 24",
-    "Unlocked at Level 33",
-    "Unlocked at Level 44",
-  ];
+  const sidebarTitle = ["Small Ship", "Locked", "Locked", "Locked", "Locked", "Locked"];
 
   function addmining() {
     if (shipCopper + shipLog + shipCotton >= 15 || inventoryCopper === 0) return;
@@ -85,50 +78,92 @@ export default function CraftMenu({
   }
 
   return (
-    <div className="w-full h-full flex absolute">
-      <div className="w-1/5 flex flex-col items-center bg-[#232A35] py-6 gap-4">
+    <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-3/5 z-40 flex items-center gap-2">
+      <div className="flex flex-col items-center h-full bg-center bg-no-repeat bg-paper-col bg-[length:100%_100%] p-6 gap-3">
         {sidebarTitle.map((title, index) => (
-          <p key={title} className={`h-[45px] ${index === 0 ? "text-[#B30000]" : "text-white"} cursor-pointer`}>
-            {title}
-          </p>
+          <div
+            key={title}
+            className="w-full flex justify-center items-center bg-center bg-no-repeat bg-frame-text bg-[length:100%_100%] px-8 py-4 gap-2"
+          >
+            {index !== 0 && (
+              <Image src="/image/product-menu/Lock.png" alt="lock-icon" width={24} height={24} priority />
+            )}
+            <p className="text-lg text-white">{title}</p>
+          </div>
         ))}
       </div>
 
-      <div className="flex-1 flex flex-col items-center bg-[#D9D9D9] gap-6 py-6 px-10">
-        <h1 className="text-3xl font-bold py-2">Crafting</h1>
-
-        <div className="w-full flex justify-between items-center">
-          <div className="flex items-center gap-2">
+      <div className="flex-1 h-full flex flex-col items-center bg-center bg-no-repeat bg-paper-row bg-[length:100%_100%] gap-6 py-6 px-10">
+        <div className="w-full flex justify-between items-center gap-2">
+          <div className="w-[150px] h-[95%] bg-center bg-no-repeat bg-frame-normal bg-[length:100%_100%] flex justify-center items-center">
             <Image src="/image/ocean/Boat_small.png" alt="small-boat" width={60} height={100} priority />
-            <div className="text-xl font-bold">small ship</div>
           </div>
 
-          <div className="text-xl">
-            <p>attack: {attack}</p>
-            <p>protection: {protection}</p>
-            <p>speed: {speed}</p>
+          <div className="flex-1 flex justify-between items-center bg-center bg-no-repeat bg-frame-width bg-[length:100%_100%] text-white px-10 py-6">
+            <div className="flex flex-col gap-1">
+              <p className="text-lg leading-none">Small Ship</p>
+              <Image src="/image/craft/center_line.png" alt="center-line-icon" width={100} height={20} priority />
+              <p className="text-lg leading-none mt-2">Require: 15 Resources</p>
+              <p className="text-lg leading-none">Cost: 5 Energy</p>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-1">
+                <Image src="/image/craft/ATK_icon.png" alt="attack-icon" width={20} height={20} priority />
+                <p>Attack: {attack}</p>
+              </div>
+              <div className="flex items-center gap-1">
+                <Image src="/image/craft/DEF_icon.png" alt="defense-icon" width={20} height={20} priority />
+                <p>Protection: {protection}</p>
+              </div>
+              <div className="flex items-center gap-1">
+                <Image src="/image/craft/speed_icon.png" alt="speed-icon" width={20} height={20} priority />
+                <p>Speed: {speed}</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="w-full grid grid-cols-7 gap-4 text-xl">
-          <div className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" onClick={removeCopper}>
-            Copper required x{shipCopper}
+        <div className="w-full grid grid-cols-5 gap-3 text-xl text-white">
+          <div
+            className="w-full aspect-[7/6] relative flex justify-center items-center bg-center bg-no-repeat bg-frame-normal bg-[length:100%_100%] cursor-pointer"
+            onClick={removeCopper}
+          >
+            <Image src="/image/product-menu/Mine_Unlocked.png" alt="copper-icon" width={60} height={60} priority />
+            <span className="absolute bottom-2 right-5">{shipCopper}</span>
           </div>
-          <div className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" onClick={removeLog}>
-            Log required x{shipLog}
+          <div
+            className="w-full aspect-[7/6] relative flex justify-center items-center bg-center bg-no-repeat bg-frame-normal bg-[length:100%_100%] cursor-pointer"
+            onClick={removeLog}
+          >
+            <Image src="/image/product-menu/Tree_Unlocked.png" alt="tree-icon" width={45} height={45} priority />
+            <span className="absolute bottom-2 right-5">{shipLog}</span>
           </div>
-          <div className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" onClick={removeCotton}>
-            Cotton required x{shipCotton}
+          <div
+            className="w-full aspect-[7/6] relative flex justify-center items-center bg-center bg-no-repeat bg-frame-normal bg-[length:100%_100%] cursor-pointer"
+            onClick={removeCotton}
+          >
+            <Image src="/image/product-menu/Cotton_Unlocked.png" alt="cotton-icon" width={60} height={60} priority />
+            <span className="absolute bottom-2 right-5">{shipCotton}</span>
           </div>
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17].map((id) => (
-            <div key={id} className="w-full aspect-[1] bg-[#A1A1A1] cursor-pointer" />
+          {[0, 1, 2, 3, 4, 5, 6].map((id) => (
+            <div
+              key={id}
+              className="w-full aspect-[7/6] bg-center bg-no-repeat bg-frame-normal bg-[length:100%_100%] cursor-pointer"
+            />
           ))}
         </div>
 
         <div className="w-full flex justify-end">
-          <div className="bg-[#A1A1A1] text-xl text-center cursor-pointer px-4 py-2" onClick={() => setModalFlag(true)}>
-            Craft
-          </div>
+          <Image
+            className="cursor-pointer"
+            src="/image/craft/Craft.png"
+            alt="craft-icon"
+            width={160}
+            height={60}
+            priority
+            onClick={() => setModalFlag(true)}
+          />
         </div>
 
         {modalFlag && (
@@ -142,55 +177,40 @@ export default function CraftMenu({
         )}
       </div>
 
-      <div className="w-1/5 flex flex-col items-center bg-[#BEBEBE] py-6 gap-4">
-        <p className="text-xl">inventory</p>
+      <div className="w-1/5 h-full flex flex-col items-center bg-center bg-no-repeat bg-paper-col bg-[length:100%_100%] p-6 gap-2">
+        <p className="w-full text-lg text-white text-center bg-center bg-no-repeat bg-frame-width bg-[length:100%_100%] py-4">
+          Inventory
+        </p>
 
-        <div className="w-full grid grid-cols-3 px-6 gap-4">
+        <div className="w-full grid grid-cols-2 gap-2">
           <div
-            className="w-full aspect-[1] relative border-2 border-transparent rounded-md text-white cursor-pointer"
-            style={{
-              borderImage: "linear-gradient(to bottom right, #c0c0c0, #4f4f4f);",
-              borderImageSlice: 1,
-              background: "radial-gradient(circle, rgb(84, 84, 84) 0%, rgb(63, 63, 63) 100%)",
-            }}
+            className="w-full aspect-[1] relative flex justify-center items-center bg-center bg-no-repeat bg-frame-normal bg-[length:100%_100%] border-2 border-transparent rounded-md text-white cursor-pointer"
             onClick={addmining}
           >
-            Copper {inventoryCopper}
+            <Image src="/image/product-menu/Mine_Unlocked.png" alt="copper-icon" width={40} height={40} priority />
+            <span className="absolute bottom-1 right-3">{inventoryCopper}</span>
           </div>
 
           <div
-            className="w-full aspect-[1] relative border-2 border-transparent rounded-md text-white cursor-pointer"
-            style={{
-              borderImage: "linear-gradient(to bottom right, #c0c0c0, #4f4f4f);",
-              borderImageSlice: 1,
-              background: "radial-gradient(circle, rgb(84, 84, 84) 0%, rgb(63, 63, 63) 100%)",
-            }}
+            className="w-full aspect-[1] relative flex justify-center items-center bg-center bg-no-repeat bg-frame-normal bg-[length:100%_100%] border-2 border-transparent rounded-md text-white cursor-pointer"
             onClick={addLog}
           >
-            Log {inventoryLog}
+            <Image src="/image/product-menu/Tree_Unlocked.png" alt="tree-icon" width={30} height={30} priority />
+            <span className="absolute bottom-1 right-3">{inventoryLog}</span>
           </div>
 
           <div
-            className="w-full aspect-[1] relative border-2 border-transparent rounded-md text-white cursor-pointer"
-            style={{
-              borderImage: "linear-gradient(to bottom right, #c0c0c0, #4f4f4f);",
-              borderImageSlice: 1,
-              background: "radial-gradient(circle, rgb(84, 84, 84) 0%, rgb(63, 63, 63) 100%)",
-            }}
+            className="w-full aspect-[1] relative flex justify-center items-center bg-center bg-no-repeat bg-frame-normal bg-[length:100%_100%] border-2 border-transparent rounded-md text-white cursor-pointer"
             onClick={addCotton}
           >
-            Cotton {inventoryCotton}
+            <Image src="/image/product-menu/Cotton_Unlocked.png" alt="cotton-icon" width={40} height={40} priority />
+            <span className="absolute bottom-1 right-3">{inventoryCotton}</span>
           </div>
 
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
+          {[0, 1, 2, 3, 4].map((id) => (
             <div
               key={id}
-              className="w-full aspect-[1] relative border-2 border-transparent rounded-md text-white cursor-pointer"
-              style={{
-                borderImage: "linear-gradient(to bottom right, #c0c0c0, #4f4f4f);",
-                borderImageSlice: 1,
-                background: "radial-gradient(circle, rgb(84, 84, 84) 0%, rgb(63, 63, 63) 100%)",
-              }}
+              className="w-full aspect-[1] bg-center bg-no-repeat bg-frame-normal bg-[length:100%_100%] border-2 border-transparent rounded-md text-white cursor-pointer"
             />
           ))}
         </div>
