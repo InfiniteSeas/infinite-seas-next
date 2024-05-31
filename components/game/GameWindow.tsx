@@ -22,7 +22,7 @@ export default function GameWindow({
 }: {
   islandsInfo: {
     occupiedBy: string;
-    coordinates: { x: any; y: any };
+    coordinates: { x: number; y: number };
     resources: any[];
   }[];
 }) {
@@ -63,8 +63,11 @@ export default function GameWindow({
 
       const playerId = await getPlayerId({ owner: currentAccount.address });
       const player = await suiPlayerInfo({ playerId });
-
       setCurrentPlayer(player);
+
+      // Get player's skill processes for action queue
+      const processes = await getPlayerSkillProcesses({ playerId: player.id.id });
+      setSkillProcesses(processes);
     }
 
     getCurrentPlayer();
@@ -115,12 +118,11 @@ export default function GameWindow({
   // Click island card
   async function handleIslandCardClicked() {
     if (!currentPlayer) return toast.error("Please login first!");
+    if (!currentPlayer.claimed_island) return toast.error("Please select an island and claim it first!");
 
     setIslandMenuFlag((prev) => !prev);
     setIslandTopbarFlag(false);
     setShipsMenuFlag(false);
-
-    if (!currentPlayer.claimed_island) return toast.error("Please select an island and claim it first!");
 
     setIslandOwnerName(currentPlayer.name);
     setIslandOwnerExp(currentPlayer.experience);
@@ -134,8 +136,6 @@ export default function GameWindow({
       else if (inv.fields.item_id === 200) setLogLeft(inv.fields.quantity);
       else if (inv.fields.item_id === 102) setCottonLeft(inv.fields.quantity);
     });
-
-    // console.log(currentPlayer.claimed_island.type);
 
     // Get player's skill processes
     const processes = await getPlayerSkillProcesses({ playerId: currentPlayer.id.id });
@@ -210,7 +210,16 @@ export default function GameWindow({
             />
           )}
 
-          {bagMenuFlag && <BagMenu maxSpace={20} />}
+          {bagMenuFlag && (
+            <BagMenu
+              oreLeft={oreLeft}
+              woodLeft={woodLeft}
+              seedsLeft={seedsLeft}
+              copperLeft={copperLeft}
+              logLeft={logLeft}
+              cottonLeft={cottonLeft}
+            />
+          )}
 
           {craftMenuFlag && (
             <CraftMenu
@@ -231,7 +240,14 @@ export default function GameWindow({
 
       {shipsMenuFlag && <ShipsMenu closeShipsMenu={() => setShipsMenuFlag(false)} />}
 
-      <GameCanvas islandsInfo={islandsInfo} islandClickedFlag={islandMenuFlag} getIslandClicked={handleIslandClicked} />
+      <GameCanvas
+        islandsInfo={islandsInfo}
+        islandClickedFlag={islandMenuFlag}
+        currentPlayerIsland={
+          currentPlayer && currentPlayer.claimed_island ? currentPlayer.claimed_island.fields : { x: 0, y: 0 }
+        }
+        getIslandClicked={handleIslandClicked}
+      />
     </>
   );
 }

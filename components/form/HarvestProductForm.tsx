@@ -134,7 +134,7 @@ export default function HarvestProductForm({
 
   return (
     <button
-      className="text-sm border-[1px] border-white text-white rounded-md cursor-pointer px-1"
+      className="text-xs border-[1px] border-white text-white rounded-md cursor-pointer px-1"
       type="button"
       onClick={harvestProductAction}
     >

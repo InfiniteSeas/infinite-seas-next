@@ -26,8 +26,8 @@ export default function IslandTopbar({
   seedsLeft: number;
 }) {
   const resources = [
-    { id: 1, title: "Ore", count: woodLeft, iconUrl: "/image/top-menu/ore_icon.png" },
-    { id: 0, title: "Wood", count: oreLeft, iconUrl: "/image/top-menu/wood_icon.png" },
+    { id: 1, title: "Ore", count: oreLeft, iconUrl: "/image/top-menu/ore_icon.png" },
+    { id: 0, title: "Wood", count: woodLeft, iconUrl: "/image/top-menu/wood_icon.png" },
     { id: 2, title: "Seeds", count: seedsLeft, iconUrl: "/image/top-menu/seeds_icon.png" },
     { id: 3, title: "Boats", count: 0, iconUrl: "/image/top-menu/boats_icon.png" },
   ];

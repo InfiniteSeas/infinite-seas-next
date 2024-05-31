@@ -6,13 +6,15 @@ import * as THREE from "three";
 export default function GameCanvas({
   islandsInfo,
   islandClickedFlag,
+  currentPlayerIsland,
   getIslandClicked,
 }: {
   islandsInfo: {
     occupiedBy: string;
-    coordinates: { x: any; y: any };
+    coordinates: { x: number; y: number };
   }[];
   islandClickedFlag: boolean;
+  currentPlayerIsland: { x: number; y: number };
   getIslandClicked: (x: number, y: number) => void;
 }) {
   const htmlEleRef = useRef<HTMLDivElement | null>(null);
@@ -46,9 +48,11 @@ export default function GameCanvas({
 
     if (islandClickedFlag) {
       camera.current.zoom = 0.05;
-      camera.current.position.set(0, 0, 10);
+      camera.current.position.set(currentPlayerIsland.x, currentPlayerIsland.y, 10);
       mouseSpeedFactor.current = 0;
     } else mouseSpeedFactor.current = 0.2;
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [islandClickedFlag]);
 
   function init() {

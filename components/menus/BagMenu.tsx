@@ -1,31 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
 
-export default function BagMenu({ maxSpace }: { maxSpace: number }) {
-  const [occupied, setOccupied] = useState<number>(0);
-
+export default function BagMenu({
+  oreLeft,
+  woodLeft,
+  seedsLeft,
+  copperLeft,
+  logLeft,
+  cottonLeft,
+}: {
+  oreLeft: number;
+  woodLeft: number;
+  seedsLeft: number;
+  copperLeft: number;
+  logLeft: number;
+  cottonLeft: number;
+}) {
   const bagSpaces = [
-    { id: 0, resource: "Ore", count: 0, iconUrl: "" },
-    { id: 1, resource: "Wood", count: 0, iconUrl: "" },
-    { id: 2, resource: "Seed", count: 0, iconUrl: "" },
-    { id: 3, resource: "", count: 0, iconUrl: "" },
-    { id: 4, resource: "", count: 0, iconUrl: "" },
-    { id: 5, resource: "", count: 0, iconUrl: "" },
-    { id: 6, resource: "", count: 0, iconUrl: "" },
-    { id: 7, resource: "", count: 0, iconUrl: "" },
-    { id: 8, resource: "", count: 0, iconUrl: "" },
-    { id: 9, resource: "", count: 0, iconUrl: "" },
-    { id: 10, resource: "", count: 0, iconUrl: "" },
-    { id: 11, resource: "", count: 0, iconUrl: "" },
-    { id: 12, resource: "", count: 0, iconUrl: "" },
-    { id: 13, resource: "", count: 0, iconUrl: "" },
-    { id: 14, resource: "", count: 0, iconUrl: "" },
-    { id: 15, resource: "", count: 0, iconUrl: "" },
-    { id: 16, resource: "", count: 0, iconUrl: "" },
-    { id: 17, resource: "", count: 0, iconUrl: "" },
-    { id: 18, resource: "", count: 0, iconUrl: "" },
-    { id: 19, resource: "", count: 0, iconUrl: "" },
+    { id: 0, count: oreLeft, iconUrl: "/image/top-menu/ore_icon.png" },
+    { id: 1, count: woodLeft, iconUrl: "/image/top-menu/wood_icon.png" },
+    { id: 2, count: seedsLeft, iconUrl: "/image/top-menu/seeds_icon.png" },
+    { id: 3, count: copperLeft, iconUrl: "/image/product-menu/Mine_Unlocked.png" },
+    { id: 4, count: logLeft, iconUrl: "/image/product-menu/Tree_Unlocked.png" },
+    { id: 5, count: cottonLeft, iconUrl: "/image/product-menu/Cotton_Unlocked.png" },
+    { id: 6, count: 0, iconUrl: "" },
+    { id: 7, count: 0, iconUrl: "" },
+    { id: 8, count: 0, iconUrl: "" },
+    { id: 9, count: 0, iconUrl: "" },
+    { id: 10, count: 0, iconUrl: "" },
+    { id: 11, count: 0, iconUrl: "" },
+    { id: 12, count: 0, iconUrl: "" },
+    { id: 13, count: 0, iconUrl: "" },
+    { id: 14, count: 0, iconUrl: "" },
+    { id: 15, count: 0, iconUrl: "" },
+    { id: 16, count: 0, iconUrl: "" },
+    { id: 17, count: 0, iconUrl: "" },
+    { id: 18, count: 0, iconUrl: "" },
+    { id: 19, count: 0, iconUrl: "" },
   ];
 
   return (
@@ -33,11 +45,10 @@ export default function BagMenu({ maxSpace }: { maxSpace: number }) {
       {bagSpaces.map((space) => (
         <div
           key={space.id}
-          className="w-full aspect-[1] relative border-2 border-transparent bg-center bg-no-repeat bg-frame-sm bg-[length:100%_100%] cursor-pointer"
+          className="w-full aspect-[1] relative flex justify-center items-center border-2 border-transparent bg-center bg-no-repeat bg-frame-sm bg-[length:100%_100%] cursor-pointer"
         >
-          <p className="absolute left-1/2 bottom-1 -translate-x-1/2 translate-y-1/2 rounded-full bg-zinc-600 text-xs text-center px-2">
-            {space.count}
-          </p>
+          {space.iconUrl && <Image src={space.iconUrl} alt="resource-icon" width={40} height={40} priority />}
+          <span className="absolute bottom-0 right-1 text-sm">{space.count}</span>
         </div>
       ))}
     </div>

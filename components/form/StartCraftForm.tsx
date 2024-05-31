@@ -35,7 +35,7 @@ export default function StartCraftForm({
     if (copper < 3) return toast.error("Please add 3 copper at least!");
     if (log < 3) return toast.error("Please add 3 log at least!");
     if (cotton < 3) return toast.error("Please add 3 cotton at least!");
-    if (copper + log + cotton < 15) return toast.error("The total resource added must be 15 at least!");
+    if (copper + log + cotton !== 15) return toast.error("The total resource added must be 15!");
 
     const processId = skillProcesses.filter((process) => process.skillProcessId.skillType === 6)[0].id_;
 

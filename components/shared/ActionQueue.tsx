@@ -1,4 +1,5 @@
 import HarvestProductForm from "@/components/form/HarvestProductForm";
+import Countdown from "@/components/queue/Countdown";
 
 export default function ActionQueue({
   skillProcesses,
@@ -26,7 +27,7 @@ export default function ActionQueue({
             <span className="text-zinc-400">{data.action}</span>
             <span className="text-white">{data.count}</span>
             <span className="text-zinc-400">{data.resource}</span>
-            <span className="text-white">{data.timeLeft}s</span>
+            <Countdown initialCount={data.timeLeft} />
             {data.productType && (
               <HarvestProductForm
                 productType={data.productType}

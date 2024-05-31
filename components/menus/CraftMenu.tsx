@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 import StartCraftForm from "@/components/form/StartCraftForm";
 
@@ -21,17 +22,18 @@ export default function CraftMenu({
   const [shipCopper, setShipCopper] = useState<number>(3);
   const [shipLog, setShipLog] = useState<number>(3);
   const [shipCotton, setShipCotton] = useState<number>(3);
-  const [attack, setAttack] = useState<number>(6);
-  const [protection, setProtection] = useState<number>(5);
-  const [speed, setSpeed] = useState<number>(4);
-  const [inventoryCopper, setInventoryCopper] = useState<number>(copperLeft - 3);
-  const [inventoryLog, setInventoryLog] = useState<number>(logLeft - 3);
-  const [inventoryCotton, setInventoryCotton] = useState<number>(cottonLeft - 3);
+  const [attack, setAttack] = useState<number>(3);
+  const [protection, setProtection] = useState<number>(3);
+  const [speed, setSpeed] = useState<number>(3);
+  const [inventoryCopper, setInventoryCopper] = useState<number>(copperLeft < 3 ? 0 : copperLeft - 3);
+  const [inventoryLog, setInventoryLog] = useState<number>(logLeft < 3 ? 0 : logLeft - 3);
+  const [inventoryCotton, setInventoryCotton] = useState<number>(cottonLeft < 3 ? 0 : cottonLeft - 3);
 
   const sidebarTitle = ["Small Ship", "Locked", "Locked", "Locked", "Locked", "Locked"];
 
   function addmining() {
-    if (shipCopper + shipLog + shipCotton >= 15 || inventoryCopper === 0) return;
+    if (shipCopper + shipLog + shipCotton >= 15 || inventoryCopper === 0)
+      return toast.error("You can add only 15 resources totally!");
 
     setShipCopper((prev) => ++prev);
     setAttack((prev) => ++prev);
@@ -39,14 +41,16 @@ export default function CraftMenu({
   }
 
   function addLog() {
-    if (shipCopper + shipLog + shipCotton >= 15 || inventoryLog === 0) return;
+    if (shipCopper + shipLog + shipCotton >= 15 || inventoryLog === 0)
+      return toast.error("You can add only 15 resources totally!");
 
     setShipLog((prev) => ++prev);
     setProtection((prev) => ++prev);
     setInventoryLog((prev) => --prev);
   }
   function addCotton() {
-    if (shipCopper + shipLog + shipCotton >= 15 || inventoryCotton === 0) return;
+    if (shipCopper + shipLog + shipCotton >= 15 || inventoryCotton === 0)
+      return toast.error("You can add only 15 resources totally!");
 
     setShipCotton((prev) => ++prev);
     setSpeed((prev) => ++prev);
@@ -54,7 +58,7 @@ export default function CraftMenu({
   }
 
   function removeCopper() {
-    if (shipCopper <= 3) return;
+    if (shipCopper <= 3) return toast.error("You must add 3 copper at least!");
 
     setShipCopper((prev) => --prev);
     setAttack((prev) => --prev);
@@ -62,7 +66,7 @@ export default function CraftMenu({
   }
 
   function removeLog() {
-    if (shipLog <= 3) return;
+    if (shipLog <= 3) return toast.error("You must add 3 log at least!");
 
     setShipLog((prev) => --prev);
     setProtection((prev) => --prev);
@@ -70,7 +74,7 @@ export default function CraftMenu({
   }
 
   function removeCotton() {
-    if (shipCotton <= 3) return;
+    if (shipCotton <= 3) return toast.error("You must add 3 cotton at least!");
 
     setShipCotton((prev) => --prev);
     setSpeed((prev) => --prev);
