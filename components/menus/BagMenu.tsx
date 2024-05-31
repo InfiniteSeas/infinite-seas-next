@@ -12,7 +12,14 @@ export default function BagMenu({ maxSpace }: { maxSpace: number }) {
   ];
 
   return (
-    <div className="w-full h-full absolute flex flex-col text-black bg-no-repeat bg-contain " style={{backgroundImage:`url('/image/14-Inventory/background.png')`,padding:'30px',backgroundSize:"100% 100%"}}>
+    <div
+      className="w-full h-full absolute flex flex-col text-black bg-no-repeat bg-contain "
+      style={{
+        backgroundImage: `url('/image/14-Inventory/background.png')`,
+        padding: "30px",
+        backgroundSize: "100% 100%",
+      }}
+    >
       <div className="px-4 py-2">
         <p>
           Space: {occupied}/{maxSpace}
@@ -26,7 +33,7 @@ export default function BagMenu({ maxSpace }: { maxSpace: number }) {
             className="w-full aspect-[1] rounded-lg border-transparent relative bg-no-repeat bg-contain text-white"
             style={{
               borderImageSlice: 1,
-              backgroundSize:"100% 100%",
+              backgroundSize: "100% 100%",
               background: `url("/image/14-Inventory/box.png")`,
             }}
           >
@@ -36,18 +43,16 @@ export default function BagMenu({ maxSpace }: { maxSpace: number }) {
             </p>
           </div>
         ))}
-        {[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16].map((space) => (
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((space) => (
           <div
             className="w-full aspect-[1] rounded-lg border-transparent relative bg-no-repeat bg-contain  text-white"
             style={{
               borderImageSlice: 1,
-              backgroundSize:"100% 100%",
+              backgroundSize: "100% 100%",
               background: `url("/image/14-Inventory/box.png")`,
             }}
           >
-            <p className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 rounded-lg bg-white text-black text-sm text-center px-2">
-             
-            </p>
+            <p className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 rounded-lg bg-white text-black text-sm text-center px-2"></p>
           </div>
         ))}
       </div>
