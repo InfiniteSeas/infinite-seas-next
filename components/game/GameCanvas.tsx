@@ -76,7 +76,7 @@ export default function GameCanvas({
     scene.current.add(camera.current);
 
     // Generate Ocean
-    const oceanTexture = new THREE.TextureLoader().load("/image/ocean/oceanTemplateMVP_version.png");
+    const oceanTexture = new THREE.TextureLoader().load("/image/ocean/ocean.png");
     oceanTexture.colorSpace = "srgb";
     oceanTexture.wrapS = THREE.RepeatWrapping;
     oceanTexture.wrapT = THREE.RepeatWrapping;
