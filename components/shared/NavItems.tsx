@@ -6,9 +6,11 @@ import EnergyFaucetForm from "@/components/form/EnergyFaucetForm";
 import ConnectWalletBtn from "@/components/wallet/ConnectWalletBtn";
 
 export default function NavItems({
+  energyBalance,
   getIslandClicked,
   getShipsClicked,
 }: {
+  energyBalance: number;
   getIslandClicked: () => void;
   getShipsClicked: () => void;
 }) {
@@ -50,15 +52,17 @@ export default function NavItems({
       </div>
 
       {/* Energy bar */}
-      <Image
-        className="fixed top-4 right-4 cursor-pointer"
-        src="/image/home/Energy_Bar.png"
-        alt="energy-bar"
-        width={240}
-        height={120}
-        priority
-        onClick={handleEnergyBar}
-      />
+      <div className="fixed top-4 right-4 cursor-pointer">
+        <Image
+          src="/image/home/Energy_Bar.png"
+          alt="energy-bar"
+          width={240}
+          height={120}
+          priority
+          onClick={handleEnergyBar}
+        />
+        <p className="absolute left-[95px] w-[52px] bottom-[23px] text-white text-center text-lg">{energyBalance}</p>
+      </div>
 
       {/* Faucet */}
       <EnergyFaucetForm />

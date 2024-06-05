@@ -16,6 +16,9 @@ import CraftMenu from "@/components/menus/CraftMenu";
 import GameCanvas from "@/components/game/GameCanvas";
 
 import { getPlayerId, getPlayerRosters, getPlayerSkillProcesses, suiPlayerInfo } from "@/actions/player.action";
+import { suixEnergyCoins } from "@/actions/coin.action";
+
+import { formatSui } from "@/utils/tools";
 
 export default function GameWindow({
   islandsInfo,
@@ -27,6 +30,8 @@ export default function GameWindow({
   }[];
 }) {
   const [currentPlayer, setCurrentPlayer] = useState<any>();
+  const [energyObjectId, setEnergyObjectId] = useState<string>("");
+  const [energyBalance, setEnergyBalance] = useState<number>(0);
 
   const [islandOwnerName, setIslandOwnerName] = useState<string>("");
   const [islandOwnerExp, setIslandOwnerExp] = useState<number>(0);
@@ -58,19 +63,25 @@ export default function GameWindow({
   const currentAccount = useCurrentAccount();
 
   useEffect(() => {
-    async function getCurrentPlayer() {
+    async function initCurrentPlayer() {
       if (!currentAccount) return;
 
       const playerId = await getPlayerId({ owner: currentAccount.address });
       const player = await suiPlayerInfo({ playerId });
       setCurrentPlayer(player);
 
+      const energyCoins = await suixEnergyCoins({ owner: currentAccount.address });
+      if (energyCoins.length === 0) return;
+
+      setEnergyBalance(formatSui(energyCoins[0].balance));
+      setEnergyObjectId(energyCoins[0].coinObjectId);
+
       // Get player's skill processes for action queue
       const processes = await getPlayerSkillProcesses({ playerId: player.id.id });
       setSkillProcesses(processes);
     }
 
-    getCurrentPlayer();
+    initCurrentPlayer();
   }, [currentAccount]);
 
   useEffect(() => {
@@ -180,7 +191,11 @@ export default function GameWindow({
 
   return (
     <>
-      <NavItems getIslandClicked={handleIslandCardClicked} getShipsClicked={handleShipsClicked} />
+      <NavItems
+        energyBalance={energyBalance}
+        getIslandClicked={handleIslandCardClicked}
+        getShipsClicked={handleShipsClicked}
+      />
 
       {/* Single topbar for checking other island */}
       {(islandMenuFlag || islandTopbarFlag) && (
