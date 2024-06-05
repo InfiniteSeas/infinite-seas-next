@@ -67,12 +67,12 @@ export default function NavItems({
       {/* Faucet */}
       <EnergyFaucetForm />
 
-      {/* Bottom-right buttons */}
+      {/* Bottom-right cards */}
       <div className="flex items-center fixed bottom-2 right-6 gap-1">
         <Image
           className="cursor-pointer"
           src="/image/home/island-card.png"
-          alt="island-button"
+          alt="island-card"
           width={110}
           height={160}
           priority
@@ -81,7 +81,7 @@ export default function NavItems({
         <Image
           className="cursor-pointer"
           src="/image/home/ships-card.png"
-          alt="ship-button"
+          alt="ship-card"
           width={110}
           height={160}
           priority

@@ -124,15 +124,10 @@ export default function StartProductForm({
     <AppModal>
       <AppInput label={productType} value={batchSize} handleChange={(value) => setBatchSize(value)} />
 
-      <p>costs {batchSize} energy token</p>
+      <p>costs {["ore", "wood"].includes(productType) ? batchSize : Number(batchSize) * 5} energy token</p>
 
       <p>
-        {productType === "ore"
-          ? Number(batchSize) * 3
-          : productType === "wood"
-          ? Number(batchSize) * 8
-          : Number(batchSize) * 36}{" "}
-        seconds time duration
+        {["ore", "wood"].includes(productType) ? Number(batchSize) * 3 : Number(batchSize) * 15} seconds time duration
       </p>
 
       <div className="flex w-4/5 justify-evenly items-center">
