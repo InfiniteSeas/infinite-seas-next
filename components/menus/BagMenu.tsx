@@ -18,12 +18,12 @@ export default function BagMenu({
   cottonLeft: number;
 }) {
   const bagSpaces = [
-    { id: 0, count: oreLeft, iconUrl: "/image/top-menu/ore_icon.png" },
-    { id: 1, count: woodLeft, iconUrl: "/image/top-menu/wood_icon.png" },
-    { id: 2, count: seedsLeft, iconUrl: "/image/top-menu/seeds_icon.png" },
-    { id: 3, count: copperLeft, iconUrl: "/image/product-menu/Mine_Unlocked.png" },
-    { id: 4, count: logLeft, iconUrl: "/image/product-menu/Tree_Unlocked.png" },
-    { id: 5, count: cottonLeft, iconUrl: "/image/product-menu/Cotton_Unlocked.png" },
+    { id: 0, count: copperLeft, iconUrl: "/image/product-menu/Mine_Unlocked.png" },
+    { id: 1, count: logLeft, iconUrl: "/image/product-menu/Tree_Unlocked.png" },
+    { id: 2, count: cottonLeft, iconUrl: "/image/product-menu/Cotton_Unlocked.png" },
+    { id: 3, count: 0, iconUrl: "" },
+    { id: 4, count: 0, iconUrl: "" },
+    { id: 5, count: 0, iconUrl: "" },
     { id: 6, count: 0, iconUrl: "" },
     { id: 7, count: 0, iconUrl: "" },
     { id: 8, count: 0, iconUrl: "" },

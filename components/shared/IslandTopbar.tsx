@@ -26,10 +26,10 @@ export default function IslandTopbar({
   seedsLeft: number;
 }) {
   const resources = [
-    { id: 1, title: "Ore", count: oreLeft, iconUrl: "/image/top-menu/ore_icon.png" },
-    { id: 0, title: "Wood", count: woodLeft, iconUrl: "/image/top-menu/wood_icon.png" },
-    { id: 2, title: "Seeds", count: seedsLeft, iconUrl: "/image/top-menu/seeds_icon.png" },
-    { id: 3, title: "Boats", count: 0, iconUrl: "/image/top-menu/boats_icon.png" },
+    { id: 1, title: "Ore", count: oreLeft, iconUrl: "/image/topbar/ore.png" },
+    { id: 0, title: "Wood", count: woodLeft, iconUrl: "/image/topbar/wood.png" },
+    { id: 2, title: "Seeds", count: seedsLeft, iconUrl: "/image/topbar/seeds.png" },
+    { id: 3, title: "Boats", count: 0, iconUrl: "/image/topbar/boat.png" },
   ];
 
   return (
@@ -37,18 +37,18 @@ export default function IslandTopbar({
       <div className="flex justify-between items-center w-full h-1/2">
         {islandOwnerName && (
           <div className="flex items-center gap-2">
-            <Image src="/image/top-menu/Avatar_pic.png" alt="avatar-pic" width={48} height={48} priority />
+            <Image src="/image/topbar/avatar.png" alt="avatar-pic" width={48} height={48} priority />
             <div className="text-xl text-white">{islandOwnerName}&apos;s island</div>
           </div>
         )}
 
         <div className="flex items-center gap-2">
-          <Image src="/image/top-menu/points-icon.png" alt="points-icon" width={50} height={50} priority />
+          <Image src="/image/topbar/points.png" alt="points" width={50} height={50} priority />
           <p className="text-white">Points: {islandOwnerExp}</p>
         </div>
 
         <div className="flex items-center gap-2">
-          <Image src="/image/top-menu/points-icon.png" alt="points-icon" width={50} height={50} priority />
+          <Image src="/image/topbar/points.png" alt="points" width={50} height={50} priority />
           <p className="text-white">Level: {islandOwnerLevel}</p>
         </div>
 
