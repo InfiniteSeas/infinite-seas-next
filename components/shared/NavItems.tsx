@@ -32,7 +32,7 @@ export default function NavItems({
       <div className="fixed top-6 left-6 flex flex-col gap-3">
         <Image
           className="cursor-pointer"
-          src="/image/home/Setting_Button.png"
+          src="/image/home/settings.png"
           alt="setting-button"
           width={50}
           height={50}
@@ -42,8 +42,8 @@ export default function NavItems({
         <ConnectWalletBtn />
         <Image
           className="cursor-pointer"
-          src="/image/home/Points-Button.png"
-          alt="points-button"
+          src="/image/home/points.png"
+          alt="points"
           width={50}
           height={50}
           priority
@@ -54,7 +54,7 @@ export default function NavItems({
       {/* Energy bar */}
       <div className="fixed top-4 right-4 cursor-pointer">
         <Image
-          src="/image/home/Energy_Bar.png"
+          src="/image/home/energy-bar.png"
           alt="energy-bar"
           width={240}
           height={120}
@@ -71,7 +71,7 @@ export default function NavItems({
       <div className="flex items-center fixed bottom-2 right-6 gap-1">
         <Image
           className="cursor-pointer"
-          src="/image/home/Island_Button.png"
+          src="/image/home/island-card.png"
           alt="island-button"
           width={110}
           height={160}
@@ -80,7 +80,7 @@ export default function NavItems({
         />
         <Image
           className="cursor-pointer"
-          src="/image/home/Ships_Button.png"
+          src="/image/home/ships-card.png"
           alt="ship-button"
           width={110}
           height={160}

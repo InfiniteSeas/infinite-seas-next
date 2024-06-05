@@ -90,7 +90,7 @@ export default function WalletMenu() {
 
       <Image
         className="cursor-pointer"
-        src="/image/home/Wallet_Button.png"
+        src="/image/home/wallet.png"
         alt="wallet-button"
         width={50}
         height={50}

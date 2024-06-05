@@ -5,10 +5,10 @@ import Image from "next/image";
 export default function ActionButtons({ handleActionClick }: { handleActionClick: (flag: string) => void }) {
   const buttonData = [
     { id: 0, flag: "bag", count: "", iconUrl: "/image/button/Inventory.png" },
-    { id: 1, flag: "ore", count: "7/99", iconUrl: "/image/button/mining.png" },
-    { id: 2, flag: "wood", count: "29/99", iconUrl: "/image/button/wood-cutting.png" },
-    { id: 3, flag: "seed", count: "30/99", iconUrl: "/image/button/Planting.png" },
-    { id: 4, flag: "craft", count: "", iconUrl: "/image/button/Crafting.png" },
+    { id: 1, flag: "ore", count: "7/99", iconUrl: "/image/button/mine.png" },
+    { id: 2, flag: "wood", count: "29/99", iconUrl: "/image/button/cut.png" },
+    { id: 3, flag: "seed", count: "30/99", iconUrl: "/image/button/plant.png" },
+    { id: 4, flag: "craft", count: "", iconUrl: "/image/button/craft.png" },
   ];
 
   return (
