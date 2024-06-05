@@ -5,6 +5,8 @@ import { TransactionBlock } from "@mysten/sui.js/transactions";
 import { bcs } from "@mysten/bcs";
 import toast from "react-hot-toast";
 
+import AppModal from "@/components/ui/AppModal";
+import AppInput from "@/components/ui/AppInput";
 import TxToast from "@/components/shared/TxToast";
 
 import { suixEnergyCoins } from "@/actions/coin.action";
@@ -83,11 +85,9 @@ export default function StartCraftForm({
   }
 
   return (
-    <div className="w-[270px] h-[180px] flex flex-col justify-between items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white text-lg p-4">
-      <div className="flex items-center gap-2">
-        <span>small ship</span>
-        <input className="w-[45px] border-[1px] text-center rounded-md" type="text" value="1" disabled />
-      </div>
+    <AppModal>
+      <AppInput label="Small Ship" value="1" disabled={true} />
+
       <p>costs 5 energy token</p>
       <p>15 seconds time duration</p>
 
@@ -99,6 +99,6 @@ export default function StartCraftForm({
           Cancel
         </div>
       </div>
-    </div>
+    </AppModal>
   );
 }

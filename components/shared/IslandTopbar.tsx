@@ -2,15 +2,10 @@
 
 import Image from "next/image";
 
-import ClaimIslandForm from "@/components/form/ClaimIslandForm";
-
 export default function IslandTopbar({
   islandOwnerName,
   islandOwnerExp,
   islandOwnerLevel,
-  islandCoordinateX,
-  islandCoordinateY,
-  islandFreeFlag,
   oreLeft,
   woodLeft,
   seedsLeft,
@@ -18,9 +13,6 @@ export default function IslandTopbar({
   islandOwnerName: string;
   islandOwnerExp: number;
   islandOwnerLevel: number;
-  islandCoordinateX: number;
-  islandCoordinateY: number;
-  islandFreeFlag: boolean;
   oreLeft: number;
   woodLeft: number;
   seedsLeft: number;
@@ -51,8 +43,6 @@ export default function IslandTopbar({
           <Image src="/image/topbar/points.png" alt="points" width={50} height={50} priority />
           <p className="text-white">Level: {islandOwnerLevel}</p>
         </div>
-
-        {islandFreeFlag && <ClaimIslandForm coordinateX={islandCoordinateX} coordinateY={islandCoordinateY} />}
       </div>
 
       <div className="w-full h-1/2 flex justify-evenly items-center gap-4">

@@ -5,6 +5,8 @@ import { useCurrentAccount, useSignAndExecuteTransactionBlock } from "@mysten/da
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 import toast from "react-hot-toast";
 
+import AppModal from "@/components/ui/AppModal";
+import AppInput from "@/components/ui/AppInput";
 import TxToast from "@/components/shared/TxToast";
 
 import { suixEnergyCoins } from "@/actions/coin.action";
@@ -119,16 +121,8 @@ export default function StartProductForm({
   }
 
   return (
-    <div className="w-[270px] h-[180px] flex flex-col justify-between items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white text-lg p-4">
-      <div className="flex items-center gap-2">
-        <span>{productType}</span>
-        <input
-          className="w-[45px] border-[1px] border-black text-center rounded-md"
-          type="text"
-          value={batchSize}
-          onChange={(e) => setBatchSize(e.target.value)}
-        />
-      </div>
+    <AppModal>
+      <AppInput label={productType} value={batchSize} handleChange={(value) => setBatchSize(value)} />
 
       <p>costs {batchSize} energy token</p>
 
@@ -159,6 +153,6 @@ export default function StartProductForm({
           Cancel
         </div>
       </div>
-    </div>
+    </AppModal>
   );
 }

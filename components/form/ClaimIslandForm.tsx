@@ -4,6 +4,7 @@ import { useCurrentAccount, useSignAndExecuteTransactionBlock } from "@mysten/da
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 import toast from "react-hot-toast";
 
+import AppModal from "@/components/ui/AppModal";
 import TxToast from "@/components/shared/TxToast";
 
 import { revalidateGame, waitForReceipt } from "@/actions/system.action";
@@ -11,20 +12,28 @@ import { getPlayerId } from "@/actions/player.action";
 
 import { MAIN_PACKAGE_ID, MAP, ROSTER_TABLE, SKILL_PROCESS_TABLE } from "@/constant";
 
-export default function ClaimIslandForm({ coordinateX, coordinateY }: { coordinateX: number; coordinateY: number }) {
+export default function ClaimIslandForm({
+  coordinateX,
+  coordinateY,
+  handleCloseModal,
+}: {
+  coordinateX: number;
+  coordinateY: number;
+  handleCloseModal: () => void;
+}) {
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
   const currentAccount = useCurrentAccount();
 
   async function claimIslandAction() {
     if (!currentAccount) return toast.error("Please login first!");
-    
+
     toast.success("Claiming the island, please approve with your wallet...");
-    
+
     try {
       const playerId = await getPlayerId({ owner: currentAccount.address });
-      
+
       const txb = new TransactionBlock();
-      
+
       txb.setGasBudget(4999000000);
 
       txb.moveCall({
@@ -56,8 +65,21 @@ export default function ClaimIslandForm({ coordinateX, coordinateY }: { coordina
   }
 
   return (
-    <button className="text-white" onClick={claimIslandAction}>
-      Claim this island
-    </button>
+    <AppModal>
+      <p>Are you sure to</p>
+      <p>claim this island?</p>
+      <p>
+        X: {coordinateX}, Y: {coordinateY}
+      </p>
+
+      <div className="w-4/5 flex justify-evenly items-center">
+        <div className="hover:bg-[#e9e9e9] border-[1px] rounded-md cursor-pointer p-1" onClick={claimIslandAction}>
+          Claim
+        </div>
+        <div className="hover:bg-[#e9e9e9] border-[1px] rounded-md cursor-pointer p-1" onClick={handleCloseModal}>
+          Cancel
+        </div>
+      </div>
+    </AppModal>
   );
 }

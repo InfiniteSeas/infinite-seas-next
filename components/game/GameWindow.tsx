@@ -14,6 +14,7 @@ import ShipsMenu from "@/components/menus/ShipsMenu";
 import BagMenu from "@/components/menus/BagMenu";
 import CraftMenu from "@/components/menus/CraftMenu";
 import GameCanvas from "@/components/game/GameCanvas";
+import ClaimIslandForm from "@/components/form/ClaimIslandForm";
 
 import { getPlayerId, getPlayerRosters, getPlayerSkillProcesses, suiPlayerInfo } from "@/actions/player.action";
 import { suixEnergyCoins } from "@/actions/coin.action";
@@ -67,6 +68,8 @@ export default function GameWindow({
       if (!currentAccount) return;
 
       const playerId = await getPlayerId({ owner: currentAccount.address });
+      if (!playerId) return;
+
       const player = await suiPlayerInfo({ playerId });
       setCurrentPlayer(player);
 
@@ -197,15 +200,20 @@ export default function GameWindow({
         getShipsClicked={handleShipsClicked}
       />
 
+      {islandFreeFlag && (
+        <ClaimIslandForm
+          coordinateX={islandCoordinateX}
+          coordinateY={islandCoordinateY}
+          handleCloseModal={() => setIslandFreeFlag(false)}
+        />
+      )}
+
       {/* Single topbar for checking other island */}
       {(islandMenuFlag || islandTopbarFlag) && (
         <IslandTopbar
           islandOwnerName={islandOwnerName}
           islandOwnerExp={islandOwnerExp}
           islandOwnerLevel={islandOwnerLevel}
-          islandCoordinateX={islandCoordinateX}
-          islandCoordinateY={islandCoordinateY}
-          islandFreeFlag={islandFreeFlag}
           oreLeft={oreLeft}
           woodLeft={woodLeft}
           seedsLeft={seedsLeft}
