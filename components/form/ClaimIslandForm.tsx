@@ -17,13 +17,14 @@ export default function ClaimIslandForm({ coordinateX, coordinateY }: { coordina
 
   async function claimIslandAction() {
     if (!currentAccount) return toast.error("Please login first!");
-    const playerId = await getPlayerId({ owner: currentAccount.address });
-
+    
     toast.success("Claiming the island, please approve with your wallet...");
-
+    
     try {
+      const playerId = await getPlayerId({ owner: currentAccount.address });
+      
       const txb = new TransactionBlock();
-
+      
       txb.setGasBudget(4999000000);
 
       txb.moveCall({

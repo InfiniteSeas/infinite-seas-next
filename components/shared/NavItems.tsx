@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 
+import EnergyFaucetForm from "@/components/form/EnergyFaucetForm";
 import ConnectWalletBtn from "@/components/wallet/ConnectWalletBtn";
 
 export default function NavItems({
@@ -13,10 +14,6 @@ export default function NavItems({
 }) {
   function handleSettingButton() {
     console.log("Here is setting button");
-  }
-
-  function handleWalletButton() {
-    console.log("Here is wallet button");
   }
 
   function handlePointsButton() {
@@ -62,6 +59,9 @@ export default function NavItems({
         priority
         onClick={handleEnergyBar}
       />
+
+      {/* Faucet */}
+      <EnergyFaucetForm />
 
       {/* Bottom-right buttons */}
       <div className="flex items-center fixed bottom-2 right-6 gap-1">
