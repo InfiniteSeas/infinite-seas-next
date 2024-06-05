@@ -13,7 +13,6 @@
     "@mysten/dapp-kit": "^0.13.2",
     "@mysten/sui.js": "^0.54.1",
     "@tanstack/react-query": "^5.37.1",
-    "@types/axios": "^0.14.0",
     "@types/three": "^0.164.1",
     "axios": "^1.7.2",
     "next": "14.2.3",

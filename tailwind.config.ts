@@ -17,7 +17,7 @@ const config: Config = {
         "paper-row": "url('/image/frame/paper-frame-row.png')",
         "paper-col": "url('/image/frame/paper-frame-col.png')",
         "frame-topbar": "url('/image/frame/topbar-frame.png')",
-        ranking: "url('/image/ranking/Ranking_text.png')",
+        "frame-rank": "url('/image/frame/rank-frame.png')",
       },
     },
   },
