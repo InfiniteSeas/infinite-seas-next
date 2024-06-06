@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useCurrentAccount, useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
+import { useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 import toast from "react-hot-toast";
 
@@ -9,10 +9,8 @@ import AppModal from "@/components/ui/AppModal";
 import AppInput from "@/components/ui/AppInput";
 import TxToast from "@/components/shared/TxToast";
 
-import { suixEnergyCoins } from "@/actions/coin.action";
-import { getPlayerId } from "@/actions/player.action";
-import { revalidateGame, waitForReceipt } from "@/actions/system.action";
-
+import { waitForReceipt } from "@/actions/system.action";
+import { useGlobalContext } from "@/context/GlobalContext";
 import { ITEM_CREATION_MINING, ITEM_CREATION_WOODING, ITEM_PRODUCTION_FARMING, MAIN_PACKAGE_ID } from "@/constant";
 
 export default function StartProductForm({
@@ -20,23 +18,23 @@ export default function StartProductForm({
   oreLeft,
   woodLeft,
   seedsLeft,
-  skillProcesses,
   handleCloseModal,
 }: {
   productType: string;
   oreLeft: number;
   woodLeft: number;
   seedsLeft: number;
-  skillProcesses: any[];
   handleCloseModal: () => void;
 }) {
   const [batchSize, setBatchSize] = useState<string>("0");
 
-  const currentAccount = useCurrentAccount();
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
+  const { currentPlayerId, skillProcesses, energyObjectId, energyBalance, setRefetchPlayerFlag, setRefetchEnergyFlag } =
+    useGlobalContext();
+
   async function startProductAction() {
-    if (!currentAccount) return toast.error("Please login first!");
+    if (!currentPlayerId) return toast.error("Please login first!");
 
     let functionName = "";
     let skillProcessId = "";
@@ -45,8 +43,10 @@ export default function StartProductForm({
     // If the player does mining
     if (productType === "ore") {
       if (Number(batchSize) > oreLeft) return toast.error("Not enough ore left!");
+      if (Number(batchSize) > energyBalance)
+        return toast.error("You don't have enough energy coin, please buy some first!");
 
-      const miningProcess = skillProcesses.filter((process) => process.skillProcessId.skillType === 3)[0];
+      const miningProcess = skillProcesses.filter((process) => process.skillType === 3)[0];
       if (!miningProcess.completed)
         return toast.error("Please wait for the end of the mining process and harvest first!");
 
@@ -58,8 +58,10 @@ export default function StartProductForm({
     // If the player does wood cutting
     else if (productType === "wood") {
       if (Number(batchSize) > woodLeft) return toast.error("Not enough wood left!");
+      if (Number(batchSize) > energyBalance)
+        return toast.error("You don't have enough energy coin, please buy some first!");
 
-      const woodCuttingProcess = skillProcesses.filter((process) => process.skillProcessId.skillType === 1)[0];
+      const woodCuttingProcess = skillProcesses.filter((process) => process.skillType === 1)[0];
       if (!woodCuttingProcess.completed)
         return toast.error("Please wait for the end of the wood cutting process and harvest first!");
 
@@ -71,8 +73,10 @@ export default function StartProductForm({
     // If the player does seed farming
     else if (productType === "seed") {
       if (Number(batchSize) > seedsLeft) return toast.error("Not enough cotton seed left!");
+      if (Number(batchSize) * 5 > energyBalance)
+        return toast.error("You don't have enough energy coin, please buy some first!");
 
-      const seedingProcesses: any[2] = skillProcesses.filter((process) => process.skillProcessId.skillType === 0);
+      const seedingProcesses: any[2] = skillProcesses.filter((process) => process.skillType === 0);
       if (seedingProcesses[0].completed) skillProcessId = seedingProcesses[0].id_;
       else if (seedingProcesses[1].completed) skillProcessId = seedingProcesses[1].id_;
       else return toast.error("Please wait for the end of the seeding process and harvest first!");
@@ -82,11 +86,6 @@ export default function StartProductForm({
     }
 
     try {
-      const energyCoins = await suixEnergyCoins({ owner: currentAccount.address });
-      if (energyCoins.length === 0) return toast.error("You don't have enough energy coin, please buy some first!");
-
-      const playerId = await getPlayerId({ owner: currentAccount.address });
-
       toast.success("Starting creation, please approve with your wallet...");
 
       const txb = new TransactionBlock();
@@ -98,10 +97,10 @@ export default function StartProductForm({
         arguments: [
           txb.object(skillProcessId),
           txb.pure.u32(Number(batchSize)),
-          txb.object(playerId),
+          txb.object(currentPlayerId),
           txb.object(itemFormulaId),
           txb.object("0x6"),
-          txb.object(energyCoins[0].coinObjectId),
+          txb.object(energyObjectId),
         ],
       });
 
@@ -110,11 +109,12 @@ export default function StartProductForm({
 
       const receipt = await waitForReceipt({ digest });
 
+      setRefetchPlayerFlag((prev) => !prev);
+      setRefetchEnergyFlag((prev) => !prev);
+
       if (receipt.effects?.status.status === "success")
         toast.custom(<TxToast title="Creation started successfully!" digest={digest} />);
       else toast.error(`Failed to start creation: ${receipt.effects?.status.error}`);
-
-      revalidateGame();
     } catch (error: any) {
       toast.error(`Failed to start creation: ${error.message}!`);
     }

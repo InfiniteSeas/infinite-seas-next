@@ -33,17 +33,3 @@ export async function suiAllIslandsInfo() {
 
   return islandInfos;
 }
-
-export async function suiIslandInfo({ islandId }: { islandId: string }) {
-  const island = await client.getObject({
-    id: islandId,
-    options: { showContent: true },
-  });
-
-  console.log(island);
-}
-
-// export async function getAllIslandsInfo() {
-//   const { data } = await axios.get(`${INDEXER_BASE_URL}/Maps/${MAP}`);
-//   return data.locations;
-// }

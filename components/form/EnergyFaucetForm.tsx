@@ -1,21 +1,21 @@
 "use client";
 
-import { useCurrentAccount, useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
+import { useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 import toast from "react-hot-toast";
 
 import TxToast from "@/components/shared/TxToast";
-
-import { revalidateGame, waitForReceipt } from "@/actions/system.action";
-
+import { waitForReceipt } from "@/actions/system.action";
+import { useGlobalContext } from "@/context/GlobalContext";
 import { COIN_PACKAGE_ID, FAUCET } from "@/constant";
 
 export default function EnergyFaucetForm() {
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
-  const currentAccount = useCurrentAccount();
+
+  const { currentPlayerId, setRefetchEnergyFlag } = useGlobalContext();
 
   async function faucetAction() {
-    if (!currentAccount) return toast.error("Please login first!");
+    if (!currentPlayerId) return toast.error("Please login first!");
 
     toast.success("Using the faucet, please approve with your wallet...");
 
@@ -34,18 +34,22 @@ export default function EnergyFaucetForm() {
 
       const receipt = await waitForReceipt({ digest });
 
+      setRefetchEnergyFlag((prev) => !prev);
+
       if (receipt.effects?.status.status === "success")
         toast.custom(<TxToast title="Faucet used successfully!" digest={digest} />);
       else toast.error(`Failed to use the faucet: ${receipt.effects?.status.error}`);
-
-      revalidateGame();
     } catch (error: any) {
       toast.error(`Failed to use the faucet: ${error.message}!`);
     }
   }
 
   return (
-    <button className="absolute top-36 right-24 bg-zinc-900/80 text-white text-xl rounded-lg px-2 py-1" type="button" onClick={faucetAction}>
+    <button
+      className="absolute top-36 right-24 bg-zinc-900/80 text-white text-xl rounded-lg px-2 py-1"
+      type="button"
+      onClick={faucetAction}
+    >
       Faucet
     </button>
   );

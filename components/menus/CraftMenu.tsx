@@ -10,12 +10,10 @@ export default function CraftMenu({
   copperLeft,
   logLeft,
   cottonLeft,
-  skillProcesses,
 }: {
   copperLeft: number;
   logLeft: number;
   cottonLeft: number;
-  skillProcesses: any[];
 }) {
   const [modalFlag, setModalFlag] = useState<boolean>(false);
 
@@ -175,7 +173,6 @@ export default function CraftMenu({
             copper={shipCopper}
             log={shipLog}
             cotton={shipCotton}
-            skillProcesses={skillProcesses}
             handleCloseModal={() => setModalFlag(false)}
           />
         )}

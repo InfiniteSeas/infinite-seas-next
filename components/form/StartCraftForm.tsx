@@ -1,6 +1,6 @@
 "use client";
 
-import { useCurrentAccount, useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
+import { useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 import { bcs } from "@mysten/bcs";
 import toast from "react-hot-toast";
@@ -9,45 +9,40 @@ import AppModal from "@/components/ui/AppModal";
 import AppInput from "@/components/ui/AppInput";
 import TxToast from "@/components/shared/TxToast";
 
-import { suixEnergyCoins } from "@/actions/coin.action";
-import { getPlayerId } from "@/actions/player.action";
-import { revalidateGame, waitForReceipt } from "@/actions/system.action";
-
+import { waitForReceipt } from "@/actions/system.action";
 import { ITEM_PRODUCTION_CRAFTING, MAIN_PACKAGE_ID } from "@/constant";
+import { useGlobalContext } from "@/context/GlobalContext";
 
 export default function StartCraftForm({
   copper,
   log,
   cotton,
-  skillProcesses,
   handleCloseModal,
 }: {
   copper: number;
   log: number;
   cotton: number;
-  skillProcesses: any[];
   handleCloseModal: () => void;
 }) {
-  const currentAccount = useCurrentAccount();
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
+  const { currentPlayerId, skillProcesses, energyObjectId, energyBalance, setRefetchPlayerFlag, setRefetchEnergyFlag } =
+    useGlobalContext();
+
   async function startCraftAction() {
-    if (!currentAccount) return toast.error("Please login first!");
+    if (!currentPlayerId) return toast.error("Please login first!");
 
     if (copper < 3) return toast.error("Please add 3 copper at least!");
     if (log < 3) return toast.error("Please add 3 log at least!");
     if (cotton < 3) return toast.error("Please add 3 cotton at least!");
     if (copper + log + cotton !== 15) return toast.error("The total resource added must be 15!");
 
-    const processId = skillProcesses.filter((process) => process.skillProcessId.skillType === 6)[0].id_;
+    const processId = skillProcesses.filter((process) => process.skillType === 6)[0].id_;
 
     try {
-      const energyCoins = await suixEnergyCoins({ owner: currentAccount.address });
-      if (energyCoins.length === 0) return toast.error("You don't have enough energy coin, please buy some first!");
+      if (energyBalance < 5) return toast.error("You don't have enough energy coin, please buy some first!");
 
       toast.success("Starting crafting, please approve with your wallet...");
-
-      const playerId = await getPlayerId({ owner: currentAccount.address });
 
       const txb = new TransactionBlock();
 
@@ -62,10 +57,10 @@ export default function StartCraftForm({
           txb.object(processId),
           txb.pure(resources),
           txb.pure(quantities),
-          txb.object(playerId),
+          txb.object(currentPlayerId),
           txb.object(ITEM_PRODUCTION_CRAFTING),
           txb.object("0x6"),
-          txb.object(energyCoins[0].coinObjectId),
+          txb.object(energyObjectId),
         ],
       });
 
@@ -74,11 +69,12 @@ export default function StartCraftForm({
 
       const receipt = await waitForReceipt({ digest });
 
+      setRefetchPlayerFlag((prev) => !prev);
+      setRefetchEnergyFlag((prev) => !prev);
+
       if (receipt.effects?.status.status === "success")
         toast.custom(<TxToast title="Craft started successfully!" digest={digest} />);
       else toast.error(`Failed to start crafting: ${receipt.effects?.status.error}`);
-
-      revalidateGame();
     } catch (error: any) {
       toast.error(`Failed to start crafting: ${error.message}!`);
     }

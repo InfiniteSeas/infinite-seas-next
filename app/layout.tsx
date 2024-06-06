@@ -4,6 +4,8 @@ import "./globals.css";
 import SuiKit from "@/components/wallet/SuiKit";
 import AppToaster from "@/components/shared/AppToaster";
 
+import GlobalContextProvider from "@/context/GlobalContext";
+
 export const metadata: Metadata = {
   title: "Infinite Seas Demo Next",
   description: "This is the Infinite Seas Demo",
@@ -17,10 +19,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SuiKit>
-          {children}
-          <AppToaster />
-        </SuiKit>
+        <main>
+          <SuiKit>
+            <GlobalContextProvider>
+              {children}
+              <AppToaster />
+            </GlobalContextProvider>
+          </SuiKit>
+        </main>
       </body>
     </html>
   );

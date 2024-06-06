@@ -5,15 +5,17 @@ import Image from "next/image";
 import EnergyFaucetForm from "@/components/form/EnergyFaucetForm";
 import ConnectWalletBtn from "@/components/wallet/ConnectWalletBtn";
 
+import { useGlobalContext } from "@/context/GlobalContext";
+
 export default function NavItems({
-  energyBalance,
   getIslandClicked,
   getShipsClicked,
 }: {
-  energyBalance: number;
   getIslandClicked: () => void;
   getShipsClicked: () => void;
 }) {
+  const { energyBalance } = useGlobalContext();
+
   function handleSettingButton() {
     console.log("Here is setting button");
   }

@@ -1,15 +1,14 @@
 "use client";
 
-import { useCurrentAccount, useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
+import { useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 import toast from "react-hot-toast";
 
 import AppModal from "@/components/ui/AppModal";
 import TxToast from "@/components/shared/TxToast";
 
-import { revalidateGame, waitForReceipt } from "@/actions/system.action";
-import { getPlayerId } from "@/actions/player.action";
-
+import { waitForReceipt } from "@/actions/system.action";
+import { useGlobalContext } from "@/context/GlobalContext";
 import { MAIN_PACKAGE_ID, MAP, ROSTER_TABLE, SKILL_PROCESS_TABLE } from "@/constant";
 
 export default function ClaimIslandForm({
@@ -22,16 +21,15 @@ export default function ClaimIslandForm({
   handleCloseModal: () => void;
 }) {
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
-  const currentAccount = useCurrentAccount();
+
+  const { currentPlayerId, setRefetchPlayerFlag } = useGlobalContext();
 
   async function claimIslandAction() {
-    if (!currentAccount) return toast.error("Please login first!");
+    if (!currentPlayerId) return toast.error("Please login first!");
 
     toast.success("Claiming the island, please approve with your wallet...");
 
     try {
-      const playerId = await getPlayerId({ owner: currentAccount.address });
-
       const txb = new TransactionBlock();
 
       txb.setGasBudget(4999000000);
@@ -39,7 +37,7 @@ export default function ClaimIslandForm({
       txb.moveCall({
         target: `${MAIN_PACKAGE_ID}::player_aggregate::claim_island`,
         arguments: [
-          txb.object(playerId),
+          txb.object(currentPlayerId),
           txb.object(MAP),
           txb.pure.u32(coordinateX),
           txb.pure.u32(coordinateY),
@@ -54,11 +52,11 @@ export default function ClaimIslandForm({
 
       const receipt = await waitForReceipt({ digest });
 
+      setRefetchPlayerFlag((prev) => !prev);
+
       if (receipt.effects?.status.status === "success")
         toast.custom(<TxToast title="Island claimed successfully!" digest={digest} />);
       else toast.error(`Failed to claim island: ${receipt.effects?.status.error}`);
-
-      revalidateGame();
     } catch (error: any) {
       toast.error(`Failed to claim island: ${error.message}!`);
     }

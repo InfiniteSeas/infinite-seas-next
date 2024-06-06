@@ -7,13 +7,11 @@ import StartProductForm from "@/components/form/StartProductForm";
 
 export default function IslandProductMenu({
   productType,
-  skillProcesses,
   oreLeft,
   woodLeft,
   seedsLeft,
 }: {
   productType: string;
-  skillProcesses: any[];
   oreLeft: number;
   woodLeft: number;
   seedsLeft: number;
@@ -106,11 +104,10 @@ export default function IslandProductMenu({
       {modalFlag && (
         <StartProductForm
           productType={productType}
-          skillProcesses={skillProcesses}
-          handleCloseModal={() => setModalFlag(false)}
           oreLeft={oreLeft}
           woodLeft={woodLeft}
           seedsLeft={seedsLeft}
+          handleCloseModal={() => setModalFlag(false)}
         />
       )}
     </div>

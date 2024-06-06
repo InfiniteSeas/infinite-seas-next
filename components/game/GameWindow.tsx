@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useCurrentAccount } from "@mysten/dapp-kit";
 import toast from "react-hot-toast";
 
 import NavItems from "@/components/shared/NavItems";
@@ -16,10 +15,8 @@ import CraftMenu from "@/components/menus/CraftMenu";
 import GameCanvas from "@/components/game/GameCanvas";
 import ClaimIslandForm from "@/components/form/ClaimIslandForm";
 
-import { getPlayerId, getPlayerRosters, getPlayerSkillProcesses, suiPlayerInfo } from "@/actions/player.action";
-import { suixEnergyCoins } from "@/actions/coin.action";
-
-import { formatSui } from "@/utils/tools";
+import { getPlayerRosters, suiPlayerInfo } from "@/actions/player.action";
+import { useGlobalContext } from "@/context/GlobalContext";
 
 export default function GameWindow({
   islandsInfo,
@@ -30,10 +27,6 @@ export default function GameWindow({
     resources: any[];
   }[];
 }) {
-  const [currentPlayer, setCurrentPlayer] = useState<any>();
-  const [energyObjectId, setEnergyObjectId] = useState<string>("");
-  const [energyBalance, setEnergyBalance] = useState<number>(0);
-
   const [islandOwnerName, setIslandOwnerName] = useState<string>("");
   const [islandOwnerExp, setIslandOwnerExp] = useState<number>(0);
   const [islandOwnerLevel, setIslandOwnerLevel] = useState<number>(0);
@@ -58,34 +51,7 @@ export default function GameWindow({
   const [islandFreeFlag, setIslandFreeFlag] = useState<boolean>(false);
 
   const [productType, setProductType] = useState<string>("ore");
-  const [skillProcesses, setSkillProcesses] = useState<any[]>([]);
   const [unassignedRosterId, setUnassignedRosterId] = useState<string>("");
-
-  const currentAccount = useCurrentAccount();
-
-  useEffect(() => {
-    async function initCurrentPlayer() {
-      if (!currentAccount) return;
-
-      const playerId = await getPlayerId({ owner: currentAccount.address });
-      if (!playerId) return;
-
-      const player = await suiPlayerInfo({ playerId });
-      setCurrentPlayer(player);
-
-      const energyCoins = await suixEnergyCoins({ owner: currentAccount.address });
-      if (energyCoins.length === 0) return;
-
-      setEnergyBalance(formatSui(energyCoins[0].balance));
-      setEnergyObjectId(energyCoins[0].coinObjectId);
-
-      // Get player's skill processes for action queue
-      const processes = await getPlayerSkillProcesses({ playerId: player.id.id });
-      setSkillProcesses(processes);
-    }
-
-    initCurrentPlayer();
-  }, [currentAccount]);
 
   useEffect(() => {
     if (!islandMenuFlag && !shipsMenuFlag) {
@@ -97,6 +63,8 @@ export default function GameWindow({
     }
   }, [islandMenuFlag, shipsMenuFlag]);
 
+  const { currentPlayerInfo } = useGlobalContext();
+
   // Click island on the game canvas
   async function handleIslandClicked(x: number, y: number) {
     setIslandTopbarFlag(true);
@@ -107,11 +75,17 @@ export default function GameWindow({
     setIslandCoordinateX(islands[0].coordinates.x);
     setIslandCoordinateY(islands[0].coordinates.y);
 
-    islands[0].resources.forEach((inv) => {
-      if (inv.fields.item_id === 2000000003) setOreLeft(inv.fields.quantity);
-      else if (inv.fields.item_id === 2000000001) setWoodLeft(inv.fields.quantity);
-      else if (inv.fields.item_id === 2) setSeedsLeft(inv.fields.quantity);
-    });
+    if (islands[0].resources.length > 0)
+      islands[0].resources.forEach((inv) => {
+        if (inv.fields.item_id === 2000000003) setOreLeft(inv.fields.quantity);
+        else if (inv.fields.item_id === 2000000001) setWoodLeft(inv.fields.quantity);
+        else if (inv.fields.item_id === 2) setSeedsLeft(inv.fields.quantity);
+      });
+    else {
+      setOreLeft(0);
+      setWoodLeft(0);
+      setSeedsLeft(0);
+    }
 
     if (islands[0].occupiedBy) {
       const player = await suiPlayerInfo({ playerId: islands[0].occupiedBy });
@@ -124,25 +98,25 @@ export default function GameWindow({
       setIslandOwnerExp(0);
       setIslandOwnerLevel(0);
 
-      if (!currentPlayer) setIslandFreeFlag(false);
-      else if (!currentPlayer.claimed_island) setIslandFreeFlag(true);
+      if (!currentPlayerInfo) setIslandFreeFlag(false);
+      else if (!currentPlayerInfo.claimed_island) setIslandFreeFlag(true);
     }
   }
 
   // Click island card
   async function handleIslandCardClicked() {
-    if (!currentPlayer) return toast.error("Please login first!");
-    if (!currentPlayer.claimed_island) return toast.error("Please select an island and claim it first!");
+    if (!currentPlayerInfo) return toast.error("Please login first!");
+    if (!currentPlayerInfo.claimed_island) return toast.error("Please select an island and claim it first!");
 
     setIslandMenuFlag((prev) => !prev);
     setIslandTopbarFlag(false);
     setShipsMenuFlag(false);
 
-    setIslandOwnerName(currentPlayer.name);
-    setIslandOwnerExp(currentPlayer.experience);
-    setIslandOwnerLevel(currentPlayer.level);
+    setIslandOwnerName(currentPlayerInfo.name);
+    setIslandOwnerExp(currentPlayerInfo.experience);
+    setIslandOwnerLevel(currentPlayerInfo.level);
 
-    currentPlayer.inventory.forEach((inv: any) => {
+    currentPlayerInfo.inventory.forEach((inv: any) => {
       if (inv.fields.item_id === 2000000003) setOreLeft(inv.fields.quantity);
       else if (inv.fields.item_id === 2000000001) setWoodLeft(inv.fields.quantity);
       else if (inv.fields.item_id === 2) setSeedsLeft(inv.fields.quantity);
@@ -151,12 +125,8 @@ export default function GameWindow({
       else if (inv.fields.item_id === 102) setCottonLeft(inv.fields.quantity);
     });
 
-    // Get player's skill processes
-    const processes = await getPlayerSkillProcesses({ playerId: currentPlayer.id.id });
-    setSkillProcesses(processes);
-
     // Get player's rosters
-    const rosters = await getPlayerRosters({ playerId: currentPlayer.id.id });
+    const rosters = await getPlayerRosters({ playerId: currentPlayerInfo.id.id });
     setUnassignedRosterId(rosters[0].id_);
   }
 
@@ -169,6 +139,7 @@ export default function GameWindow({
 
   // Click action buttons
   function handleActionClick(flag: string) {
+    // Product buttons
     if (["ore", "wood", "seed"].includes(flag)) {
       setProductType(flag);
 
@@ -179,13 +150,15 @@ export default function GameWindow({
       setCraftMenuFlag(false);
     }
 
-    if (flag === "bag") {
+    // Inventory button
+    else if (flag === "bag") {
       setBagMenuFlag((prev) => !prev);
       setIslandProductMenuFlag(false);
       setCraftMenuFlag(false);
     }
 
-    if (flag === "craft") {
+    // Craft button
+    else if (flag === "craft") {
       setCraftMenuFlag((prev) => !prev);
       setIslandProductMenuFlag(false);
       setBagMenuFlag(false);
@@ -194,11 +167,7 @@ export default function GameWindow({
 
   return (
     <>
-      <NavItems
-        energyBalance={energyBalance}
-        getIslandClicked={handleIslandCardClicked}
-        getShipsClicked={handleShipsClicked}
-      />
+      <NavItems getIslandClicked={handleIslandCardClicked} getShipsClicked={handleShipsClicked} />
 
       {islandFreeFlag && (
         <ClaimIslandForm
@@ -224,13 +193,7 @@ export default function GameWindow({
       {islandMenuFlag && (
         <>
           {islandProductMenuFlag && (
-            <IslandProductMenu
-              productType={productType}
-              skillProcesses={skillProcesses}
-              oreLeft={oreLeft}
-              woodLeft={woodLeft}
-              seedsLeft={seedsLeft}
-            />
+            <IslandProductMenu productType={productType} oreLeft={oreLeft} woodLeft={woodLeft} seedsLeft={seedsLeft} />
           )}
 
           {bagMenuFlag && (
@@ -244,20 +207,13 @@ export default function GameWindow({
             />
           )}
 
-          {craftMenuFlag && (
-            <CraftMenu
-              copperLeft={copperLeft}
-              logLeft={logLeft}
-              cottonLeft={cottonLeft}
-              skillProcesses={skillProcesses}
-            />
-          )}
+          {craftMenuFlag && <CraftMenu copperLeft={copperLeft} logLeft={logLeft} cottonLeft={cottonLeft} />}
 
           <ActionButtons handleActionClick={handleActionClick} />
         </>
       )}
 
-      {actionQueueFlag && <ActionQueue skillProcesses={skillProcesses} unassignedRosterId={unassignedRosterId} />}
+      {actionQueueFlag && <ActionQueue unassignedRosterId={unassignedRosterId} />}
 
       {rankListFlag && <RankList />}
 
@@ -267,7 +223,9 @@ export default function GameWindow({
         islandsInfo={islandsInfo}
         islandClickedFlag={islandMenuFlag}
         currentPlayerIsland={
-          currentPlayer && currentPlayer.claimed_island ? currentPlayer.claimed_island.fields : { x: 0, y: 0 }
+          currentPlayerInfo && currentPlayerInfo.claimed_island
+            ? currentPlayerInfo.claimed_island.fields
+            : { x: 0, y: 0 }
         }
         getIslandClicked={handleIslandClicked}
       />

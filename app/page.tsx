@@ -3,7 +3,6 @@ import { suiAllIslandsInfo } from "@/actions/map.action";
 
 export default async function page() {
   const infos = await suiAllIslandsInfo();
-
   const islandsInfo = infos.map((info) => {
     return {
       occupiedBy: info.occupied_by,
@@ -12,9 +11,5 @@ export default async function page() {
     };
   });
 
-  return (
-    <main>
-      <GameWindow islandsInfo={islandsInfo} />
-    </main>
-  );
+  return <GameWindow islandsInfo={islandsInfo} />;
 }

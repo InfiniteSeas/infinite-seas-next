@@ -10,9 +10,10 @@ import AppModal from "@/components/ui/AppModal";
 import AppInput from "@/components/ui/AppInput";
 import TxToast from "@/components/shared/TxToast";
 
-import { getPlayerId } from "@/actions/player.action";
-import { revalidateGame, waitForReceipt } from "@/actions/system.action";
+import { getCurrentPlayerId } from "@/actions/player.action";
+import { waitForReceipt } from "@/actions/system.action";
 
+import { useGlobalContext } from "@/context/GlobalContext";
 import { MAIN_PACKAGE_ID } from "@/constant";
 
 export default function WalletMenu() {
@@ -23,14 +24,18 @@ export default function WalletMenu() {
   const { mutateAsync: connectAsync } = useConnectWallet();
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
+  const { setRefetchPlayerFlag, setRefetchEnergyFlag } = useGlobalContext();
+
   async function connectAction() {
     try {
       const { accounts } = await connectAsync({ wallet: wallets[0] });
 
-      const playerId = await getPlayerId({ owner: accounts[0].address });
+      const playerId = await getCurrentPlayerId({ owner: accounts[0].address });
+      if (!playerId) return setModalFlag(true);
 
-      if (playerId) return toast.success("Wallet connected!");
-      else setModalFlag(true);
+      setRefetchEnergyFlag((prev) => !prev);
+
+      toast.success("Wallet connected!");
     } catch (error: any) {
       toast.error(`Failed to connect player: ${error.message}!`);
     }
@@ -54,11 +59,12 @@ export default function WalletMenu() {
 
       const receipt = await waitForReceipt({ digest });
 
+      setRefetchPlayerFlag((prev) => !prev);
+      setRefetchEnergyFlag((prev) => !prev);
+
       if (receipt.effects?.status.status === "success")
         toast.custom(<TxToast title="New player created and connected successfully!" digest={digest} />);
       else toast.error(`Failed to create new player: ${receipt.effects?.status.error}`);
-
-      revalidateGame();
     } catch (error: any) {
       toast.error(`Failed to create new player: ${error.message}!`);
     }

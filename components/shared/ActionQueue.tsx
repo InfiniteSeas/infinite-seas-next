@@ -1,13 +1,7 @@
 import HarvestProductForm from "@/components/form/HarvestProductForm";
 import Countdown from "@/components/queue/Countdown";
 
-export default function ActionQueue({
-  skillProcesses,
-  unassignedRosterId,
-}: {
-  skillProcesses: any[];
-  unassignedRosterId: string;
-}) {
+export default function ActionQueue({ unassignedRosterId }: { unassignedRosterId: string }) {
   const queueData = [
     { id: 0, action: "Mining", count: 0, resource: "Copper Ore", timeLeft: 0, productType: "ore" },
     { id: 1, action: "Cutting", count: 0, resource: "Normal Trees", timeLeft: 0, productType: "wood" },
@@ -29,11 +23,7 @@ export default function ActionQueue({
             <span className="text-zinc-400">{data.resource}</span>
             <Countdown initialCount={data.timeLeft} />
             {data.productType && (
-              <HarvestProductForm
-                productType={data.productType}
-                skillProcesses={skillProcesses}
-                unassignedRosterId={unassignedRosterId}
-              />
+              <HarvestProductForm productType={data.productType} unassignedRosterId={unassignedRosterId} />
             )}
           </div>
         ))}
