@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useConnectWallet, useSignAndExecuteTransactionBlock, useWallets } from "@mysten/dapp-kit";
+import { useConnectWallet, useCurrentAccount, useSignAndExecuteTransactionBlock, useWallets } from "@mysten/dapp-kit";
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 import toast from "react-hot-toast";
 
@@ -21,10 +21,28 @@ export default function WalletMenu() {
   const [modalFlag, setModalFlag] = useState<boolean>(false);
 
   const wallets = useWallets();
+  const currentAccount = useCurrentAccount();
   const { mutateAsync: connectAsync } = useConnectWallet();
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
-  const { setRefetchPlayerFlag, setRefetchEnergyFlag } = useGlobalContext();
+  const { refetchPlayer, refetchEnergy } = useGlobalContext();
+
+  useEffect(() => {
+    // Cannot put this logic in to connectAction directly,
+    // because though connectAsync is done, currentAccount is not ready
+    async function refetchWhenAccountReady() {
+      if (modalFlag) return;
+
+      await refetchPlayer();
+      await refetchEnergy();
+
+      toast.success("Wallet connected!");
+    }
+
+    refetchWhenAccountReady();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentAccount]);
 
   async function connectAction() {
     try {
@@ -32,10 +50,6 @@ export default function WalletMenu() {
 
       const playerId = await getCurrentPlayerId({ owner: accounts[0].address });
       if (!playerId) return setModalFlag(true);
-
-      setRefetchEnergyFlag((prev) => !prev);
-
-      toast.success("Wallet connected!");
     } catch (error: any) {
       toast.error(`Failed to connect player: ${error.message}!`);
     }
@@ -59,12 +73,11 @@ export default function WalletMenu() {
 
       const receipt = await waitForReceipt({ digest });
 
-      setRefetchPlayerFlag((prev) => !prev);
-      setRefetchEnergyFlag((prev) => !prev);
-
-      if (receipt.effects?.status.status === "success")
+      if (receipt.effects?.status.status === "success") {
+        await refetchPlayer();
+        await refetchEnergy();
         toast.custom(<TxToast title="New player created and connected successfully!" digest={digest} />);
-      else toast.error(`Failed to create new player: ${receipt.effects?.status.error}`);
+      } else toast.error(`Failed to create new player: ${receipt.effects?.status.error}`);
     } catch (error: any) {
       toast.error(`Failed to create new player: ${error.message}!`);
     }

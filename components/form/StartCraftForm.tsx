@@ -26,7 +26,7 @@ export default function StartCraftForm({
 }) {
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
-  const { currentPlayerId, skillProcesses, energyObjectId, energyBalance, setRefetchPlayerFlag, setRefetchEnergyFlag } =
+  const { currentPlayerId, skillProcesses, energyObjectId, energyBalance, refetchPlayer, refetchEnergy } =
     useGlobalContext();
 
   async function startCraftAction() {
@@ -69,12 +69,11 @@ export default function StartCraftForm({
 
       const receipt = await waitForReceipt({ digest });
 
-      setRefetchPlayerFlag((prev) => !prev);
-      setRefetchEnergyFlag((prev) => !prev);
-
-      if (receipt.effects?.status.status === "success")
+      if (receipt.effects?.status.status === "success") {
+        await refetchPlayer();
+        await refetchEnergy();
         toast.custom(<TxToast title="Craft started successfully!" digest={digest} />);
-      else toast.error(`Failed to start crafting: ${receipt.effects?.status.error}`);
+      } else toast.error(`Failed to start crafting: ${receipt.effects?.status.error}`);
     } catch (error: any) {
       toast.error(`Failed to start crafting: ${error.message}!`);
     }

@@ -30,7 +30,7 @@ export default function StartProductForm({
 
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
-  const { currentPlayerId, skillProcesses, energyObjectId, energyBalance, setRefetchPlayerFlag, setRefetchEnergyFlag } =
+  const { currentPlayerId, skillProcesses, energyObjectId, energyBalance, refetchPlayer, refetchEnergy } =
     useGlobalContext();
 
   async function startProductAction() {
@@ -108,13 +108,11 @@ export default function StartProductForm({
       toast.success("The transaction is sent to the block chain, please wait a sec for result...");
 
       const receipt = await waitForReceipt({ digest });
-
-      setRefetchPlayerFlag((prev) => !prev);
-      setRefetchEnergyFlag((prev) => !prev);
-
-      if (receipt.effects?.status.status === "success")
+      if (receipt.effects?.status.status === "success") {
+        await refetchPlayer();
+        await refetchEnergy();
         toast.custom(<TxToast title="Creation started successfully!" digest={digest} />);
-      else toast.error(`Failed to start creation: ${receipt.effects?.status.error}`);
+      } else toast.error(`Failed to start creation: ${receipt.effects?.status.error}`);
     } catch (error: any) {
       toast.error(`Failed to start creation: ${error.message}!`);
     }

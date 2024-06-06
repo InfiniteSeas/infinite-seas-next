@@ -12,10 +12,10 @@ type GlobalContextType = {
   currentPlayerId: string;
   currentPlayerInfo?: any;
   skillProcesses: any[];
-  setRefetchPlayerFlag: React.Dispatch<React.SetStateAction<boolean>>;
+  refetchPlayer: () => Promise<void>;
   energyObjectId: string;
   energyBalance: number;
-  setRefetchEnergyFlag: React.Dispatch<React.SetStateAction<boolean>>;
+  refetchEnergy: () => Promise<void>;
 };
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -31,43 +31,33 @@ export default function GlobalContextProvider({ children }: { children: React.Re
   const [currentPlayerId, setCurrentPlayerId] = useState<string>("");
   const [currentPlayerInfo, setCurrentPlayerInfo] = useState<any>();
   const [skillProcesses, setSkillProcesses] = useState<any[]>([]);
-  const [refetchPlayerFlag, setRefetchPlayerFlag] = useState<boolean>(false);
 
   const [energyObjectId, setEnergyObjectId] = useState<string>("");
   const [energyBalance, setEnergyBalance] = useState<number>(0);
-  const [refetchEnergyFlag, setRefetchEnergyFlag] = useState<boolean>(false);
 
   const currentAccount = useCurrentAccount();
 
-  useEffect(() => {
-    async function refetchPlayer() {
-      if (!currentAccount) return;
+  async function refetchPlayer() {
+    if (!currentAccount) return;
 
-      const playerId = await getCurrentPlayerId({ owner: currentAccount.address });
-      const playerInfo = await suiPlayerInfo({ playerId });
-      const processes = await suiPlayerSkillProcesses({ playerId });
+    const playerId = await getCurrentPlayerId({ owner: currentAccount.address });
+    const playerInfo = await suiPlayerInfo({ playerId });
+    const processes = await suiPlayerSkillProcesses({ playerId });
 
-      setCurrentPlayerId(playerId);
-      setCurrentPlayerInfo(playerInfo);
-      setSkillProcesses(processes);
-    }
+    setCurrentPlayerId(playerId);
+    setCurrentPlayerInfo(playerInfo);
+    setSkillProcesses(processes);
+  }
 
-    refetchPlayer();
-  }, [currentAccount, refetchPlayerFlag]);
+  async function refetchEnergy() {
+    if (!currentAccount) return;
 
-  useEffect(() => {
-    async function refetchEnergy() {
-      if (!currentAccount) return;
+    const energyCoins = await suixEnergyCoins({ owner: currentAccount.address });
+    if (energyCoins.length === 0) return;
 
-      const energyCoins = await suixEnergyCoins({ owner: currentAccount.address });
-      if (energyCoins.length === 0) return;
-
-      setEnergyObjectId(energyCoins[0].coinObjectId);
-      setEnergyBalance(formatSui(energyCoins[0].balance));
-    }
-
-    refetchEnergy();
-  }, [refetchEnergyFlag]);
+    setEnergyObjectId(energyCoins[0].coinObjectId);
+    setEnergyBalance(formatSui(energyCoins[0].balance));
+  }
 
   return (
     <GlobalContext.Provider
@@ -75,10 +65,10 @@ export default function GlobalContextProvider({ children }: { children: React.Re
         currentPlayerId,
         currentPlayerInfo,
         skillProcesses,
-        setRefetchPlayerFlag,
+        refetchPlayer,
         energyObjectId,
         energyBalance,
-        setRefetchEnergyFlag,
+        refetchEnergy,
       }}
     >
       {children}

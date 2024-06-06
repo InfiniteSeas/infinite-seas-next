@@ -22,7 +22,7 @@ export default function ClaimIslandForm({
 }) {
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
-  const { currentPlayerId, setRefetchPlayerFlag } = useGlobalContext();
+  const { currentPlayerId, refetchPlayer } = useGlobalContext();
 
   async function claimIslandAction() {
     if (!currentPlayerId) return toast.error("Please login first!");
@@ -52,11 +52,10 @@ export default function ClaimIslandForm({
 
       const receipt = await waitForReceipt({ digest });
 
-      setRefetchPlayerFlag((prev) => !prev);
-
-      if (receipt.effects?.status.status === "success")
+      if (receipt.effects?.status.status === "success") {
+        await refetchPlayer();
         toast.custom(<TxToast title="Island claimed successfully!" digest={digest} />);
-      else toast.error(`Failed to claim island: ${receipt.effects?.status.error}`);
+      } else toast.error(`Failed to claim island: ${receipt.effects?.status.error}`);
     } catch (error: any) {
       toast.error(`Failed to claim island: ${error.message}!`);
     }

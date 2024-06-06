@@ -12,7 +12,7 @@ import { COIN_PACKAGE_ID, FAUCET } from "@/constant";
 export default function EnergyFaucetForm() {
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
-  const { currentPlayerId, setRefetchEnergyFlag } = useGlobalContext();
+  const { currentPlayerId, refetchEnergy } = useGlobalContext();
 
   async function faucetAction() {
     if (!currentPlayerId) return toast.error("Please login first!");
@@ -34,11 +34,10 @@ export default function EnergyFaucetForm() {
 
       const receipt = await waitForReceipt({ digest });
 
-      setRefetchEnergyFlag((prev) => !prev);
-
-      if (receipt.effects?.status.status === "success")
+      if (receipt.effects?.status.status === "success") {
+        await refetchEnergy();
         toast.custom(<TxToast title="Faucet used successfully!" digest={digest} />);
-      else toast.error(`Failed to use the faucet: ${receipt.effects?.status.error}`);
+      } else toast.error(`Failed to use the faucet: ${receipt.effects?.status.error}`);
     } catch (error: any) {
       toast.error(`Failed to use the faucet: ${error.message}!`);
     }
