@@ -30,7 +30,7 @@ export default function StartProductForm({
 
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
-  const { currentPlayerId, skillProcesses, energyObjectId, energyBalance, refetchPlayer, refetchEnergy } =
+  const { currentPlayerId, skillProcesses, energyObjectIds, energyBalance, refetchPlayer, refetchEnergy } =
     useGlobalContext();
 
   async function startProductAction() {
@@ -92,6 +92,8 @@ export default function StartProductForm({
 
       txb.setGasBudget(11000000);
 
+      if (energyObjectIds.length > 0) txb.mergeCoins(txb.object(energyObjectIds[0]), energyObjectIds.slice(1));
+
       txb.moveCall({
         target: `${MAIN_PACKAGE_ID}::skill_process_service::${functionName}`,
         arguments: [
@@ -100,7 +102,7 @@ export default function StartProductForm({
           txb.object(currentPlayerId),
           txb.object(itemFormulaId),
           txb.object("0x6"),
-          txb.object(energyObjectId),
+          txb.object(energyObjectIds[0]),
         ],
       });
 

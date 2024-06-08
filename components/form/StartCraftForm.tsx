@@ -26,7 +26,7 @@ export default function StartCraftForm({
 }) {
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
-  const { currentPlayerId, skillProcesses, energyObjectId, energyBalance, refetchPlayer, refetchEnergy } =
+  const { currentPlayerId, skillProcesses, energyObjectIds, energyBalance, refetchPlayer, refetchEnergy } =
     useGlobalContext();
 
   async function startCraftAction() {
@@ -48,6 +48,8 @@ export default function StartCraftForm({
 
       txb.setGasBudget(42000000);
 
+      if (energyObjectIds.length > 0) txb.mergeCoins(txb.object(energyObjectIds[0]), energyObjectIds.slice(1));
+
       const resources = bcs.vector(bcs.u32()).serialize([301, 200, 102]).toBytes();
       const quantities = bcs.vector(bcs.u32()).serialize([copper, log, cotton]).toBytes();
 
@@ -60,7 +62,7 @@ export default function StartCraftForm({
           txb.object(currentPlayerId),
           txb.object(ITEM_PRODUCTION_CRAFTING),
           txb.object("0x6"),
-          txb.object(energyObjectId),
+          txb.object(energyObjectIds[0]),
         ],
       });
 

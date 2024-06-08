@@ -13,7 +13,7 @@ type GlobalContextType = {
   currentPlayerInfo?: any;
   skillProcesses: any[];
   refetchPlayer: () => Promise<void>;
-  energyObjectId: string;
+  energyObjectIds: string[];
   energyBalance: number;
   refetchEnergy: () => Promise<void>;
 };
@@ -32,7 +32,7 @@ export default function GlobalContextProvider({ children }: { children: React.Re
   const [currentPlayerInfo, setCurrentPlayerInfo] = useState<any>();
   const [skillProcesses, setSkillProcesses] = useState<any[]>([]);
 
-  const [energyObjectId, setEnergyObjectId] = useState<string>("");
+  const [energyObjectIds, setEnergyObjectIds] = useState<string[]>([]);
   const [energyBalance, setEnergyBalance] = useState<number>(0);
 
   const currentAccount = useCurrentAccount();
@@ -55,8 +55,11 @@ export default function GlobalContextProvider({ children }: { children: React.Re
     const energyCoins = await suixEnergyCoins({ owner: currentAccount.address });
     if (energyCoins.length === 0) return;
 
-    setEnergyObjectId(energyCoins[0].coinObjectId);
-    setEnergyBalance(formatSui(energyCoins[0].balance));
+    setEnergyObjectIds(energyCoins.map((coin) => coin.coinObjectId));
+
+    let totalBalance = 0;
+    energyCoins.forEach((coin) => (totalBalance += Number(coin.balance)));
+    setEnergyBalance(formatSui(totalBalance.toString()));
   }
 
   return (
@@ -66,8 +69,8 @@ export default function GlobalContextProvider({ children }: { children: React.Re
         currentPlayerInfo,
         skillProcesses,
         refetchPlayer,
-        energyObjectId,
         energyBalance,
+        energyObjectIds,
         refetchEnergy,
       }}
     >
