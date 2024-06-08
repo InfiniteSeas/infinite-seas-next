@@ -7,8 +7,9 @@ import AppToaster from "@/components/shared/AppToaster";
 import GlobalContextProvider from "@/context/GlobalContext";
 
 export const metadata: Metadata = {
-  title: "Infinite Seas Demo Next",
-  description: "This is the Infinite Seas Demo",
+  title: "Infinite Seas - Maritime Trading, Managing, and Battling Diplomatic Fully On-chain Game",
+  description:
+    "Infinite Seas is a maritime trading, managing, and battling diplomatic fully on-chain game. We believe the best fully onchain games should be fun and infinite (define by games that are non-session and infinitely large map) with an open economy design.",
 };
 
 export default function RootLayout({

@@ -27,7 +27,7 @@ export default function ClaimIslandForm({
   async function claimIslandAction() {
     if (!currentPlayerId) return toast.error("Please login first!");
 
-    toast.success("Claiming the island, please approve with your wallet...");
+    toast.loading("Claiming the island, please approve with your wallet...");
 
     try {
       const txb = new TransactionBlock();
@@ -48,7 +48,7 @@ export default function ClaimIslandForm({
       });
 
       const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
-      toast.success("The transaction is sent to the block chain, please wait a sec for result...");
+      toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
 
       const receipt = await waitForReceipt({ digest });
 

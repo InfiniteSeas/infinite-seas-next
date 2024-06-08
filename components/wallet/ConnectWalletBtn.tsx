@@ -31,7 +31,7 @@ export default function WalletMenu() {
     // Cannot put this logic in to connectAction directly,
     // because though connectAsync is done, currentAccount is not ready
     async function refetchWhenAccountReady() {
-      if (modalFlag) return;
+      if (modalFlag || !currentAccount) return;
 
       await refetchPlayer();
       await refetchEnergy();
@@ -46,10 +46,14 @@ export default function WalletMenu() {
 
   async function connectAction() {
     try {
+      toast.loading("Connecting your wallet...");
+
       const { accounts } = await connectAsync({ wallet: wallets[0] });
 
       const playerId = await getCurrentPlayerId({ owner: accounts[0].address });
       if (!playerId) return setModalFlag(true);
+
+      // After this is the useEffect watcher
     } catch (error: any) {
       toast.error(`Failed to connect player: ${error.message}!`);
     }
@@ -57,7 +61,7 @@ export default function WalletMenu() {
 
   async function createAction() {
     try {
-      toast.success("Creating a new player, please approve with your wallet...");
+      toast.loading("Creating a new player, please approve with your wallet...");
 
       const txb = new TransactionBlock();
 
@@ -69,7 +73,7 @@ export default function WalletMenu() {
       });
 
       const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
-      toast.success("The transaction is sent to the block chain, please wait a sec for result...");
+      toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
 
       const receipt = await waitForReceipt({ digest });
 

@@ -86,7 +86,7 @@ export default function StartProductForm({
     }
 
     try {
-      toast.success("Starting creation, please approve with your wallet...");
+      toast.loading("Starting creation, please approve with your wallet...");
 
       const txb = new TransactionBlock();
 
@@ -105,7 +105,7 @@ export default function StartProductForm({
       });
 
       const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
-      toast.success("The transaction is sent to the block chain, please wait a sec for result...");
+      toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
 
       const receipt = await waitForReceipt({ digest });
       if (receipt.effects?.status.status === "success") {
@@ -122,11 +122,13 @@ export default function StartProductForm({
     <AppModal>
       <AppInput label={productType} value={batchSize} handleChange={(value) => setBatchSize(value)} />
 
-      <p>costs {["ore", "wood"].includes(productType) ? batchSize : Number(batchSize) * 5} energy token</p>
+      <p>Costs {["ore", "wood"].includes(productType) ? batchSize : Number(batchSize) * 5} energy token</p>
 
-      <p>
-        {["ore", "wood"].includes(productType) ? Number(batchSize) * 3 : Number(batchSize) * 15} seconds time duration
-      </p>
+      {productType === "ore" && <p>Can harvest {batchSize} copper</p>}
+      {productType === "wood" && <p>Can harvest {batchSize} wood</p>}
+      {productType === "seed" && <p>Can harvest {Number(batchSize) * 5} cotton</p>}
+
+      <p>{["ore", "wood"].includes(productType) ? Number(batchSize) * 3 : Number(batchSize) * 15} seconds duration</p>
 
       <div className="flex w-4/5 justify-evenly items-center">
         <div

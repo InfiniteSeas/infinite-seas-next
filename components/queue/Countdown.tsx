@@ -2,18 +2,21 @@
 
 import React, { useEffect, useState } from "react";
 
-export default function Countdown({ initialCount }: { initialCount: number }) {
+export default function Countdown({ initialCount, startedAt }: { initialCount: number; startedAt: string }) {
   const [count, setCount] = useState<number>(initialCount);
 
   useEffect(() => {
-    if (count <= 0) return;
+    setCount(initialCount);
 
     const timer = setInterval(() => {
-      setCount((prevCount) => prevCount - 1);
+      setCount((prev) => {
+        if (prev <= 0) return 0;
+        return prev - 1;
+      });
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [count]);
+  }, [initialCount, startedAt]);
 
   return <span className="text-white">{count}s</span>;
 }

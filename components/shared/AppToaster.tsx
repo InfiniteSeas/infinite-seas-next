@@ -10,10 +10,10 @@ export default function AppToaster() {
           padding: "12px 18px",
         },
       }}
-      position="bottom-right"
+      position="bottom-left"
       containerStyle={{
         bottom: 30,
-        right: 40,
+        left: 40,
       }}
     />
   );

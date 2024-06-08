@@ -17,7 +17,7 @@ export default function EnergyFaucetForm() {
   async function faucetAction() {
     if (!currentPlayerId) return toast.error("Please login first!");
 
-    toast.success("Using the faucet, please approve with your wallet...");
+    toast.loading("Using the faucet, please approve with your wallet...");
 
     try {
       const txb = new TransactionBlock();
@@ -30,7 +30,7 @@ export default function EnergyFaucetForm() {
       });
 
       const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
-      toast.success("The transaction is sent to the block chain, please wait a sec for result...");
+      toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
 
       const receipt = await waitForReceipt({ digest });
 
@@ -44,12 +44,16 @@ export default function EnergyFaucetForm() {
   }
 
   return (
-    <button
-      className="absolute top-36 right-24 bg-zinc-900/80 text-white text-xl rounded-lg px-2 py-1"
-      type="button"
-      onClick={faucetAction}
-    >
-      Faucet
-    </button>
+    <>
+      {currentPlayerId && (
+        <button
+          className="absolute top-36 right-24 bg-zinc-900/80 text-white text-xl rounded-lg px-2 py-1"
+          type="button"
+          onClick={faucetAction}
+        >
+          Faucet
+        </button>
+      )}
+    </>
   );
 }

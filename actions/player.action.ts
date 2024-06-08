@@ -66,6 +66,8 @@ export async function suiPlayerSkillProcesses({ playerId }: { playerId: string }
       const suiProcess = {
         id_: process.id_,
         skillType: content.skill_process_id.fields.skill_type,
+        sequenceNumber: content.skill_process_id.fields.sequence_number,
+        batchSize: content.batch_size,
         completed: content.completed,
         creationTime: content.creation_time,
         startedAt: content.started_at,

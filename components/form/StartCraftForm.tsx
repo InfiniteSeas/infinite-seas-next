@@ -42,7 +42,7 @@ export default function StartCraftForm({
     try {
       if (energyBalance < 5) return toast.error("You don't have enough energy coin, please buy some first!");
 
-      toast.success("Starting crafting, please approve with your wallet...");
+      toast.loading("Starting crafting, please approve with your wallet...");
 
       const txb = new TransactionBlock();
 
@@ -65,7 +65,7 @@ export default function StartCraftForm({
       });
 
       const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
-      toast.success("The transaction is sent to the block chain, please wait a sec for result...");
+      toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
 
       const receipt = await waitForReceipt({ digest });
 

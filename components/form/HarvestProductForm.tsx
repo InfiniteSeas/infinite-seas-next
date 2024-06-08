@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import { useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 import toast from "react-hot-toast";
@@ -17,75 +18,79 @@ import {
 import { useGlobalContext } from "@/context/GlobalContext";
 
 export default function HarvestProductForm({
-  productType,
+  processId,
+  skillType,
+  processCompleted,
+  initialCount,
+  startedAt,
   unassignedRosterId,
 }: {
-  productType: string;
+  processId: string;
+  skillType: number;
+  processCompleted: boolean;
+  initialCount: number;
+  startedAt: string;
   unassignedRosterId: string;
 }) {
+  const [count, setCount] = useState<number>(initialCount);
+
   const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
 
-  const { currentPlayerId, skillProcesses, refetchPlayer } = useGlobalContext();
+  const { currentPlayerId, refetchPlayer } = useGlobalContext();
+
+  useEffect(() => {
+    setCount(initialCount);
+
+    const timer = setInterval(() => {
+      setCount((prev) => {
+        if (prev <= 0) return 0;
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [initialCount, startedAt]);
 
   async function harvestProductAction() {
     if (!currentPlayerId) return toast.error("Please login first!");
 
     let functionName = "";
-    let skillProcessId = "";
     let itemFormulaId = "";
 
-    // If the player harvests ore
-    if (productType === "ore") {
-      const miningProcess = skillProcesses.filter((process) => process.skillType === 3)[0];
-      if (miningProcess.completed) return toast.error("No ore to havest, please start mining first!");
+    // If the player harvests cotton seeds
+    if (skillType === 0) {
+      if (processCompleted) return toast.error("No cotton to harvest, please start seeding cotton first!");
 
-      functionName = "complete_creation";
-      skillProcessId = miningProcess.id_;
-      itemFormulaId = ITEM_CREATION_MINING;
+      functionName = "complete_production";
+      itemFormulaId = ITEM_PRODUCTION_FARMING;
     }
 
     // If the player harvests wood
-    else if (productType === "wood") {
-      const woodCuttingProcess = skillProcesses.filter((process) => process.skillType === 1)[0];
-      if (woodCuttingProcess.completed) return toast.error("No wood to havest, please start wood cutting first!");
+    else if (skillType === 1) {
+      if (processCompleted) return toast.error("No wood to harvest, please start wood cutting first!");
 
       functionName = "complete_creation";
-      skillProcessId = woodCuttingProcess.id_;
       itemFormulaId = ITEM_CREATION_WOODING;
     }
 
-    // If the player harvests cotton seeds from process 1
-    else if (productType === "seed1") {
-      const seedingProcess = skillProcesses.filter((process) => process.skillType === 0)[0];
-      if (seedingProcess.completed) return toast.error("No cotton to harvest, please start seeding cotton first!");
+    // If the player harvests ore
+    else if (skillType === 3) {
+      if (processCompleted) return toast.error("No ore to harvest, please start mining first!");
 
-      functionName = "complete_production";
-      skillProcessId = seedingProcess.id_;
-      itemFormulaId = ITEM_PRODUCTION_FARMING;
-    }
-
-    // If the player harvests cotton seeds from process 2
-    else if (productType === "seed2") {
-      const seedingProcess = skillProcesses.filter((process) => process.skillType === 0)[1];
-      if (seedingProcess.completed) return toast.error("No cotton to harvest, please start seeding cotton first!");
-
-      functionName = "complete_production";
-      skillProcessId = seedingProcess.id_;
-      itemFormulaId = ITEM_PRODUCTION_FARMING;
+      functionName = "complete_creation";
+      itemFormulaId = ITEM_CREATION_MINING;
     }
 
     // If the player harvests craft
-    else if (productType === "craft") {
-      const craftingProcess = skillProcesses.filter((process) => process.skillType === 6)[0];
-      if (craftingProcess.completed) return toast.error("No ship to havest, please start crafting first!");
+    else if (skillType === 6) {
+      if (processCompleted) return toast.error("No ship to harvest, please start crafting first!");
 
       functionName = "complete_ship_production";
-      skillProcessId = craftingProcess.id_;
       itemFormulaId = ITEM_PRODUCTION_CRAFTING;
     }
 
     try {
-      toast.success("Harvesting creation, please approve with your wallet...");
+      toast.loading("Harvesting creation, please approve with your wallet...");
 
       const txb = new TransactionBlock();
 
@@ -94,9 +99,9 @@ export default function HarvestProductForm({
       txb.moveCall({
         target: `${MAIN_PACKAGE_ID}::skill_process_aggregate::${functionName}`,
         arguments:
-          productType === "craft"
+          skillType === 6
             ? [
-                txb.object(skillProcessId),
+                txb.object(processId),
                 txb.object(unassignedRosterId),
                 txb.object(currentPlayerId),
                 txb.object(itemFormulaId),
@@ -104,7 +109,7 @@ export default function HarvestProductForm({
                 txb.object("0x6"),
               ]
             : [
-                txb.object(skillProcessId),
+                txb.object(processId),
                 txb.object(currentPlayerId),
                 txb.object(itemFormulaId),
                 txb.object(EXPERIENCE_TABLE),
@@ -113,7 +118,7 @@ export default function HarvestProductForm({
       });
 
       const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
-      toast.success("The transaction is sent to the block chain, please wait a sec for result...");
+      toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
 
       const receipt = await waitForReceipt({ digest });
 
@@ -127,12 +132,17 @@ export default function HarvestProductForm({
   }
 
   return (
-    <button
-      className="text-xs border-[1px] border-white text-white rounded-md cursor-pointer px-1"
-      type="button"
-      onClick={harvestProductAction}
-    >
-      GET
-    </button>
+    <>
+      <span className="text-white">{count}s</span>
+
+      <button
+        className="text-xs border-[1px] border-white text-white disabled:border-zinc-400 disabled:text-zinc-400 rounded-sm cursor-pointer px-1"
+        type="button"
+        disabled={processCompleted || count > 0}
+        onClick={harvestProductAction}
+      >
+        GET
+      </button>
+    </>
   );
 }

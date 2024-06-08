@@ -84,7 +84,7 @@ export default function CraftMenu({
       <div className="flex flex-col items-center h-full bg-center bg-no-repeat bg-paper-col bg-[length:100%_100%] p-6 gap-3">
         {sidebarTitle.map((title, index) => (
           <div
-            key={title}
+            key={index}
             className="w-full flex justify-center items-center bg-center bg-no-repeat bg-frame-text bg-[length:100%_100%] px-8 py-4 gap-2"
           >
             {index !== 0 && (
