@@ -1,7 +1,7 @@
 "use client";
 
-import { useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
-import { TransactionBlock } from "@mysten/sui.js/transactions";
+import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
 import toast from "react-hot-toast";
 
 import AppModal from "@/components/ui/AppModal";
@@ -20,7 +20,7 @@ export default function ClaimIslandForm({
   coordinateY: number;
   handleCloseModal: () => void;
 }) {
-  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
+  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransaction();
 
   const { currentPlayerId, refetchPlayer } = useGlobalContext();
 
@@ -30,32 +30,32 @@ export default function ClaimIslandForm({
     toast.loading("Claiming the island, please approve with your wallet...");
 
     try {
-      const txb = new TransactionBlock();
+      const tx = new Transaction();
 
-      txb.setGasBudget(4999000000);
+      tx.setGasBudget(4999000000);
 
-      txb.moveCall({
+      tx.moveCall({
         target: `${MAIN_PACKAGE_ID}::player_aggregate::claim_island`,
         arguments: [
-          txb.object(currentPlayerId),
-          txb.object(MAP),
-          txb.pure.u32(coordinateX),
-          txb.pure.u32(coordinateY),
-          txb.object("0x6"),
-          txb.object(ROSTER_TABLE),
-          txb.object(SKILL_PROCESS_TABLE),
+          tx.object(currentPlayerId),
+          tx.object(MAP),
+          tx.pure.u32(coordinateX),
+          tx.pure.u32(coordinateY),
+          tx.object("0x6"),
+          tx.object(ROSTER_TABLE),
+          tx.object(SKILL_PROCESS_TABLE),
         ],
       });
 
-      const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
+      const { digest } = await signAndExecuteTransactionBlockAsync({ transaction: tx });
       toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
 
-      const receipt = await waitForReceipt({ digest });
+      const { status, error } = await waitForReceipt({ digest });
 
-      if (receipt.effects?.status.status === "success") {
+      if (status === "success") {
         await refetchPlayer();
         toast.custom(<TxToast title="Island claimed successfully!" digest={digest} />);
-      } else toast.error(`Failed to claim island: ${receipt.effects?.status.error}`);
+      } else toast.error(`Failed to claim island: ${error}`);
     } catch (error: any) {
       toast.error(`Failed to claim island: ${error.message}!`);
     }

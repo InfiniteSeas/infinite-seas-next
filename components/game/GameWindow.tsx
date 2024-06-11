@@ -196,16 +196,7 @@ export default function GameWindow({
             <IslandProductMenu productType={productType} oreLeft={oreLeft} woodLeft={woodLeft} seedsLeft={seedsLeft} />
           )}
 
-          {bagMenuFlag && (
-            <BagMenu
-              oreLeft={oreLeft}
-              woodLeft={woodLeft}
-              seedsLeft={seedsLeft}
-              copperLeft={copperLeft}
-              logLeft={logLeft}
-              cottonLeft={cottonLeft}
-            />
-          )}
+          {bagMenuFlag && <BagMenu copperLeft={copperLeft} logLeft={logLeft} cottonLeft={cottonLeft} />}
 
           {craftMenuFlag && <CraftMenu copperLeft={copperLeft} logLeft={logLeft} cottonLeft={cottonLeft} />}
 

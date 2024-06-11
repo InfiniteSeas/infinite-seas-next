@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useConnectWallet, useCurrentAccount, useSignAndExecuteTransactionBlock, useWallets } from "@mysten/dapp-kit";
-import { TransactionBlock } from "@mysten/sui.js/transactions";
+import { useConnectWallet, useCurrentAccount, useSignAndExecuteTransaction, useWallets } from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
 import toast from "react-hot-toast";
 
 import AppModal from "@/components/ui/AppModal";
@@ -23,7 +23,7 @@ export default function WalletMenu() {
   const wallets = useWallets();
   const currentAccount = useCurrentAccount();
   const { mutateAsync: connectAsync } = useConnectWallet();
-  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
+  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransaction();
 
   const { refetchPlayer, refetchEnergy } = useGlobalContext();
 
@@ -63,25 +63,25 @@ export default function WalletMenu() {
     try {
       toast.loading("Creating a new player, please approve with your wallet...");
 
-      const txb = new TransactionBlock();
+      const tx = new Transaction();
 
-      txb.setGasBudget(11000000);
+      tx.setGasBudget(11000000);
 
-      txb.moveCall({
+      tx.moveCall({
         target: `${MAIN_PACKAGE_ID}::player_aggregate::create`,
-        arguments: [txb.pure.string(username)],
+        arguments: [tx.pure.string(username)],
       });
 
-      const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
+      const { digest } = await signAndExecuteTransactionBlockAsync({ transaction: tx });
       toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
 
-      const receipt = await waitForReceipt({ digest });
+      const { status, error } = await waitForReceipt({ digest });
 
-      if (receipt.effects?.status.status === "success") {
+      if (status === "success") {
         await refetchPlayer();
         await refetchEnergy();
         toast.custom(<TxToast title="New player created and connected successfully!" digest={digest} />);
-      } else toast.error(`Failed to create new player: ${receipt.effects?.status.error}`);
+      } else toast.error(`Failed to create new player: ${error}`);
     } catch (error: any) {
       toast.error(`Failed to create new player: ${error.message}!`);
     }

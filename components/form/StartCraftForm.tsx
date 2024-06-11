@@ -1,7 +1,7 @@
 "use client";
 
-import { useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
-import { TransactionBlock } from "@mysten/sui.js/transactions";
+import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
 import { bcs } from "@mysten/bcs";
 import toast from "react-hot-toast";
 
@@ -24,7 +24,7 @@ export default function StartCraftForm({
   cotton: number;
   handleCloseModal: () => void;
 }) {
-  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
+  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransaction();
 
   const { currentPlayerId, skillProcesses, energyObjectIds, energyBalance, refetchPlayer, refetchEnergy } =
     useGlobalContext();
@@ -44,38 +44,38 @@ export default function StartCraftForm({
 
       toast.loading("Starting crafting, please approve with your wallet...");
 
-      const txb = new TransactionBlock();
+      const tx = new Transaction();
 
-      txb.setGasBudget(42000000);
+      tx.setGasBudget(42000000);
 
-      if (energyObjectIds.length > 0) txb.mergeCoins(txb.object(energyObjectIds[0]), energyObjectIds.slice(1));
+      if (energyObjectIds.length > 0) tx.mergeCoins(tx.object(energyObjectIds[0]), energyObjectIds.slice(1));
 
       const resources = bcs.vector(bcs.u32()).serialize([301, 200, 102]).toBytes();
       const quantities = bcs.vector(bcs.u32()).serialize([copper, log, cotton]).toBytes();
 
-      txb.moveCall({
+      tx.moveCall({
         target: `${MAIN_PACKAGE_ID}::skill_process_service::start_ship_production`,
         arguments: [
-          txb.object(processId),
-          txb.pure(resources),
-          txb.pure(quantities),
-          txb.object(currentPlayerId),
-          txb.object(ITEM_PRODUCTION_CRAFTING),
-          txb.object("0x6"),
-          txb.object(energyObjectIds[0]),
+          tx.object(processId),
+          tx.pure(resources),
+          tx.pure(quantities),
+          tx.object(currentPlayerId),
+          tx.object(ITEM_PRODUCTION_CRAFTING),
+          tx.object("0x6"),
+          tx.object(energyObjectIds[0]),
         ],
       });
 
-      const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
+      const { digest } = await signAndExecuteTransactionBlockAsync({ transaction: tx });
       toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
 
-      const receipt = await waitForReceipt({ digest });
+      const { status, error } = await waitForReceipt({ digest });
 
-      if (receipt.effects?.status.status === "success") {
+      if (status === "success") {
         await refetchPlayer();
         await refetchEnergy();
         toast.custom(<TxToast title="Craft started successfully!" digest={digest} />);
-      } else toast.error(`Failed to start crafting: ${receipt.effects?.status.error}`);
+      } else toast.error(`Failed to start crafting: ${error}`);
     } catch (error: any) {
       toast.error(`Failed to start crafting: ${error.message}!`);
     }

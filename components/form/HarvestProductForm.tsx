@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
-import { TransactionBlock } from "@mysten/sui.js/transactions";
+import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
 import toast from "react-hot-toast";
 
 import TxToast from "@/components/shared/TxToast";
@@ -34,7 +34,7 @@ export default function HarvestProductForm({
 }) {
   const [count, setCount] = useState<number>(initialCount);
 
-  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
+  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransaction();
 
   const { currentPlayerId, refetchPlayer } = useGlobalContext();
 
@@ -92,40 +92,40 @@ export default function HarvestProductForm({
     try {
       toast.loading("Harvesting creation, please approve with your wallet...");
 
-      const txb = new TransactionBlock();
+      const tx = new Transaction();
 
-      txb.setGasBudget(42000000);
+      tx.setGasBudget(42000000);
 
-      txb.moveCall({
+      tx.moveCall({
         target: `${MAIN_PACKAGE_ID}::skill_process_aggregate::${functionName}`,
         arguments:
           skillType === 6
             ? [
-                txb.object(processId),
-                txb.object(unassignedRosterId),
-                txb.object(currentPlayerId),
-                txb.object(itemFormulaId),
-                txb.object(EXPERIENCE_TABLE),
-                txb.object("0x6"),
+                tx.object(processId),
+                tx.object(unassignedRosterId),
+                tx.object(currentPlayerId),
+                tx.object(itemFormulaId),
+                tx.object(EXPERIENCE_TABLE),
+                tx.object("0x6"),
               ]
             : [
-                txb.object(processId),
-                txb.object(currentPlayerId),
-                txb.object(itemFormulaId),
-                txb.object(EXPERIENCE_TABLE),
-                txb.object("0x6"),
+                tx.object(processId),
+                tx.object(currentPlayerId),
+                tx.object(itemFormulaId),
+                tx.object(EXPERIENCE_TABLE),
+                tx.object("0x6"),
               ],
       });
 
-      const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
+      const { digest } = await signAndExecuteTransactionBlockAsync({ transaction: tx });
       toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
 
-      const receipt = await waitForReceipt({ digest });
+      const { status, error } = await waitForReceipt({ digest });
 
-      if (receipt.effects?.status.status === "success") {
+      if (status === "success") {
         await refetchPlayer();
         toast.custom(<TxToast title="Creation Harvested successfully!" digest={digest} />);
-      } else toast.error(`Failed to harvest creation: ${receipt.effects?.status.error}`);
+      } else toast.error(`Failed to harvest creation: ${error}`);
     } catch (error: any) {
       toast.error(`Failed to harvest creation: ${error.message}!`);
     }

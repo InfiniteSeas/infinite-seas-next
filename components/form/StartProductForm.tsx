@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
-import { TransactionBlock } from "@mysten/sui.js/transactions";
+import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
 import toast from "react-hot-toast";
 
 import AppModal from "@/components/ui/AppModal";
@@ -28,7 +28,7 @@ export default function StartProductForm({
 }) {
   const [batchSize, setBatchSize] = useState<string>("0");
 
-  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
+  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransaction();
 
   const { currentPlayerId, skillProcesses, energyObjectIds, energyBalance, refetchPlayer, refetchEnergy } =
     useGlobalContext();
@@ -88,33 +88,34 @@ export default function StartProductForm({
     try {
       toast.loading("Starting creation, please approve with your wallet...");
 
-      const txb = new TransactionBlock();
+      const tx = new Transaction();
 
-      txb.setGasBudget(11000000);
+      tx.setGasBudget(11000000);
 
-      if (energyObjectIds.length > 0) txb.mergeCoins(txb.object(energyObjectIds[0]), energyObjectIds.slice(1));
+      if (energyObjectIds.length > 0) tx.mergeCoins(tx.object(energyObjectIds[0]), energyObjectIds.slice(1));
 
-      txb.moveCall({
+      tx.moveCall({
         target: `${MAIN_PACKAGE_ID}::skill_process_service::${functionName}`,
         arguments: [
-          txb.object(skillProcessId),
-          txb.pure.u32(Number(batchSize)),
-          txb.object(currentPlayerId),
-          txb.object(itemFormulaId),
-          txb.object("0x6"),
-          txb.object(energyObjectIds[0]),
+          tx.object(skillProcessId),
+          tx.pure.u32(Number(batchSize)),
+          tx.object(currentPlayerId),
+          tx.object(itemFormulaId),
+          tx.object("0x6"),
+          tx.object(energyObjectIds[0]),
         ],
       });
 
-      const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
+      const { digest } = await signAndExecuteTransactionBlockAsync({ transaction: tx });
       toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
 
-      const receipt = await waitForReceipt({ digest });
-      if (receipt.effects?.status.status === "success") {
+      const { status, error } = await waitForReceipt({ digest });
+
+      if (status === "success") {
         await refetchPlayer();
         await refetchEnergy();
         toast.custom(<TxToast title="Creation started successfully!" digest={digest} />);
-      } else toast.error(`Failed to start creation: ${receipt.effects?.status.error}`);
+      } else toast.error(`Failed to start creation: ${error}`);
     } catch (error: any) {
       toast.error(`Failed to start creation: ${error.message}!`);
     }

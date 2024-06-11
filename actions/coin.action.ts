@@ -1,6 +1,6 @@
 "use server";
 
-import { SuiClient } from "@mysten/sui.js/client";
+import { SuiClient } from "@mysten/sui/client";
 
 import { COIN_PACKAGE_ID, SUI_TESTNET_JSON_RPC } from "@/constant";
 

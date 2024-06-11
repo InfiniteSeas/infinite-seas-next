@@ -119,21 +119,21 @@ async function someAction(formData: FormData) {
 
   // Build a programmable transaction block
   try {
-    const txb = new TransactionBlock();
+    const tx = new Transaction();
 
-    txb.setGasBudget(100000000);
+    tx.setGasBudget(100000000);
 
-    txb.moveCall({
+    tx.moveCall({
       target: "packageId::moduleName::functionName",
       arguments: [
-        txb.object(someObjectId),
-        txb.pure.u64(someData),
+        tx.object(someObjectId),
+        tx.pure.u64(someData),
         // ... and more
       ],
       typeArguments: [someType],
     });
 
-    const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
+    const { digest } = await signAndExecuteTransactionBlockAsync({ transaction: tx });
     toast.custom(<TxToast title="Something done successfully!" digest={digest} />);
   } catch (error: any) {
     // Popup some err msg

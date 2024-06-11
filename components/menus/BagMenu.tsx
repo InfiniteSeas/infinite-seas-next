@@ -3,16 +3,10 @@
 import Image from "next/image";
 
 export default function BagMenu({
-  oreLeft,
-  woodLeft,
-  seedsLeft,
   copperLeft,
   logLeft,
   cottonLeft,
 }: {
-  oreLeft: number;
-  woodLeft: number;
-  seedsLeft: number;
   copperLeft: number;
   logLeft: number;
   cottonLeft: number;

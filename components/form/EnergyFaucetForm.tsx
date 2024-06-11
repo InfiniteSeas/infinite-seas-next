@@ -1,7 +1,7 @@
 "use client";
 
-import { useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
-import { TransactionBlock } from "@mysten/sui.js/transactions";
+import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
 import toast from "react-hot-toast";
 
 import TxToast from "@/components/shared/TxToast";
@@ -10,7 +10,7 @@ import { useGlobalContext } from "@/context/GlobalContext";
 import { COIN_PACKAGE_ID, FAUCET } from "@/constant";
 
 export default function EnergyFaucetForm() {
-  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransactionBlock();
+  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransaction();
 
   const { currentPlayerId, refetchEnergy } = useGlobalContext();
 
@@ -20,24 +20,24 @@ export default function EnergyFaucetForm() {
     toast.loading("Using the faucet, please approve with your wallet...");
 
     try {
-      const txb = new TransactionBlock();
+      const tx = new Transaction();
 
-      txb.setGasBudget(11000000);
+      tx.setGasBudget(11000000);
 
-      txb.moveCall({
+      tx.moveCall({
         target: `${COIN_PACKAGE_ID}::energy_faucet::request_a_drop`,
-        arguments: [txb.object(FAUCET)],
+        arguments: [tx.object(FAUCET)],
       });
 
-      const { digest } = await signAndExecuteTransactionBlockAsync({ transactionBlock: txb });
+      const { digest } = await signAndExecuteTransactionBlockAsync({ transaction: tx });
       toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
 
-      const receipt = await waitForReceipt({ digest });
+      const { status, error } = await waitForReceipt({ digest });
 
-      if (receipt.effects?.status.status === "success") {
+      if (status === "success") {
         await refetchEnergy();
         toast.custom(<TxToast title="Faucet used successfully!" digest={digest} />);
-      } else toast.error(`Failed to use the faucet: ${receipt.effects?.status.error}`);
+      } else toast.error(`Failed to use the faucet: ${error}`);
     } catch (error: any) {
       toast.error(`Failed to use the faucet: ${error.message}!`);
     }

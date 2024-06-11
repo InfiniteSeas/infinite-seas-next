@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { SuiClient } from "@mysten/sui.js/client";
+import { SuiClient } from "@mysten/sui/client";
 import axios from "axios";
 
 import { formatSui } from "@/utils/tools";
