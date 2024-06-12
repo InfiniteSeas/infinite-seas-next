@@ -510,6 +510,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mysten/enoki@npm:^0.3.6":
+  version: 0.3.6
+  resolution: "@mysten/enoki@npm:0.3.6"
+  dependencies:
+    "@mysten/sui": "npm:1.1.0"
+    "@mysten/zklogin": "npm:0.7.6"
+    "@nanostores/react": "npm:^0.7.1"
+    jose: "npm:^5.2.3"
+    nanostores: "npm:^0.9.3"
+  peerDependencies:
+    "@types/react": ">=17.0.0"
+    react: ">=17.0.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    react:
+      optional: true
+  checksum: 10c0/8dc21b77ede368d6bb67e549ee1fb463662b6404ffb28a3f05cafd52b5aeea5b6ea5d2b2f3e0cad4eddb50e85b98072d674ed090fdc6596bc0aa3286861af7ed
+  languageName: node
+  linkType: hard
+
 "@mysten/sui@npm:1.0.5, @mysten/sui@npm:^1.0.5":
   version: 1.0.5
   resolution: "@mysten/sui@npm:1.0.5"
@@ -530,6 +551,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mysten/sui@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@mysten/sui@npm:1.1.0"
+  dependencies:
+    "@graphql-typed-document-node/core": "npm:^3.2.0"
+    "@mysten/bcs": "npm:1.0.2"
+    "@noble/curves": "npm:^1.1.0"
+    "@noble/hashes": "npm:^1.3.1"
+    "@scure/bip32": "npm:^1.3.1"
+    "@scure/bip39": "npm:^1.2.1"
+    "@suchipi/femver": "npm:^1.0.0"
+    bech32: "npm:^2.0.0"
+    gql.tada: "npm:^1.7.0"
+    graphql: "npm:^16.8.1"
+    tweetnacl: "npm:^1.0.3"
+    valibot: "npm:^0.25.0"
+  checksum: 10c0/ec3cd1f99f644a187476b7ccfc81a2b582e4057be19f8e3deabb774373f4e663ef25220a39ba8ed8f232a5fb4b565a09d6a807e0d108e10912499b3ea829541e
+  languageName: node
+  linkType: hard
+
 "@mysten/wallet-standard@npm:0.12.5":
   version: 0.12.5
   resolution: "@mysten/wallet-standard@npm:0.12.5"
@@ -537,6 +578,19 @@ __metadata:
     "@mysten/sui": "npm:1.0.5"
     "@wallet-standard/core": "npm:1.0.3"
   checksum: 10c0/125965d0c1e73475d192098e1700546f652ca84bfe466dd1681ea1ff6d5c08c2affff25c17b311efd40c6301d3579c7f6e56aaeb2b24e494107820722c27e9b9
+  languageName: node
+  linkType: hard
+
+"@mysten/zklogin@npm:0.7.6":
+  version: 0.7.6
+  resolution: "@mysten/zklogin@npm:0.7.6"
+  dependencies:
+    "@mysten/bcs": "npm:1.0.2"
+    "@mysten/sui": "npm:1.1.0"
+    "@noble/hashes": "npm:^1.3.1"
+    jose: "npm:^5.2.3"
+    poseidon-lite: "npm:^0.2.0"
+  checksum: 10c0/aa46b562842bbddb87645d48ecc288fe55c2db9a2bf71e26e82e6e3288c64181fbb0b2fc9fafb967e12f7c1a872beb298ba61ea1b573897b95c0bb00a57de63e
   languageName: node
   linkType: hard
 
@@ -550,6 +604,16 @@ __metadata:
     nanostores: "npm:^0.9.3"
     valibot: "npm:^0.25.0"
   checksum: 10c0/3101523dcda5a69ad059ee211ff674ff627a1e0d6ed76b8b3286278ff4e6d6ca10d73804e407c125135be6796627ec6d3ac78a9c1cd25cbb41b2156713a5d60c
+  languageName: node
+  linkType: hard
+
+"@nanostores/react@npm:^0.7.1":
+  version: 0.7.2
+  resolution: "@nanostores/react@npm:0.7.2"
+  peerDependencies:
+    nanostores: ^0.9.0 || ^0.10.0
+    react: ">=18.0.0"
+  checksum: 10c0/3b7dff4b3f662d41030b603b1054d91a527e5454f918e6578eb45369096ea47c5b9d2094a4f1a02cc2af2fce8598c7efd0de1c92e644f61ff0580dc4e180391a
   languageName: node
   linkType: hard
 
@@ -3395,6 +3459,7 @@ __metadata:
   dependencies:
     "@mysten/bcs": "npm:^1.0.2"
     "@mysten/dapp-kit": "npm:^0.14.5"
+    "@mysten/enoki": "npm:^0.3.6"
     "@mysten/sui": "npm:^1.0.5"
     "@tanstack/react-query": "npm:^5.40.1"
     "@types/node": "npm:^20"
@@ -3781,6 +3846,13 @@ __metadata:
   bin:
     jiti: bin/jiti.js
   checksum: 10c0/7f361219fe6c7a5e440d5f1dba4ab763a5538d2df8708cdc22561cf25ea3e44b837687931fca7cdd8cdd9f567300e90be989dd1321650045012d8f9ed6aab07f
+  languageName: node
+  linkType: hard
+
+"jose@npm:^5.2.3":
+  version: 5.4.0
+  resolution: "jose@npm:5.4.0"
+  checksum: 10c0/ef880ee7d93d2758f9b9b0883eef2bb10319778142fad8cdea9d4f4322ca4dfae3c1ee87960c7f29c55b9d78460ea3de8dc462987ea23d821596fb5916425bc0
   languageName: node
   linkType: hard
 
@@ -4579,6 +4651,13 @@ __metadata:
   version: 4.0.6
   resolution: "pirates@npm:4.0.6"
   checksum: 10c0/00d5fa51f8dded94d7429700fb91a0c1ead00ae2c7fd27089f0c5b63e6eca36197fe46384631872690a66f390c5e27198e99006ab77ae472692ab9c2ca903f36
+  languageName: node
+  linkType: hard
+
+"poseidon-lite@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "poseidon-lite@npm:0.2.0"
+  checksum: 10c0/4d92a4deea6d9ce622a33a5e166c905c29255b0a4eb1d9ba62c382ea5de796c75be259c7006bbdb5351895c6cbe9d8c48f842cbc3a39862e5c17c87e27dc73df
   languageName: node
   linkType: hard
 

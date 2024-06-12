@@ -18,6 +18,8 @@ const config: Config = {
         "paper-col": "url('/image/frame/paper-frame-col.png')",
         "frame-topbar": "url('/image/frame/topbar-frame.png')",
         "frame-rank": "url('/image/frame/rank-frame.png')",
+        "frame-roster": "url('/image/frame/roster-frame.png')",
+        "frame-ship": "url('/image/frame/ship-frame.png')",
       },
     },
   },

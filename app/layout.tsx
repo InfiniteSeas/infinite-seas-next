@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -22,10 +23,12 @@ export default function RootLayout({
       <body>
         <main>
           <SuiKit>
-            <GlobalContextProvider>
-              {children}
-              <AppToaster />
-            </GlobalContextProvider>
+            <Suspense>
+              <GlobalContextProvider>
+                {children}
+                <AppToaster />
+              </GlobalContextProvider>
+            </Suspense>
           </SuiKit>
         </main>
       </body>

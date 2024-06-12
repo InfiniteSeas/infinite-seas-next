@@ -1,10 +1,13 @@
 "use client";
 
 import { createContext, useState, useContext, useEffect } from "react";
-import { useCurrentAccount } from "@mysten/dapp-kit";
+import { useSearchParams } from "next/navigation";
+import { useEnokiFlow, useAuthCallback } from "@mysten/enoki/react";
+import toast from "react-hot-toast";
 
 import { getCurrentPlayerId, suiPlayerInfo, suiPlayerSkillProcesses } from "@/actions/player.action";
 import { suixEnergyCoins } from "@/actions/coin.action";
+import { getSaltAndAddress } from "@/actions/system.action";
 
 import { formatSui } from "@/utils/tools";
 
@@ -28,6 +31,7 @@ export function useGlobalContext(): GlobalContextType {
 }
 
 export default function GlobalContextProvider({ children }: { children: React.ReactNode }) {
+  const [currentUserAddress, setCurrentUserAddress] = useState<string>("");
   const [currentPlayerId, setCurrentPlayerId] = useState<string>("");
   const [currentPlayerInfo, setCurrentPlayerInfo] = useState<any>();
   const [skillProcesses, setSkillProcesses] = useState<any[]>([]);
@@ -35,12 +39,35 @@ export default function GlobalContextProvider({ children }: { children: React.Re
   const [energyObjectIds, setEnergyObjectIds] = useState<string[]>([]);
   const [energyBalance, setEnergyBalance] = useState<number>(0);
 
-  const currentAccount = useCurrentAccount();
+  const searchParams = useSearchParams();
+
+  const enokiFlow = useEnokiFlow();
+  const { handled } = useAuthCallback();
+
+  // After login by OAuth, handle zkLogin logic
+  useEffect(() => {
+    async function handleZkLogin() {
+      if (!handled) return;
+
+      enokiFlow.getKeypair({ network: "testnet" });
+
+      // Get jwt provided by OAuth and reset the url
+      const jwt = searchParams.get("id_token");
+      if (!jwt) return toast.error("Failed to connect your wallet!");
+      window.location.href = "/";
+
+      // Get user salt and address
+      const user = await getSaltAndAddress({ jwt });
+      setCurrentUserAddress(user.address);
+    }
+
+    handleZkLogin();
+  }, [handled]);
 
   async function refetchPlayer() {
-    if (!currentAccount) return;
+    if (!currentUserAddress) return;
 
-    const playerId = await getCurrentPlayerId({ owner: currentAccount.address });
+    const playerId = await getCurrentPlayerId({ owner: currentUserAddress });
     const playerInfo = await suiPlayerInfo({ playerId });
     const processes = await suiPlayerSkillProcesses({ playerId });
 
@@ -50,9 +77,9 @@ export default function GlobalContextProvider({ children }: { children: React.Re
   }
 
   async function refetchEnergy() {
-    if (!currentAccount) return;
+    if (!currentUserAddress) return;
 
-    const energyCoins = await suixEnergyCoins({ owner: currentAccount.address });
+    const energyCoins = await suixEnergyCoins({ owner: currentUserAddress });
     if (energyCoins.length === 0) return;
 
     setEnergyObjectIds(energyCoins.map((coin) => coin.coinObjectId));

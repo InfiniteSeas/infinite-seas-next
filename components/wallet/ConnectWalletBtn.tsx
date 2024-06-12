@@ -90,7 +90,7 @@ export default function WalletMenu() {
   return (
     <>
       {modalFlag && (
-        <AppModal>
+        <AppModal frame={""}>
           <AppInput label="Enter new username" value={username} handleChange={(value) => setUsername(value)} />
 
           <div className="flex w-4/5 justify-evenly items-center">

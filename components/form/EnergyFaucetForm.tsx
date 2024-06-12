@@ -1,7 +1,8 @@
 "use client";
 
-import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
+import { useSuiClient } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
+import { useEnokiFlow } from "@mysten/enoki/react";
 import toast from "react-hot-toast";
 
 import TxToast from "@/components/shared/TxToast";
@@ -10,14 +11,16 @@ import { useGlobalContext } from "@/context/GlobalContext";
 import { COIN_PACKAGE_ID, FAUCET } from "@/constant";
 
 export default function EnergyFaucetForm() {
-  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransaction();
+  const client = useSuiClient();
+
+  const enokiFlow = useEnokiFlow();
 
   const { currentPlayerId, refetchEnergy } = useGlobalContext();
 
   async function faucetAction() {
     if (!currentPlayerId) return toast.error("Please login first!");
 
-    toast.loading("Using the faucet, please approve with your wallet...");
+    toast.loading("To use the faucet, please approve with your wallet...");
 
     try {
       const tx = new Transaction();
@@ -29,7 +32,10 @@ export default function EnergyFaucetForm() {
         arguments: [tx.object(FAUCET)],
       });
 
-      const { digest } = await signAndExecuteTransactionBlockAsync({ transaction: tx });
+      const { digest } = await client.signAndExecuteTransaction({
+        signer: await enokiFlow.getKeypair(),
+        transaction: tx,
+      });
       toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
 
       const { status, error } = await waitForReceipt({ digest });

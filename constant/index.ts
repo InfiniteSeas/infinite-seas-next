@@ -16,3 +16,6 @@ export const ITEM_PRODUCTION_FARMING = "0x027729483e9de6996535878788f7a10f3af788
 export const ITEM_PRODUCTION_CRAFTING = "0xd97f7bf2bd3315265c5d37ae6774f0b331263c08e4b7c2b084cd8a863dd787cf";
 
 export const FAUCET = "0x09457dc9803e9f6aadfcbd39894ee6433484a51397e6be5a7149637a230ee9da";
+
+export const GOOGLE_OAUTH_CLIENT_ID = "381498403868-qs7anfokufs993ei4ur0ed8iiee3u1qp.apps.googleusercontent.com";
+export const ENOKI_PUBLIC_API_KEY = "enoki_public_302d5b323504ef6b5914e69d835d0e6e";
