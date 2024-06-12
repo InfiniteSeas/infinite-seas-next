@@ -2,7 +2,7 @@
 
 import { createContext, useState, useContext, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { useEnokiFlow, useAuthCallback } from "@mysten/enoki/react";
+import { useAuthCallback } from "@mysten/enoki/react";
 import toast from "react-hot-toast";
 
 import { getCurrentPlayerId, suiPlayerInfo, suiPlayerSkillProcesses } from "@/actions/player.action";
@@ -12,6 +12,7 @@ import { getSaltAndAddress } from "@/actions/system.action";
 import { formatSui } from "@/utils/tools";
 
 type GlobalContextType = {
+  currentUserAddress: string;
   currentPlayerId: string;
   currentPlayerInfo?: any;
   skillProcesses: any[];
@@ -41,15 +42,14 @@ export default function GlobalContextProvider({ children }: { children: React.Re
 
   const searchParams = useSearchParams();
 
-  const enokiFlow = useEnokiFlow();
   const { handled } = useAuthCallback();
 
   // After login by OAuth, handle zkLogin logic
   useEffect(() => {
+    console.log(handled);
+
     async function handleZkLogin() {
       if (!handled) return;
-
-      enokiFlow.getKeypair({ network: "testnet" });
 
       // Get jwt provided by OAuth and reset the url
       const jwt = searchParams.get("id_token");
@@ -59,6 +59,8 @@ export default function GlobalContextProvider({ children }: { children: React.Re
       // Get user salt and address
       const user = await getSaltAndAddress({ jwt });
       setCurrentUserAddress(user.address);
+
+      console.log(user);
     }
 
     handleZkLogin();
@@ -92,6 +94,7 @@ export default function GlobalContextProvider({ children }: { children: React.Re
   return (
     <GlobalContext.Provider
       value={{
+        currentUserAddress,
         currentPlayerId,
         currentPlayerInfo,
         skillProcesses,

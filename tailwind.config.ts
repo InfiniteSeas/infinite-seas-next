@@ -20,6 +20,7 @@ const config: Config = {
         "frame-rank": "url('/image/frame/rank-frame.png')",
         "frame-roster": "url('/image/frame/roster-frame.png')",
         "frame-ship": "url('/image/frame/ship-frame.png')",
+        "frame-player": "url('/image/frame/player-frame.png')",
       },
     },
   },
