@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { getFaucetHost, requestSuiFromFaucetV0 } from "@mysten/sui/faucet";
 import { useAuthCallback, useEnokiFlow } from "@mysten/enoki/react";
 import toast from "react-hot-toast";
 
@@ -33,6 +34,12 @@ export default function ZkLoginForm() {
       window.history.replaceState(null, "", window.location.origin + window.location.pathname);
 
       toast.success("Logined Successfully!");
+
+      // Sui coin faucet, only sui testnet
+      await requestSuiFromFaucetV0({
+        host: getFaucetHost("testnet"),
+        recipient: enokiFlow.$zkLoginState.value.address,
+      });
 
       const playerId = await getCurrentPlayerId({ owner: enokiFlow.$zkLoginState.value.address });
       if (!playerId) return setNewPlayerFlag(true);
