@@ -1,12 +1,15 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEnokiFlow } from "@mysten/enoki/react";
 import toast from "react-hot-toast";
 
 import { GOOGLE_OAUTH_CLIENT_ID } from "@/constant";
 
 export default function ZkLoginForm() {
+  const router = useRouter();
+
   const enokiFlow = useEnokiFlow();
 
   async function zkLoginAction() {
@@ -24,8 +27,7 @@ export default function ZkLoginForm() {
         extraParams: { scope: ["openid", "email", "profile"] },
       });
 
-      // Navigate to its login url
-      window.location.href = oAuthLoginUrl;
+      router.push(oAuthLoginUrl);
     } catch (error: any) {
       toast.error(`Failed to connect your wallet: ${error.message}!`);
     }

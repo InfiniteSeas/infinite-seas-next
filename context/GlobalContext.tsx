@@ -55,15 +55,19 @@ export default function GlobalContextProvider({ children }: { children: React.Re
   // After login by OAuth, handle zkLogin logic
   useEffect(() => {
     async function handleZkLogin() {
-      // if (!handled) return;
+      if (!handled) return;
 
       // Get jwt provided by OAuth and reset the url
       const jwt = searchParams.get("id_token");
-      if (!jwt) return;
-      // window.location.href = "/";
+      if (!jwt || !enokiFlow.$zkLoginState.value?.address) return;
 
-      console.log(enokiFlow.$zkLoginState);
+      setCurrentUserAddress(enokiFlow.$zkLoginState.value.address);
+
+      window.history.replaceState(null, "", window.location.origin + window.location.pathname);
+
+      console.log(await enokiFlow.getProof({ network: "testnet" }));
       console.log(await enokiFlow.getKeypair({ network: "testnet" }));
+      console.log(await enokiFlow.getSession());
     }
 
     handleZkLogin();
