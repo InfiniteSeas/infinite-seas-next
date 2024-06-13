@@ -21,15 +21,17 @@ export default function CreatePlayerForm({ handleCloseModal }: { handleCloseModa
 
   const enokiFlow = useEnokiFlow();
 
-  const { currentUserAddress, refetchPlayer, refetchEnergy } = useGlobalContext();
+  const { refetchPlayer, refetchEnergy } = useGlobalContext();
 
   async function createAction() {
+    if (!enokiFlow.$zkLoginState.value?.address) return toast.error("Please login first!");
+
     toast.loading("Creating a new player...");
 
     try {
       const tx = new Transaction();
 
-      tx.setSender(currentUserAddress);
+      tx.setSender(enokiFlow.$zkLoginState.value.address);
 
       tx.setGasBudget(11000000);
 

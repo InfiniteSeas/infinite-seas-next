@@ -19,3 +19,4 @@ export const FAUCET = "0x09457dc9803e9f6aadfcbd39894ee6433484a51397e6be5a7149637
 
 export const GOOGLE_OAUTH_CLIENT_ID = "381498403868-qs7anfokufs993ei4ur0ed8iiee3u1qp.apps.googleusercontent.com";
 export const ENOKI_PUBLIC_API_KEY = "enoki_public_302d5b323504ef6b5914e69d835d0e6e";
+export const REDIRECT_URL = "https://game.infiniteseas.io/";

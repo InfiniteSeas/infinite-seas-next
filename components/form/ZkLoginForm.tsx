@@ -1,21 +1,47 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEnokiFlow } from "@mysten/enoki/react";
+import { useAuthCallback, useEnokiFlow } from "@mysten/enoki/react";
 import toast from "react-hot-toast";
 
-import { GOOGLE_OAUTH_CLIENT_ID } from "@/constant";
+import CreatePlayerForm from "@/components/form/CreatePlayerForm";
+import { getCurrentPlayerId } from "@/actions/player.action";
+import { GOOGLE_OAUTH_CLIENT_ID, REDIRECT_URL } from "@/constant";
 
 export default function ZkLoginForm() {
+  const [newPlayerFlag, setNewPlayerFlag] = useState<boolean>(false);
+
   const router = useRouter();
 
   const enokiFlow = useEnokiFlow();
+  const { handled } = useAuthCallback();
+
+  useEffect(() => {
+    if (!window.location.hash) return;
+
+    const hash = window.location.hash.substring(1);
+    const newUrl = window.location.origin + window.location.pathname + "?" + hash;
+    window.history.replaceState(null, "", newUrl);
+  }, []);
+
+  useEffect(() => {
+    async function getZkStatus() {
+      console.log(enokiFlow.$zkLoginState);
+      if (!handled || !enokiFlow.$zkLoginState.value?.address) return;
+
+      window.history.replaceState(null, "", window.location.origin + window.location.pathname);
+
+      const playerId = await getCurrentPlayerId({ owner: enokiFlow.$zkLoginState.value.address });
+      if (!playerId) return setNewPlayerFlag(true);
+    }
+
+    getZkStatus();
+  }, [handled]);
 
   async function zkLoginAction() {
     toast.loading("Using your Google account to connect your wallet...");
-
-    const redirectUrl = "https://game.infiniteseas.io/";
 
     try {
       // Init OAuth and get its login url
@@ -23,25 +49,29 @@ export default function ZkLoginForm() {
         provider: "google",
         network: "testnet",
         clientId: GOOGLE_OAUTH_CLIENT_ID,
-        redirectUrl,
+        redirectUrl: REDIRECT_URL,
         extraParams: { scope: ["openid", "email", "profile"] },
       });
 
       router.push(oAuthLoginUrl);
     } catch (error: any) {
-      toast.error(`Failed to connect your wallet: ${error.message}!`);
+      toast.error(`Failed to login: ${error.message}!`);
     }
   }
 
   return (
-    <Image
-      className="cursor-pointer"
-      src="/image/home/wallet.png"
-      alt="wallet-button"
-      width={50}
-      height={50}
-      priority
-      onClick={zkLoginAction}
-    />
+    <>
+      {newPlayerFlag && <CreatePlayerForm handleCloseModal={() => setNewPlayerFlag(false)} />}
+
+      <Image
+        className="cursor-pointer"
+        src="/image/home/wallet.png"
+        alt="wallet-button"
+        width={50}
+        height={50}
+        priority
+        onClick={zkLoginAction}
+      />
+    </>
   );
 }

@@ -1,9 +1,8 @@
 "use client";
 
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext } from "react";
 import { useSearchParams } from "next/navigation";
 import { useAuthCallback, useEnokiFlow } from "@mysten/enoki/react";
-import toast from "react-hot-toast";
 
 import { getCurrentPlayerId, suiPlayerInfo, suiPlayerSkillProcesses } from "@/actions/player.action";
 import { suixEnergyCoins } from "@/actions/coin.action";
@@ -11,7 +10,6 @@ import { suixEnergyCoins } from "@/actions/coin.action";
 import { formatSui } from "@/utils/tools";
 
 type GlobalContextType = {
-  currentUserAddress: string;
   currentPlayerId: string;
   currentPlayerInfo?: any;
   skillProcesses: any[];
@@ -31,7 +29,6 @@ export function useGlobalContext(): GlobalContextType {
 }
 
 export default function GlobalContextProvider({ children }: { children: React.ReactNode }) {
-  const [currentUserAddress, setCurrentUserAddress] = useState<string>("");
   const [currentPlayerId, setCurrentPlayerId] = useState<string>("");
   const [currentPlayerInfo, setCurrentPlayerInfo] = useState<any>();
   const [skillProcesses, setSkillProcesses] = useState<any[]>([]);
@@ -39,44 +36,12 @@ export default function GlobalContextProvider({ children }: { children: React.Re
   const [energyObjectIds, setEnergyObjectIds] = useState<string[]>([]);
   const [energyBalance, setEnergyBalance] = useState<number>(0);
 
-  const searchParams = useSearchParams();
-
   const enokiFlow = useEnokiFlow();
-  const { handled } = useAuthCallback();
-
-  useEffect(() => {
-    if (!window.location.hash) return;
-
-    const hash = window.location.hash.substring(1);
-    const newUrl = window.location.origin + window.location.pathname + "?" + hash;
-    window.history.replaceState(null, "", newUrl);
-  }, []);
-
-  // After login by OAuth, handle zkLogin logic
-  useEffect(() => {
-    async function handleZkLogin() {
-      if (!handled) return;
-
-      // Get jwt provided by OAuth and reset the url
-      const jwt = searchParams.get("id_token");
-      if (!jwt || !enokiFlow.$zkLoginState.value?.address) return;
-
-      setCurrentUserAddress(enokiFlow.$zkLoginState.value.address);
-
-      window.history.replaceState(null, "", window.location.origin + window.location.pathname);
-
-      console.log(await enokiFlow.getProof({ network: "testnet" }));
-      console.log(await enokiFlow.getKeypair({ network: "testnet" }));
-      console.log(await enokiFlow.getSession());
-    }
-
-    handleZkLogin();
-  }, [searchParams, handled]);
 
   async function refetchPlayer() {
-    if (!currentUserAddress) return;
+    if (!enokiFlow.$zkLoginState.value?.address) return;
 
-    const playerId = await getCurrentPlayerId({ owner: currentUserAddress });
+    const playerId = await getCurrentPlayerId({ owner: enokiFlow.$zkLoginState.value.address });
     const playerInfo = await suiPlayerInfo({ playerId });
     const processes = await suiPlayerSkillProcesses({ playerId });
 
@@ -86,9 +51,9 @@ export default function GlobalContextProvider({ children }: { children: React.Re
   }
 
   async function refetchEnergy() {
-    if (!currentUserAddress) return;
+    if (!enokiFlow.$zkLoginState.value?.address) return;
 
-    const energyCoins = await suixEnergyCoins({ owner: currentUserAddress });
+    const energyCoins = await suixEnergyCoins({ owner: enokiFlow.$zkLoginState.value.address });
     if (energyCoins.length === 0) return;
 
     setEnergyObjectIds(energyCoins.map((coin) => coin.coinObjectId));
@@ -101,7 +66,6 @@ export default function GlobalContextProvider({ children }: { children: React.Re
   return (
     <GlobalContext.Provider
       value={{
-        currentUserAddress,
         currentPlayerId,
         currentPlayerInfo,
         skillProcesses,

@@ -14,7 +14,6 @@ import BagMenu from "@/components/menus/BagMenu";
 import CraftMenu from "@/components/menus/CraftMenu";
 import GameCanvas from "@/components/game/GameCanvas";
 import ClaimIslandForm from "@/components/form/ClaimIslandForm";
-import CreatePlayerForm from "@/components/form/CreatePlayerForm";
 
 import { getPlayerRosters, suiPlayerInfo } from "@/actions/player.action";
 import { useGlobalContext } from "@/context/GlobalContext";
@@ -41,7 +40,6 @@ export default function GameWindow({
   const [logLeft, setLogLeft] = useState<number>(0);
   const [cottonLeft, setCottonLeft] = useState<number>(0);
 
-  const [newPlayerFlag, setNewPlayerFlag] = useState<boolean>(false);
   const [islandMenuFlag, setIslandMenuFlag] = useState<boolean>(false);
   const [shipsMenuFlag, setShipsMenuFlag] = useState<boolean>(false);
   const [islandProductMenuFlag, setIslandProductMenuFlag] = useState<boolean>(false);
@@ -169,8 +167,6 @@ export default function GameWindow({
 
   return (
     <>
-      {newPlayerFlag && <CreatePlayerForm handleCloseModal={() => setNewPlayerFlag(false)} />}
-
       <NavItems getIslandClicked={handleIslandCardClicked} getShipsClicked={handleShipsClicked} />
 
       {islandFreeFlag && (
