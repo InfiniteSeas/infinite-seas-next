@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
+import { useSuiClient } from "@mysten/dapp-kit";
+import { useEnokiFlow } from "@mysten/enoki/react";
 import toast from "react-hot-toast";
 
 import TxToast from "@/components/shared/TxToast";
@@ -34,7 +35,8 @@ export default function HarvestProductForm({
 }) {
   const [count, setCount] = useState<number>(initialCount);
 
-  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransaction();
+  const client = useSuiClient();
+  const enokiFlow = useEnokiFlow();
 
   const { currentPlayerId, refetchPlayer } = useGlobalContext();
 
@@ -94,8 +96,6 @@ export default function HarvestProductForm({
 
       const tx = new Transaction();
 
-      tx.setGasBudget(42000000);
-
       tx.moveCall({
         target: `${MAIN_PACKAGE_ID}::skill_process_aggregate::${functionName}`,
         arguments:
@@ -117,7 +117,10 @@ export default function HarvestProductForm({
               ],
       });
 
-      const { digest } = await signAndExecuteTransactionBlockAsync({ transaction: tx });
+      const { digest } = await client.signAndExecuteTransaction({
+        signer: await enokiFlow.getKeypair({ network: "testnet" }),
+        transaction: tx,
+      });
       toast.loading("The transaction is sent to the blockchain, checking the result...");
 
       const { status, error } = await waitForReceipt({ digest });

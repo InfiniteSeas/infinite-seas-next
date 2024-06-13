@@ -1,7 +1,7 @@
 "use client";
 
-import { useSuiClient } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
+import { useSuiClient } from "@mysten/dapp-kit";
 import { useEnokiFlow } from "@mysten/enoki/react";
 import toast from "react-hot-toast";
 
@@ -19,7 +19,7 @@ export default function EnergyFaucetForm() {
   async function faucetAction() {
     if (!currentPlayerId) return toast.error("Please login first!");
 
-    toast.loading("Getting testnet energy token, it may take a while...");
+    toast.loading("Requesting testnet energy coins, it may take a while...");
 
     try {
       const tx = new Transaction();

@@ -1,7 +1,8 @@
 "use client";
 
-import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
+import { useSuiClient } from "@mysten/dapp-kit";
+import { useEnokiFlow } from "@mysten/enoki/react";
 import toast from "react-hot-toast";
 
 import AppModal from "@/components/ui/AppModal";
@@ -20,9 +21,10 @@ export default function ClaimIslandForm({
   coordinateY: number;
   handleCloseModal: () => void;
 }) {
-  const { mutateAsync: signAndExecuteTransactionBlockAsync } = useSignAndExecuteTransaction();
-
   const { currentPlayerId, refetchPlayer } = useGlobalContext();
+
+  const client = useSuiClient();
+  const enokiFlow = useEnokiFlow();
 
   async function claimIslandAction() {
     if (!currentPlayerId) return toast.error("Please login first!");
@@ -31,8 +33,6 @@ export default function ClaimIslandForm({
 
     try {
       const tx = new Transaction();
-
-      tx.setGasBudget(4999000000);
 
       tx.moveCall({
         target: `${MAIN_PACKAGE_ID}::player_aggregate::claim_island`,
@@ -47,7 +47,10 @@ export default function ClaimIslandForm({
         ],
       });
 
-      const { digest } = await signAndExecuteTransactionBlockAsync({ transaction: tx });
+      const { digest } = await client.signAndExecuteTransaction({
+        signer: await enokiFlow.getKeypair({ network: "testnet" }),
+        transaction: tx,
+      });
       toast.loading("The transaction is sent to the blockchain, checking the result...");
 
       const { status, error } = await waitForReceipt({ digest });
@@ -62,19 +65,16 @@ export default function ClaimIslandForm({
   }
 
   return (
-    <AppModal>
-      <p>Are you sure to</p>
-      <p>claim this island?</p>
-      <p>
-        X: {coordinateX}, Y: {coordinateY}
-      </p>
+    <AppModal frame="bg-frame-claim">
+      <div className="relative flex flex-col justify-between items-center text-2xl text-white px-12 pt-6 pb-[74px] gap-4">
+        <p>Are you sure to</p>
+        <p>claim this island?</p>
+        <p>
+          X: {coordinateX}, Y: {coordinateY}
+        </p>
 
-      <div className="w-4/5 flex justify-evenly items-center">
-        <div className="hover:bg-[#e9e9e9] border-[1px] rounded-md cursor-pointer p-1" onClick={claimIslandAction}>
+        <div className="absolute -bottom-0.5 w-full text-center cursor-pointer" onClick={claimIslandAction}>
           Claim
-        </div>
-        <div className="hover:bg-[#e9e9e9] border-[1px] rounded-md cursor-pointer p-1" onClick={handleCloseModal}>
-          Cancel
         </div>
       </div>
     </AppModal>

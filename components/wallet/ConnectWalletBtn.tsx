@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useConnectWallet, useCurrentAccount, useSignAndExecuteTransaction, useWallets } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
+import { useConnectWallet, useCurrentAccount, useSignAndExecuteTransaction, useWallets } from "@mysten/dapp-kit";
 import toast from "react-hot-toast";
 
 import AppModal from "@/components/ui/AppModal";
@@ -64,8 +64,6 @@ export default function WalletMenu() {
       toast.loading("Creating a new player, please approve with your wallet...");
 
       const tx = new Transaction();
-
-      tx.setGasBudget(11000000);
 
       tx.moveCall({
         target: `${MAIN_PACKAGE_ID}::player_aggregate::create`,

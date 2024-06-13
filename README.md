@@ -121,8 +121,6 @@ async function someAction(formData: FormData) {
   try {
     const tx = new Transaction();
 
-    tx.setGasBudget(100000000);
-
     tx.moveCall({
       target: "packageId::moduleName::functionName",
       arguments: [
@@ -133,7 +131,7 @@ async function someAction(formData: FormData) {
       typeArguments: [someType],
     });
 
-    const { digest } = await signAndExecuteTransactionBlockAsync({ transaction: tx });
+    const { digest } = await client.signAndExecuteTransaction({ transaction: tx });
     toast.custom(<TxToast title="Something done successfully!" digest={digest} />);
   } catch (error: any) {
     // Popup some err msg
