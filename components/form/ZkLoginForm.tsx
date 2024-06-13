@@ -56,7 +56,14 @@ export default function ZkLoginForm() {
     handleZkStatus();
   }, [handled, enokiFlow.$zkLoginState, currentPlayerId, refetchPlayer, refetchEnergy]);
 
-  async function oAuthLoginAction() {
+  async function loginAction() {
+    if (currentPlayerId) {
+      toast.loading("Logouting...");
+      await enokiFlow.logout();
+
+      return toast.success("Logouted Successfully!");
+    }
+
     toast.loading("Using your Google account to act a zero-knowledge login...");
 
     try {
@@ -86,7 +93,7 @@ export default function ZkLoginForm() {
         width={50}
         height={50}
         priority
-        onClick={oAuthLoginAction}
+        onClick={loginAction}
       />
     </>
   );
