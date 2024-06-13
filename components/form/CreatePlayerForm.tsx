@@ -8,7 +8,6 @@ import { useEnokiFlow } from "@mysten/enoki/react";
 import toast from "react-hot-toast";
 
 import AppModal from "@/components/ui/AppModal";
-import AppInput from "@/components/ui/AppInput";
 import TxToast from "@/components/shared/TxToast";
 
 import { waitForReceipt } from "@/actions/system.action";
@@ -40,7 +39,7 @@ export default function CreatePlayerForm({ handleCloseModal }: { handleCloseModa
       });
 
       const { digest } = await client.signAndExecuteTransaction({
-        signer: await enokiFlow.getKeypair(),
+        signer: await enokiFlow.getKeypair({ network: "testnet" }),
         transaction: tx,
       });
       toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");

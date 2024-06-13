@@ -12,7 +12,7 @@ export default function ZkLoginForm() {
   async function zkLoginAction() {
     toast.loading("Using your Google account to connect your wallet...");
 
-    const redirectUrl = "https://game.infiniteseas.io";
+    const redirectUrl = "https://game.infiniteseas.io/";
 
     try {
       // Init OAuth and get its login url

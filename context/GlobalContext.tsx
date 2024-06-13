@@ -2,12 +2,11 @@
 
 import { createContext, useState, useContext, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { useAuthCallback } from "@mysten/enoki/react";
+import { useAuthCallback, useEnokiFlow } from "@mysten/enoki/react";
 import toast from "react-hot-toast";
 
 import { getCurrentPlayerId, suiPlayerInfo, suiPlayerSkillProcesses } from "@/actions/player.action";
 import { suixEnergyCoins } from "@/actions/coin.action";
-import { getSaltAndAddress } from "@/actions/system.action";
 
 import { formatSui } from "@/utils/tools";
 
@@ -42,29 +41,33 @@ export default function GlobalContextProvider({ children }: { children: React.Re
 
   const searchParams = useSearchParams();
 
+  const enokiFlow = useEnokiFlow();
   const { handled } = useAuthCallback();
+
+  useEffect(() => {
+    if (!window.location.hash) return;
+
+    const hash = window.location.hash.substring(1);
+    const newUrl = window.location.origin + window.location.pathname + "?" + hash;
+    window.history.replaceState(null, "", newUrl);
+  }, []);
 
   // After login by OAuth, handle zkLogin logic
   useEffect(() => {
-    console.log(handled);
-
     async function handleZkLogin() {
-      if (!handled) return;
+      // if (!handled) return;
 
       // Get jwt provided by OAuth and reset the url
       const jwt = searchParams.get("id_token");
-      if (!jwt) return toast.error("Failed to connect your wallet!");
-      window.location.href = "/";
+      if (!jwt) return;
+      // window.location.href = "/";
 
-      // Get user salt and address
-      const user = await getSaltAndAddress({ jwt });
-      setCurrentUserAddress(user.address);
-
-      console.log(user);
+      console.log(enokiFlow.$zkLoginState);
+      console.log(await enokiFlow.getKeypair({ network: "testnet" }));
     }
 
     handleZkLogin();
-  }, [handled]);
+  }, [searchParams, handled]);
 
   async function refetchPlayer() {
     if (!currentUserAddress) return;
