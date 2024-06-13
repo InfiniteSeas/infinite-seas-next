@@ -23,11 +23,11 @@ export default function ZkLoginForm() {
   const { currentPlayerId, refetchPlayer, refetchEnergy } = useGlobalContext();
 
   useEffect(() => {
-    if (!window.location.hash) return;
+    if (!location.hash) return;
 
-    const hash = window.location.hash.substring(1);
-    const newUrl = window.location.origin + window.location.pathname + "?" + hash;
-    window.history.replaceState(null, "", newUrl);
+    const hash = location.hash.substring(1);
+    const newUrl = location.origin + location.pathname + "?" + hash;
+    history.replaceState(null, "", newUrl);
   }, []);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function ZkLoginForm() {
 
       toast.loading("Checking zero-knowledge proof status...");
 
-      window.history.replaceState(null, "", window.location.origin + window.location.pathname);
+      history.replaceState(null, "", location.origin + location.pathname);
 
       // Sui coin faucet, only sui testnet
       await requestSuiFromFaucetV0({
@@ -58,13 +58,10 @@ export default function ZkLoginForm() {
 
   async function handleUserStatusAction() {
     if (currentPlayerId) {
-      toast.loading("Logouting...");
       await enokiFlow.logout();
+      toast.success("Logouted Successfully!");
 
-      await refetchPlayer();
-      await refetchEnergy();
-
-      return toast.success("Logouted Successfully!");
+      return location.reload();
     }
 
     toast.loading("Using your Google account to act a zero-knowledge login...");
