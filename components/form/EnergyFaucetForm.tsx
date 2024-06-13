@@ -14,17 +14,15 @@ export default function EnergyFaucetForm() {
   const client = useSuiClient();
   const enokiFlow = useEnokiFlow();
 
-  const { refetchEnergy } = useGlobalContext();
+  const { currentPlayerId, refetchEnergy } = useGlobalContext();
 
   async function faucetAction() {
-    if (!enokiFlow.$zkLoginState.value?.address) return toast.error("Please login first!");
+    if (!currentPlayerId) return toast.error("Please login first!");
 
-    toast.loading("Using the faucet to get testnet energy token...");
+    toast.loading("Using the faucet to get testnet energy token, please wait a sec...");
 
     try {
       const tx = new Transaction();
-
-      tx.setSender(enokiFlow.$zkLoginState.value.address);
 
       tx.setGasBudget(11000000);
 
@@ -43,7 +41,7 @@ export default function EnergyFaucetForm() {
 
       if (status === "success") {
         await refetchEnergy();
-        toast.custom(<TxToast title="Faucet used successfully!" digest={digest} />);
+        toast.custom(<TxToast title="Energy token sent successfully!" digest={digest} />);
       } else toast.error(`Failed to use the faucet: ${error}`);
     } catch (error: any) {
       toast.error(`Failed to use the faucet: ${error.message}!`);
@@ -52,7 +50,7 @@ export default function EnergyFaucetForm() {
 
   return (
     <>
-      {enokiFlow.$zkLoginState.value?.address && (
+      {currentPlayerId && (
         <button
           className="absolute top-36 right-24 bg-zinc-900/80 text-white text-xl rounded-lg px-2 py-1"
           type="button"
