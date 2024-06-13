@@ -18,7 +18,6 @@ export default function CreatePlayerForm({ handleCloseModal }: { handleCloseModa
   const [username, setUsername] = useState<string>("");
 
   const client = useSuiClient();
-
   const enokiFlow = useEnokiFlow();
 
   const { refetchPlayer, refetchEnergy } = useGlobalContext();

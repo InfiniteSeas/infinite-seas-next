@@ -12,18 +12,19 @@ import { COIN_PACKAGE_ID, FAUCET } from "@/constant";
 
 export default function EnergyFaucetForm() {
   const client = useSuiClient();
-
   const enokiFlow = useEnokiFlow();
 
-  const { currentPlayerId, refetchEnergy } = useGlobalContext();
+  const { refetchEnergy } = useGlobalContext();
 
   async function faucetAction() {
-    if (!currentPlayerId) return toast.error("Please login first!");
+    if (!enokiFlow.$zkLoginState.value?.address) return toast.error("Please login first!");
 
     toast.loading("To use the faucet, please approve with your wallet...");
 
     try {
       const tx = new Transaction();
+
+      tx.setSender(enokiFlow.$zkLoginState.value.address);
 
       tx.setGasBudget(11000000);
 
@@ -51,7 +52,7 @@ export default function EnergyFaucetForm() {
 
   return (
     <>
-      {currentPlayerId && (
+      {enokiFlow.$zkLoginState.value?.address && (
         <button
           className="absolute top-36 right-24 bg-zinc-900/80 text-white text-xl rounded-lg px-2 py-1"
           type="button"

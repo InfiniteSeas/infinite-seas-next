@@ -3,7 +3,6 @@
 import Image from "next/image";
 
 import EnergyFaucetForm from "@/components/form/EnergyFaucetForm";
-import ConnectWalletBtn from "@/components/wallet/ConnectWalletBtn";
 import ZkLoginForm from "../form/ZkLoginForm";
 
 import { useGlobalContext } from "@/context/GlobalContext";

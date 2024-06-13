@@ -53,6 +53,8 @@ export default function GameWindow({
   const [productType, setProductType] = useState<string>("ore");
   const [unassignedRosterId, setUnassignedRosterId] = useState<string>("");
 
+  const { currentPlayerId, currentPlayerInfo } = useGlobalContext();
+
   useEffect(() => {
     if (!islandMenuFlag && !shipsMenuFlag) {
       setActionQueueFlag(true);
@@ -62,8 +64,6 @@ export default function GameWindow({
       setRankListFlag(false);
     }
   }, [islandMenuFlag, shipsMenuFlag]);
-
-  const { currentPlayerInfo } = useGlobalContext();
 
   // Click island on the game canvas
   async function handleIslandClicked(x: number, y: number) {
@@ -105,7 +105,7 @@ export default function GameWindow({
 
   // Click island card
   async function handleIslandCardClicked() {
-    if (!currentPlayerInfo) return toast.error("Please login first!");
+    if (!currentPlayerId) return toast.error("Please login first!");
     if (!currentPlayerInfo.claimed_island) return toast.error("Please select an island and claim it first!");
 
     setIslandMenuFlag((prev) => !prev);
