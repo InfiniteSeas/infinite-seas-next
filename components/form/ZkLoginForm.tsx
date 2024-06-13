@@ -56,10 +56,13 @@ export default function ZkLoginForm() {
     handleZkStatus();
   }, [handled, enokiFlow.$zkLoginState, currentPlayerId, refetchPlayer, refetchEnergy]);
 
-  async function loginAction() {
+  async function handleUserStatusAction() {
     if (currentPlayerId) {
       toast.loading("Logouting...");
       await enokiFlow.logout();
+
+      await refetchPlayer();
+      await refetchEnergy();
 
       return toast.success("Logouted Successfully!");
     }
@@ -93,7 +96,7 @@ export default function ZkLoginForm() {
         width={50}
         height={50}
         priority
-        onClick={loginAction}
+        onClick={handleUserStatusAction}
       />
     </>
   );
