@@ -92,7 +92,7 @@ export default function HarvestProductForm({
     }
 
     try {
-      toast.loading("Harvesting creation, please approve with your wallet...");
+      toast.loading("Harvesting creation, it may take a while...");
 
       const tx = new Transaction();
 

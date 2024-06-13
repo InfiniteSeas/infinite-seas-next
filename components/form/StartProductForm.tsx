@@ -88,7 +88,7 @@ export default function StartProductForm({
     }
 
     try {
-      toast.loading("Starting creation, please approve with your wallet...");
+      toast.loading("Starting creation, it may take a while...");
 
       const tx = new Transaction();
 

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Transaction } from "@mysten/sui/transactions";
 import { useSuiClient } from "@mysten/dapp-kit";
 import { useEnokiFlow } from "@mysten/enoki/react";
@@ -29,7 +30,7 @@ export default function ClaimIslandForm({
   async function claimIslandAction() {
     if (!currentPlayerId) return toast.error("Please login first!");
 
-    toast.loading("Claiming the island, please approve with your wallet...");
+    toast.loading("Claiming the island, it may take a while...");
 
     try {
       const tx = new Transaction();
@@ -76,6 +77,16 @@ export default function ClaimIslandForm({
         <div className="absolute -bottom-0.5 w-full text-center cursor-pointer" onClick={claimIslandAction}>
           Claim
         </div>
+
+        <Image
+          className="absolute top-0 right-2 cursor-pointer"
+          src="/image/modal/x-mark.png"
+          alt="x-icon"
+          width={30}
+          height={30}
+          priority
+          onClick={handleCloseModal}
+        />
       </div>
     </AppModal>
   );

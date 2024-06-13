@@ -44,7 +44,7 @@ export default function StartCraftForm({
     try {
       if (energyBalance < 5) return toast.error("You don't have enough energy coin, please buy some first!");
 
-      toast.loading("Starting crafting, please approve with your wallet...");
+      toast.loading("Starting crafting, it may take a while...");
 
       const tx = new Transaction();
 
