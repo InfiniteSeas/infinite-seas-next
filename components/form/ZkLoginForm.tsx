@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 
 import CreatePlayerForm from "@/components/form/CreatePlayerForm";
 import { getCurrentPlayerId } from "@/actions/player.action";
+import { useGlobalContext } from "@/context/GlobalContext";
 import { GOOGLE_OAUTH_CLIENT_ID, REDIRECT_URL } from "@/constant";
 
 export default function ZkLoginForm() {
@@ -18,6 +19,8 @@ export default function ZkLoginForm() {
 
   const enokiFlow = useEnokiFlow();
   const { handled } = useAuthCallback();
+
+  const { refetchPlayer, refetchEnergy } = useGlobalContext();
 
   useEffect(() => {
     if (!window.location.hash) return;
@@ -33,8 +36,6 @@ export default function ZkLoginForm() {
 
       window.history.replaceState(null, "", window.location.origin + window.location.pathname);
 
-      toast.success("Logined Successfully!");
-
       // Sui coin faucet, only sui testnet
       await requestSuiFromFaucetV0({
         host: getFaucetHost("testnet"),
@@ -43,6 +44,11 @@ export default function ZkLoginForm() {
 
       const playerId = await getCurrentPlayerId({ owner: enokiFlow.$zkLoginState.value.address });
       if (!playerId) return setNewPlayerFlag(true);
+
+      await refetchPlayer();
+      await refetchEnergy();
+
+      toast.success("Logined Successfully!");
     }
 
     handleZkStatus();

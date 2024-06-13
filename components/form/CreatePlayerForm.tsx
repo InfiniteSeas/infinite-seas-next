@@ -52,7 +52,7 @@ export default function CreatePlayerForm({ handleCloseModal }: { handleCloseModa
         await refetchEnergy();
 
         handleCloseModal();
-        toast.custom(<TxToast title="New player created and connected successfully!" digest={digest} />);
+        toast.custom(<TxToast title="New player created and logined successfully!" digest={digest} />);
       } else toast.error(`Failed to create new player: ${error}`);
     } catch (error: any) {
       toast.error(`Failed to create new player: ${error.message}!`);
