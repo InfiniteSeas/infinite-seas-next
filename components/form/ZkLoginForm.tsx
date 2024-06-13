@@ -20,7 +20,7 @@ export default function ZkLoginForm() {
   const enokiFlow = useEnokiFlow();
   const { handled } = useAuthCallback();
 
-  const { refetchPlayer, refetchEnergy } = useGlobalContext();
+  const { currentPlayerId, refetchPlayer, refetchEnergy } = useGlobalContext();
 
   useEffect(() => {
     if (!window.location.hash) return;
@@ -32,7 +32,7 @@ export default function ZkLoginForm() {
 
   useEffect(() => {
     async function handleZkStatus() {
-      if (!handled || !enokiFlow.$zkLoginState.value?.address) return;
+      if (currentPlayerId || !handled || !enokiFlow.$zkLoginState.value?.address) return;
 
       window.history.replaceState(null, "", window.location.origin + window.location.pathname);
 
@@ -52,7 +52,7 @@ export default function ZkLoginForm() {
     }
 
     handleZkStatus();
-  }, [handled, enokiFlow.$zkLoginState, refetchPlayer, refetchEnergy]);
+  }, [handled, enokiFlow.$zkLoginState, currentPlayerId, refetchPlayer, refetchEnergy]);
 
   async function zkLoginAction() {
     toast.loading("Using your Google account to connect your wallet...");

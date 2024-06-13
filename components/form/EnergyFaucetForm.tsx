@@ -37,7 +37,11 @@ export default function EnergyFaucetForm() {
       });
       toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
 
+      console.log(digest);
+
       const { status, error } = await waitForReceipt({ digest });
+
+      console.log(status);
 
       if (status === "success") {
         await refetchEnergy();
