@@ -19,7 +19,7 @@ export default function EnergyFaucetForm() {
   async function faucetAction() {
     if (!enokiFlow.$zkLoginState.value?.address) return toast.error("Please login first!");
 
-    toast.loading("To use the faucet, please approve with your wallet...");
+    toast.loading("Using the faucet to get testnet energy token...");
 
     try {
       const tx = new Transaction();
@@ -34,7 +34,7 @@ export default function EnergyFaucetForm() {
       });
 
       const { digest } = await client.signAndExecuteTransaction({
-        signer: await enokiFlow.getKeypair(),
+        signer: await enokiFlow.getKeypair({ network: "testnet" }),
         transaction: tx,
       });
       toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");

@@ -52,7 +52,7 @@ export default function ZkLoginForm() {
     }
 
     handleZkStatus();
-  }, [handled, enokiFlow.$zkLoginState]);
+  }, [handled, enokiFlow.$zkLoginState, refetchPlayer, refetchEnergy]);
 
   async function zkLoginAction() {
     toast.loading("Using your Google account to connect your wallet...");
