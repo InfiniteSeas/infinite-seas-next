@@ -118,7 +118,7 @@ export default function HarvestProductForm({
       });
 
       const { digest } = await signAndExecuteTransactionBlockAsync({ transaction: tx });
-      toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
+      toast.loading("The transaction is sent to the blockchain, checking the result...");
 
       const { status, error } = await waitForReceipt({ digest });
 

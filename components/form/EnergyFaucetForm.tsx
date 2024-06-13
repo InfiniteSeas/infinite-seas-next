@@ -19,12 +19,10 @@ export default function EnergyFaucetForm() {
   async function faucetAction() {
     if (!currentPlayerId) return toast.error("Please login first!");
 
-    toast.loading("Using the faucet to get testnet energy token, please wait a sec...");
+    toast.loading("Getting testnet energy token, it may take a while...");
 
     try {
       const tx = new Transaction();
-
-      tx.setGasBudget(11000000);
 
       tx.moveCall({
         target: `${COIN_PACKAGE_ID}::energy_faucet::request_a_drop`,
@@ -35,13 +33,9 @@ export default function EnergyFaucetForm() {
         signer: await enokiFlow.getKeypair({ network: "testnet" }),
         transaction: tx,
       });
-      toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
-
-      console.log(digest);
+      toast.loading("The transaction is sent to the blockchain, checking the result...");
 
       const { status, error } = await waitForReceipt({ digest });
-
-      console.log(status);
 
       if (status === "success") {
         await refetchEnergy();

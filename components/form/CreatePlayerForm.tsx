@@ -25,14 +25,10 @@ export default function CreatePlayerForm({ handleCloseModal }: { handleCloseModa
   async function createAction() {
     if (!enokiFlow.$zkLoginState.value?.address) return toast.error("Please login first!");
 
-    toast.loading("Creating a new player...");
+    toast.loading("Creating a new player, it may take a while...");
 
     try {
       const tx = new Transaction();
-
-      tx.setSender(enokiFlow.$zkLoginState.value.address);
-
-      tx.setGasBudget(11000000);
 
       tx.moveCall({
         target: `${MAIN_PACKAGE_ID}::player_aggregate::create`,
@@ -43,7 +39,7 @@ export default function CreatePlayerForm({ handleCloseModal }: { handleCloseModa
         signer: await enokiFlow.getKeypair({ network: "testnet" }),
         transaction: tx,
       });
-      toast.loading("The transaction is sent to the blockchain, please wait a sec for result...");
+      toast.loading("The transaction is sent to the blockchain, checking the result...");
 
       const { status, error } = await waitForReceipt({ digest });
 

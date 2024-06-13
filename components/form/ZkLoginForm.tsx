@@ -34,6 +34,8 @@ export default function ZkLoginForm() {
     async function handleZkStatus() {
       if (currentPlayerId || !handled || !enokiFlow.$zkLoginState.value?.address) return;
 
+      toast.loading("Checking zero-knowledge proof status...");
+
       window.history.replaceState(null, "", window.location.origin + window.location.pathname);
 
       // Sui coin faucet, only sui testnet
@@ -54,8 +56,8 @@ export default function ZkLoginForm() {
     handleZkStatus();
   }, [handled, enokiFlow.$zkLoginState, currentPlayerId, refetchPlayer, refetchEnergy]);
 
-  async function zkLoginAction() {
-    toast.loading("Using your Google account to connect your wallet...");
+  async function oAuthLoginAction() {
+    toast.loading("Using your Google account to act a zero-knowledge login...");
 
     try {
       // Init OAuth and get its login url
@@ -84,7 +86,7 @@ export default function ZkLoginForm() {
         width={50}
         height={50}
         priority
-        onClick={zkLoginAction}
+        onClick={oAuthLoginAction}
       />
     </>
   );
