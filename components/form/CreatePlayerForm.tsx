@@ -31,7 +31,7 @@ export default function CreatePlayerForm({ handleCloseModal }: { handleCloseModa
     try {
       const tx = new Transaction();
 
-      tx.setSender(enokiFlow.$zkLoginState.value.address);
+      // tx.setSender(enokiFlow.$zkLoginState.value.address);
 
       tx.setGasBudget(11000000);
 

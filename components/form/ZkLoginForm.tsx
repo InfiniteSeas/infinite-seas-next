@@ -27,18 +27,19 @@ export default function ZkLoginForm() {
   }, []);
 
   useEffect(() => {
-    async function getZkStatus() {
-      console.log(enokiFlow.$zkLoginState);
+    async function handleZkStatus() {
       if (!handled || !enokiFlow.$zkLoginState.value?.address) return;
 
       window.history.replaceState(null, "", window.location.origin + window.location.pathname);
+
+      toast.success("Logined Successfully!");
 
       const playerId = await getCurrentPlayerId({ owner: enokiFlow.$zkLoginState.value.address });
       if (!playerId) return setNewPlayerFlag(true);
     }
 
-    getZkStatus();
-  }, [handled]);
+    handleZkStatus();
+  }, [handled, enokiFlow.$zkLoginState]);
 
   async function zkLoginAction() {
     toast.loading("Using your Google account to connect your wallet...");
