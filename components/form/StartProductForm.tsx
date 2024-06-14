@@ -112,6 +112,8 @@ export default function StartProductForm({
         ],
       });
 
+      console.log(await enokiFlow.getSession());
+      console.log(await enokiFlow.getProof({ network: "testnet" }));
       console.log(await enokiFlow.getKeypair({ network: "testnet" }));
 
       const { digest } = await client.signAndExecuteTransaction({
