@@ -40,6 +40,7 @@ export default function EnergyFaucetForm() {
 
       if (status === "success") {
         await refetchEnergy();
+        
         toast.custom(<TxToast title="Energy token sent successfully!" digest={digest} />);
       } else toast.error(`Failed to use the faucet: ${error}`);
     } catch (error: any) {

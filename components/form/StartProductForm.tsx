@@ -100,7 +100,7 @@ export default function StartProductForm({
 
       console.log(energyObjectIds);
 
-      if (energyObjectIds.length > 0) tx.mergeCoins(tx.object(energyObjectIds[0]), energyObjectIds.slice(1));
+      if (energyObjectIds.length > 1) tx.mergeCoins(tx.object(energyObjectIds[0]), energyObjectIds.slice(1));
 
       tx.moveCall({
         target: `${MAIN_PACKAGE_ID}::skill_process_service::${functionName}`,

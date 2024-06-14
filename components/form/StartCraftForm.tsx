@@ -47,7 +47,7 @@ export default function StartCraftForm({
     try {
       const tx = new Transaction();
 
-      if (energyObjectIds.length > 0) tx.mergeCoins(tx.object(energyObjectIds[0]), energyObjectIds.slice(1));
+      if (energyObjectIds.length > 1) tx.mergeCoins(tx.object(energyObjectIds[0]), energyObjectIds.slice(1));
 
       const resources = bcs.vector(bcs.u32()).serialize([301, 200, 102]).toBytes();
       const quantities = bcs.vector(bcs.u32()).serialize([copper, log, cotton]).toBytes();
