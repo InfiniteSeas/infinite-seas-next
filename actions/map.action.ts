@@ -28,7 +28,15 @@ export async function suiAllIslandsInfo() {
     });
 
     // @ts-ignore
-    islandInfos.push(locationInfo.data?.content.fields.value.fields);
+    const info = locationInfo.data?.content.fields.value.fields;
+
+    const islandInfo = {
+      occupiedBy: info.occupied_by,
+      coordinates: { x: info.coordinates.fields.x, y: info.coordinates.fields.y },
+      resources: info.resources,
+    };
+
+    islandInfos.push(islandInfo);
   }
 
   return islandInfos;

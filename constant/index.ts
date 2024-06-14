@@ -1,4 +1,7 @@
-export const SUI_TESTNET_JSON_RPC = "https://sui-testnet.nodeinfra.com/?apikey=A5hM76oO0ZzZtWa0jigeEgBWECIAuosG";
+import { getFullnodeUrl } from "@mysten/sui/client";
+
+export const SUI_TESTNET_JSON_RPC = getFullnodeUrl("testnet");
+// export const SUI_TESTNET_JSON_RPC = "https://sui-testnet.nodeinfra.com/?apikey=A5hM76oO0ZzZtWa0jigeEgBWECIAuosG";
 export const MOVEMENT_M2_DEVNET_JSON_RPC = "https://sui.devnet.m2.movementlabs.xyz:443";
 export const INDEXER_BASE_URL = "http://47.96.81.197:8809/api";
 
