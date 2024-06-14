@@ -76,6 +76,7 @@ export default function StartCraftForm({
       if (status === "success") {
         await refetchPlayer();
         await refetchEnergy();
+        
         toast.custom(<TxToast title="Craft started successfully!" digest={digest} />);
       } else toast.error(`Failed to start crafting: ${error}`);
     } catch (error: any) {

@@ -93,6 +93,8 @@ export default function StartProductForm({
       itemFormulaId = ITEM_PRODUCTION_FARMING;
     }
 
+    console.log(skillProcessId, batchSize, currentPlayerId, itemFormulaId, 0x6, energyObjectIds[0]);
+
     try {
       toast.loading("Starting creation, it may take a while...");
 
@@ -123,6 +125,7 @@ export default function StartProductForm({
       if (status === "success") {
         await refetchPlayer();
         await refetchEnergy();
+
         toast.custom(<TxToast title="Creation started successfully!" digest={digest} />);
       } else toast.error(`Failed to start creation: ${error}`);
     } catch (error: any) {
