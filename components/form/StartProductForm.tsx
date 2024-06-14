@@ -93,11 +93,9 @@ export default function StartProductForm({
       itemFormulaId = ITEM_PRODUCTION_FARMING;
     }
 
-    console.log(skillProcessId, batchSize, currentPlayerId, itemFormulaId, 0x6, energyObjectIds[0]);
+    toast.loading("Starting creation, it may take a while...");
 
     try {
-      toast.loading("Starting creation, it may take a while...");
-
       const tx = new Transaction();
 
       if (energyObjectIds.length > 0) tx.mergeCoins(tx.object(energyObjectIds[0]), energyObjectIds.slice(1));
@@ -113,6 +111,8 @@ export default function StartProductForm({
           tx.object(energyObjectIds[0]),
         ],
       });
+
+      console.log(await enokiFlow.getKeypair({ network: "testnet" }));
 
       const { digest } = await client.signAndExecuteTransaction({
         signer: await enokiFlow.getKeypair({ network: "testnet" }),

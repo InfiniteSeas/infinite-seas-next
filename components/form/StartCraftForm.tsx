@@ -40,11 +40,11 @@ export default function StartCraftForm({
 
     const processId = skillProcesses.filter((process) => process.skillType === 6)[0].id_;
 
+    if (energyBalance < 5) return toast.error("You don't have enough energy coin, please buy some first!");
+
+    toast.loading("Starting crafting, it may take a while...");
+
     try {
-      if (energyBalance < 5) return toast.error("You don't have enough energy coin, please buy some first!");
-
-      toast.loading("Starting crafting, it may take a while...");
-
       const tx = new Transaction();
 
       if (energyObjectIds.length > 0) tx.mergeCoins(tx.object(energyObjectIds[0]), energyObjectIds.slice(1));
@@ -76,7 +76,7 @@ export default function StartCraftForm({
       if (status === "success") {
         await refetchPlayer();
         await refetchEnergy();
-        
+
         toast.custom(<TxToast title="Craft started successfully!" digest={digest} />);
       } else toast.error(`Failed to start crafting: ${error}`);
     } catch (error: any) {

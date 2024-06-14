@@ -30,6 +30,8 @@ export default function EnergyFaucetForm() {
         arguments: [tx.object(FAUCET)],
       });
 
+      console.log(await enokiFlow.getKeypair({ network: "testnet" }));
+
       const { digest } = await client.signAndExecuteTransaction({
         signer: await enokiFlow.getKeypair({ network: "testnet" }),
         transaction: tx,
