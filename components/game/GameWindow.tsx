@@ -169,7 +169,7 @@ export default function GameWindow({
     <>
       <NavItems getIslandClicked={handleIslandCardClicked} getShipsClicked={handleShipsClicked} />
 
-      {islandFreeFlag && (
+      {!islandFreeFlag && (
         <ClaimIslandForm
           coordinateX={islandCoordinateX}
           coordinateY={islandCoordinateY}

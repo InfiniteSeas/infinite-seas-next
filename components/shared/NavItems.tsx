@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 import EnergyFaucetForm from "@/components/form/EnergyFaucetForm";
-import ZkLoginForm from "../form/ZkLoginForm";
+import ZkLoginForm from "@/components/form/ZkLoginForm";
 
 import { useGlobalContext } from "@/context/GlobalContext";
 

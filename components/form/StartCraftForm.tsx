@@ -7,7 +7,6 @@ import { bcs } from "@mysten/bcs";
 import toast from "react-hot-toast";
 
 import AppModal from "@/components/ui/AppModal";
-import AppInput from "@/components/ui/AppInput";
 import TxToast from "@/components/shared/TxToast";
 
 import { waitForReceipt } from "@/actions/system.action";
@@ -85,18 +84,27 @@ export default function StartCraftForm({
   }
 
   return (
-    <AppModal>
-      <AppInput label="Small Ship" value="1" disabled={true} />
-
-      <p>costs 5 energy token</p>
-      <p>15 seconds time duration</p>
-
-      <div className="w-4/5 flex justify-evenly items-center">
-        <div className="hover:bg-[#e9e9e9] border-[1px] rounded-md cursor-pointer p-1" onClick={startCraftAction}>
-          Create
+    <AppModal frame="bg-frame-prod">
+      <div className="w-96 flex flex-col items-center text-2xl text-white">
+        <div className="flex flex-col items-center pt-8 pb-5 gap-2">
+          <p>costs 5 energy token</p>
+          <p>15 seconds time duration</p>
         </div>
-        <div className="hover:bg-[#e9e9e9] border-[1px] rounded-md cursor-pointer p-1" onClick={handleCloseModal}>
-          Cancel
+
+        <div className="flex w-full items-center">
+          <div
+            className="flex-1 bg-frame-btn bg-center bg-no-repeat bg-[length:100%_100%] text-center cursor-pointer py-3"
+            onClick={startCraftAction}
+          >
+            Create
+          </div>
+
+          <div
+            className="flex-1 bg-frame-btn bg-center bg-no-repeat bg-[length:100%_100%] text-center cursor-pointer py-3"
+            onClick={() => handleCloseModal()}
+          >
+            Cancel
+          </div>
         </div>
       </div>
     </AppModal>

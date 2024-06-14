@@ -67,7 +67,7 @@ export default function ClaimIslandForm({
 
   return (
     <AppModal frame="bg-frame-claim">
-      <div className="relative flex flex-col items-center text-2xl text-white px-20">
+      <div className="w-72 relative flex flex-col items-center text-2xl text-white">
         <div className="flex flex-col items-center pt-12 pb-24 gap-4">
           <p>Are you sure to</p>
           <p>claim this island?</p>
@@ -85,7 +85,7 @@ export default function ClaimIslandForm({
         </button>
 
         <Image
-          className="absolute top-6 right-8 cursor-pointer"
+          className="absolute top-5 right-6 cursor-pointer"
           src="/image/modal/x-mark.png"
           alt="x-icon"
           width={30}

@@ -48,9 +48,9 @@ export default function ActionQueue({ unassignedRosterId }: { unassignedRosterId
   return (
     <>
       {queueData.length > 0 && (
-        <div className="fixed top-1/2 left-2 -translate-y-1/2 bg-center bg-no-repeat bg-frame-lg bg-[length:100%_100%] p-6 z-0">
-          <div className="flex flex-col gap-4">
-            <h1 className="text-center text-xl text-white font-bold">Action Queue</h1>
+        <div className="fixed top-1/2 left-2 -translate-y-1/2 w-64 bg-center bg-no-repeat bg-frame-lg bg-[length:100%_100%] py-6 z-0">
+          <div className="flex flex-col items-center gap-4">
+            <h1 className="text-xl text-white font-bold">Action Queue</h1>
 
             {queueData.map((data) => (
               <div key={data.id_} className="flex justify-between items-center text-sm gap-1.5">

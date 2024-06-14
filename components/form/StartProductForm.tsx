@@ -132,8 +132,8 @@ export default function StartProductForm({
 
   return (
     <AppModal frame="bg-frame-prod">
-      <div className="flex flex-col items-center text-2xl text-white">
-        <div className="flex flex-col items-center px-16 pt-8 pb-5 gap-2">
+      <div className="w-96 flex flex-col items-center text-2xl text-white">
+        <div className="flex flex-col items-center pt-8 pb-5 gap-2">
           <div className="flex items-center gap-1">
             <label htmlFor="newPlayerName">{getProductName()}: </label>
 
