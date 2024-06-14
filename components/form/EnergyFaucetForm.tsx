@@ -30,12 +30,8 @@ export default function EnergyFaucetForm() {
         arguments: [tx.object(FAUCET)],
       });
 
-      console.log((await enokiFlow.getKeypair({ network: "testnet" })).getPublicKey());
-
       const { digest } = await client.signAndExecuteTransaction({
-        // @ts-ignore
-        signer: await enokiFlow.getSession().ephemeralKeyPair,
-        // signer: await enokiFlow.getKeypair({ network: "testnet" }),
+        signer: await enokiFlow.getKeypair({ network: "testnet" }),
         transaction: tx,
       });
       toast.loading("The transaction is sent to the blockchain, checking the result...");

@@ -98,6 +98,8 @@ export default function StartProductForm({
     try {
       const tx = new Transaction();
 
+      console.log(energyObjectIds);
+
       if (energyObjectIds.length > 0) tx.mergeCoins(tx.object(energyObjectIds[0]), energyObjectIds.slice(1));
 
       tx.moveCall({
@@ -112,13 +114,8 @@ export default function StartProductForm({
         ],
       });
 
-      console.log(await enokiFlow.getSession());
-      console.log(await enokiFlow.getProof({ network: "testnet" }));
-      console.log((await enokiFlow.getKeypair({ network: "testnet" })).getPublicKey());
-
       const { digest } = await client.signAndExecuteTransaction({
-        // @ts-ignore
-        signer: await enokiFlow.getSession().ephemeralKeyPair,
+        signer: await enokiFlow.getKeypair({ network: "testnet" }),
         transaction: tx,
       });
       toast.loading("The transaction is sent to the blockchain, checking the result...");
