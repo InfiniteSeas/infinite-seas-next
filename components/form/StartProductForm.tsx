@@ -114,10 +114,11 @@ export default function StartProductForm({
 
       console.log(await enokiFlow.getSession());
       console.log(await enokiFlow.getProof({ network: "testnet" }));
-      console.log(await enokiFlow.getKeypair({ network: "testnet" }));
+      console.log((await enokiFlow.getKeypair({ network: "testnet" })).getPublicKey());
 
       const { digest } = await client.signAndExecuteTransaction({
-        signer: await enokiFlow.getKeypair({ network: "testnet" }),
+        // @ts-ignore
+        signer: await enokiFlow.getSession().ephemeralKeyPair,
         transaction: tx,
       });
       toast.loading("The transaction is sent to the blockchain, checking the result...");
