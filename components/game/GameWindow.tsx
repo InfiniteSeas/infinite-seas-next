@@ -72,6 +72,8 @@ export default function GameWindow({
 
     const islands = islandsInfo.filter((info) => info.coordinates.x === x && info.coordinates.y === y);
 
+    console.log(islands);
+
     setIslandCoordinateX(islands[0].coordinates.x);
     setIslandCoordinateY(islands[0].coordinates.y);
 
@@ -169,7 +171,7 @@ export default function GameWindow({
     <>
       <NavItems getIslandClicked={handleIslandCardClicked} getShipsClicked={handleShipsClicked} />
 
-      {!islandFreeFlag && (
+      {islandFreeFlag && (
         <ClaimIslandForm
           coordinateX={islandCoordinateX}
           coordinateY={islandCoordinateY}

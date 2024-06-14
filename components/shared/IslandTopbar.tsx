@@ -27,12 +27,12 @@ export default function IslandTopbar({
   return (
     <div className="fixed top-2 left-1/2 -translate-x-1/2 w-3/5 h-[150px] flex flex-col bg-frame-topbar bg-center bg-no-repeat bg-cotain bg-[length:100%_100%] px-16 py-8 gap-6">
       <div className="flex justify-between items-center w-full h-1/2">
-        {islandOwnerName && (
-          <div className="flex items-center gap-2">
-            <Image src="/image/topbar/avatar.png" alt="avatar-pic" width={48} height={48} priority />
-            <div className="text-xl text-white">{islandOwnerName}&apos;s island</div>
+        <div className="flex items-center gap-2">
+          <Image src="/image/topbar/avatar.png" alt="avatar-pic" width={48} height={48} priority />
+          <div className="text-xl text-white">
+            {islandOwnerName ? `${islandOwnerName}'s island` : "Island can be claimed"}
           </div>
-        )}
+        </div>
 
         <div className="flex items-center gap-2">
           <Image src="/image/topbar/points.png" alt="points" width={50} height={50} priority />
