@@ -61,7 +61,7 @@ export default function WalletMenu() {
 
   async function createAction() {
     try {
-      toast.loading("Creating a new player, please approve with your wallet...");
+      toast.loading("Creating a new player, it may take a while...");
 
       const tx = new Transaction();
 
@@ -88,7 +88,7 @@ export default function WalletMenu() {
   return (
     <>
       {modalFlag && (
-        <AppModal frame={""}>
+        <AppModal frame="bg-frame-player">
           <AppInput label="Enter new username" value={username} handleChange={(value) => setUsername(value)} />
 
           <div className="flex w-4/5 justify-evenly items-center">

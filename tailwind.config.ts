@@ -23,6 +23,7 @@ const config: Config = {
         "frame-player": "url('/image/frame/player-frame.png')",
         "frame-claim": "url('/image/frame/claim-frame.png')",
         "frame-btn": "url('/image/frame/btn-frame.png')",
+        "frame-prod": "url('/image/frame/prod-frame.png')",
       },
     },
   },

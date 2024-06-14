@@ -49,7 +49,7 @@ export default function EnergyFaucetForm() {
 
   return (
     <>
-      {!currentPlayerId && (
+      {currentPlayerId && (
         <div className="absolute top-36 right-14 text-white flex flex-col items-center" onClick={faucetAction}>
           <button
             className="bg-frame-btn bg-center bg-no-repeat bg-[length:100%_100%] flex items-center text-lg px-4 py-2 gap-2 z-10"

@@ -67,19 +67,25 @@ export default function ClaimIslandForm({
 
   return (
     <AppModal frame="bg-frame-claim">
-      <div className="relative flex flex-col justify-between items-center text-2xl text-white px-12 pt-6 pb-[74px] gap-4">
-        <p>Are you sure to</p>
-        <p>claim this island?</p>
-        <p>
-          X: {coordinateX}, Y: {coordinateY}
-        </p>
-
-        <div className="absolute -bottom-0.5 w-full text-center cursor-pointer" onClick={claimIslandAction}>
-          Claim
+      <div className="relative flex flex-col items-center text-2xl text-white px-20">
+        <div className="flex flex-col items-center pt-12 pb-24 gap-4">
+          <p>Are you sure to</p>
+          <p>claim this island?</p>
+          <p>
+            X: {coordinateX}, Y: {coordinateY}
+          </p>
         </div>
 
+        <button
+          className="absolute bottom-5 w-full text-center cursor-pointer"
+          type="button"
+          onClick={claimIslandAction}
+        >
+          Claim
+        </button>
+
         <Image
-          className="absolute top-0 right-2 cursor-pointer"
+          className="absolute top-6 right-8 cursor-pointer"
           src="/image/modal/x-mark.png"
           alt="x-icon"
           width={30}

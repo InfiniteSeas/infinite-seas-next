@@ -57,7 +57,7 @@ export default function CreatePlayerForm({ handleCloseModal }: { handleCloseModa
 
   return (
     <AppModal frame="bg-frame-player">
-      <div className="flex flex-col items-center text-2xl text-white px-8 py-4 gap-6">
+      <div className="flex flex-col items-center text-2xl text-white px-12 py-8 gap-6">
         <div className="flex flex-col items-center gap-1">
           <h1>Create Your Player Name</h1>
           <Image src="/image/new-player/player-bar.png" alt="player-bar" width={300} height={10} priority />

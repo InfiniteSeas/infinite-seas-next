@@ -7,7 +7,6 @@ import { useEnokiFlow } from "@mysten/enoki/react";
 import toast from "react-hot-toast";
 
 import AppModal from "@/components/ui/AppModal";
-import AppInput from "@/components/ui/AppInput";
 import TxToast from "@/components/shared/TxToast";
 
 import { waitForReceipt } from "@/actions/system.action";
@@ -34,6 +33,13 @@ export default function StartProductForm({
 
   const { currentPlayerId, skillProcesses, energyObjectIds, energyBalance, refetchPlayer, refetchEnergy } =
     useGlobalContext();
+
+  function getProductName() {
+    if (productType === "ore") return "Ore";
+    else if (productType === "wood") return "Wood";
+    else if (productType === "seed") return "Seeds";
+    else return "Unknown Product";
+  }
 
   async function startProductAction() {
     if (!currentPlayerId) return toast.error("Please login first!");
@@ -125,33 +131,49 @@ export default function StartProductForm({
   }
 
   return (
-    <AppModal>
-      <AppInput label={productType} value={batchSize} handleChange={(value) => setBatchSize(value)} />
+    <AppModal frame="bg-frame-prod">
+      <div className="flex flex-col items-center text-2xl text-white">
+        <div className="flex flex-col items-center px-16 pt-8 pb-5 gap-2">
+          <div className="flex items-center gap-1">
+            <label htmlFor="newPlayerName">{getProductName()}: </label>
 
-      <p>Costs {["ore", "wood"].includes(productType) ? batchSize : Number(batchSize) * 5} energy token</p>
+            <input
+              id="newPlayerName"
+              className="w-32 bg-transparent border-b-[1px] border-white outline-none"
+              type="text"
+              value={batchSize}
+              onChange={(e) => setBatchSize(e.target.value)}
+            />
+          </div>
 
-      {productType === "ore" && <p>Can harvest {batchSize} copper</p>}
-      {productType === "wood" && <p>Can harvest {batchSize} wood</p>}
-      {productType === "seed" && <p>Can harvest {Number(batchSize) * 5} cotton</p>}
+          <p>Costs {["ore", "wood"].includes(productType) ? batchSize : Number(batchSize) * 5} energy token</p>
 
-      <p>{["ore", "wood"].includes(productType) ? Number(batchSize) * 3 : Number(batchSize) * 15} seconds duration</p>
+          {productType === "ore" && <p>Can harvest {batchSize} copper</p>}
+          {productType === "wood" && <p>Can harvest {batchSize} wood</p>}
+          {productType === "seed" && <p>Can harvest {Number(batchSize) * 5} cotton</p>}
 
-      <div className="flex w-4/5 justify-evenly items-center">
-        <div
-          className="hover:bg-[#e9e9e9] border-[1px] border-black rounded-md px-2 cursor-pointer"
-          onClick={startProductAction}
-        >
-          Create
+          <p>
+            {["ore", "wood"].includes(productType) ? Number(batchSize) * 3 : Number(batchSize) * 15} seconds duration
+          </p>
         </div>
 
-        <div
-          className="hover:bg-[#e9e9e9] border-[1px] border-black rounded-md px-2 cursor-pointer"
-          onClick={() => {
-            handleCloseModal();
-            setBatchSize("");
-          }}
-        >
-          Cancel
+        <div className="flex w-full items-center">
+          <div
+            className="flex-1 bg-frame-btn bg-center bg-no-repeat bg-[length:100%_100%] text-center cursor-pointer py-3"
+            onClick={startProductAction}
+          >
+            Create
+          </div>
+
+          <div
+            className="flex-1 bg-frame-btn bg-center bg-no-repeat bg-[length:100%_100%] text-center cursor-pointer py-3"
+            onClick={() => {
+              handleCloseModal();
+              setBatchSize("");
+            }}
+          >
+            Cancel
+          </div>
         </div>
       </div>
     </AppModal>
