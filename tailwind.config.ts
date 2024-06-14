@@ -22,6 +22,7 @@ const config: Config = {
         "frame-ship": "url('/image/frame/ship-frame.png')",
         "frame-player": "url('/image/frame/player-frame.png')",
         "frame-claim": "url('/image/frame/claim-frame.png')",
+        "frame-btn": "url('/image/frame/btn-frame.png')",
       },
     },
   },

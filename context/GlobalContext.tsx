@@ -1,8 +1,7 @@
 "use client";
 
 import { createContext, useState, useContext } from "react";
-import { useSearchParams } from "next/navigation";
-import { useAuthCallback, useEnokiFlow } from "@mysten/enoki/react";
+import { useEnokiFlow } from "@mysten/enoki/react";
 
 import { getCurrentPlayerId, suiPlayerInfo, suiPlayerSkillProcesses } from "@/actions/player.action";
 import { suixEnergyCoins } from "@/actions/coin.action";

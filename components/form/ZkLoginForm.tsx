@@ -50,7 +50,7 @@ export default function ZkLoginForm() {
       await refetchPlayer();
       await refetchEnergy();
 
-      toast.success("Logined Successfully!");
+      toast.success("Logged in Successfully!");
     }
 
     handleZkStatus();
@@ -59,7 +59,7 @@ export default function ZkLoginForm() {
   async function handleUserStatusAction() {
     if (currentPlayerId) {
       await enokiFlow.logout();
-      toast.success("Logouted Successfully!");
+      toast.success("Logged out Successfully!");
 
       return location.reload();
     }
