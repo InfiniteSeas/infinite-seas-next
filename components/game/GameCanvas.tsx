@@ -71,7 +71,7 @@ export default function GameCanvas({
     const aspect = htmlEleRef.current.clientWidth / htmlEleRef.current.clientHeight;
     camera.current = new THREE.OrthographicCamera(-aspect / 2, aspect / 2, 0.5, -0.5, 1, 1000);
     camera.current.zoom = 0.05;
-    camera.current.position.set(50, 50, 10);
+    camera.current.position.set(240, 250, 10);
     camera.current.updateProjectionMatrix();
     scene.current.add(camera.current);
 

@@ -29,9 +29,9 @@ export default function CraftMenu({
 
   const sidebarTitle = ["Small Ship", "Locked", "Locked", "Locked", "Locked", "Locked"];
 
-  function addmining() {
-    if (shipCopper + shipLog + shipCotton >= 15 || inventoryCopper === 0)
-      return toast.error("You can add only 15 resources totally!");
+  function addCooper() {
+    if (inventoryCopper === 0) return toast.error("Not enough copper!");
+    if (shipCopper + shipLog + shipCotton >= 15) return toast.error("You can add only 15 resources totally!");
 
     setShipCopper((prev) => ++prev);
     setAttack((prev) => ++prev);
@@ -39,16 +39,16 @@ export default function CraftMenu({
   }
 
   function addLog() {
-    if (shipCopper + shipLog + shipCotton >= 15 || inventoryLog === 0)
-      return toast.error("You can add only 15 resources totally!");
+    if (inventoryLog === 0) return toast.error("Not enough copper!");
+    if (shipCopper + shipLog + shipCotton >= 15) return toast.error("You can add only 15 resources totally!");
 
     setShipLog((prev) => ++prev);
     setProtection((prev) => ++prev);
     setInventoryLog((prev) => --prev);
   }
   function addCotton() {
-    if (shipCopper + shipLog + shipCotton >= 15 || inventoryCotton === 0)
-      return toast.error("You can add only 15 resources totally!");
+    if (inventoryCotton === 0) return toast.error("Not enough copper!");
+    if (shipCopper + shipLog + shipCotton >= 15) return toast.error("You can add only 15 resources totally!");
 
     setShipCotton((prev) => ++prev);
     setSpeed((prev) => ++prev);
@@ -186,7 +186,7 @@ export default function CraftMenu({
         <div className="w-full grid grid-cols-2 gap-2">
           <div
             className="w-full aspect-[1] relative flex justify-center items-center bg-center bg-no-repeat bg-frame-normal bg-[length:100%_100%] border-2 border-transparent rounded-md text-white cursor-pointer"
-            onClick={addmining}
+            onClick={addCooper}
           >
             <Image src="/image/product-menu/Mine_Unlocked.png" alt="copper-icon" width={40} height={40} priority />
             <span className="absolute bottom-1 right-3">{inventoryCopper}</span>
