@@ -18,11 +18,11 @@ export default function CraftMenu({
   const [modalFlag, setModalFlag] = useState<boolean>(false);
 
   const [shipCopper, setShipCopper] = useState<number>(copperLeft < 3 ? copperLeft : 3);
-  const [shipLog, setShipLog] = useState<number>(copperLeft < 3 ? copperLeft : 3);
-  const [shipCotton, setShipCotton] = useState<number>(copperLeft < 3 ? copperLeft : 3);
+  const [shipLog, setShipLog] = useState<number>(logLeft < 3 ? logLeft : 3);
+  const [shipCotton, setShipCotton] = useState<number>(cottonLeft < 3 ? cottonLeft : 3);
   const [attack, setAttack] = useState<number>(copperLeft < 3 ? copperLeft : 3);
-  const [protection, setProtection] = useState<number>(copperLeft < 3 ? copperLeft : 3);
-  const [speed, setSpeed] = useState<number>(copperLeft < 3 ? copperLeft : 3);
+  const [protection, setProtection] = useState<number>(logLeft < 3 ? logLeft : 3);
+  const [speed, setSpeed] = useState<number>(cottonLeft < 3 ? cottonLeft : 3);
   const [inventoryCopper, setInventoryCopper] = useState<number>(copperLeft < 3 ? 0 : copperLeft - 3);
   const [inventoryLog, setInventoryLog] = useState<number>(logLeft < 3 ? 0 : logLeft - 3);
   const [inventoryCotton, setInventoryCotton] = useState<number>(cottonLeft < 3 ? 0 : cottonLeft - 3);
