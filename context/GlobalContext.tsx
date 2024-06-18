@@ -3,7 +3,7 @@
 import { createContext, useState, useContext } from "react";
 import { useEnokiFlow } from "@mysten/enoki/react";
 
-import { getCurrentPlayerId, suiPlayerInfo, suiPlayerSkillProcesses } from "@/actions/player.action";
+import { getCurrentPlayerId, suiPlayerInfo, suiPlayerRosters, suiPlayerSkillProcesses } from "@/actions/player.action";
 import { suixEnergyCoins } from "@/actions/coin.action";
 
 import { formatSui } from "@/utils/tools";
@@ -12,6 +12,7 @@ type GlobalContextType = {
   currentPlayerId: string;
   currentPlayerInfo?: any;
   skillProcesses: any[];
+  playerRosters: any[];
   refetchPlayer: () => Promise<void>;
   energyObjectIds: string[];
   energyBalance: number;
@@ -31,6 +32,7 @@ export default function GlobalContextProvider({ children }: { children: React.Re
   const [currentPlayerId, setCurrentPlayerId] = useState<string>("");
   const [currentPlayerInfo, setCurrentPlayerInfo] = useState<any>();
   const [skillProcesses, setSkillProcesses] = useState<any[]>([]);
+  const [playerRosters, setPlayerRosters] = useState<any[]>([]);
 
   const [energyObjectIds, setEnergyObjectIds] = useState<string[]>([]);
   const [energyBalance, setEnergyBalance] = useState<number>(0);
@@ -43,10 +45,14 @@ export default function GlobalContextProvider({ children }: { children: React.Re
     const playerId = await getCurrentPlayerId({ owner: enokiFlow.$zkLoginState.value.address });
     const playerInfo = await suiPlayerInfo({ playerId });
     const processes = await suiPlayerSkillProcesses({ playerId });
+    const rosters = await suiPlayerRosters({ playerId });
+
+    console.log(rosters);
 
     setCurrentPlayerId(playerId);
     setCurrentPlayerInfo(playerInfo);
     setSkillProcesses(processes);
+    setPlayerRosters(rosters);
   }
 
   async function refetchEnergy() {
@@ -68,6 +74,7 @@ export default function GlobalContextProvider({ children }: { children: React.Re
         currentPlayerId,
         currentPlayerInfo,
         skillProcesses,
+        playerRosters,
         refetchPlayer,
         energyBalance,
         energyObjectIds,

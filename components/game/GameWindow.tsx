@@ -127,6 +127,8 @@ export default function GameWindow({
 
     // Get player's rosters
     const rosters = await getPlayerRosters({ playerId: currentPlayerInfo.id.id });
+    console.log(rosters);
+
     setUnassignedRosterId(rosters[0].id_);
   }
 

@@ -48,6 +48,26 @@ export async function suiPlayerSkillProcesses({ playerId }: { playerId: string }
   return suiProcesses;
 }
 
+export async function suiPlayerRosters({ playerId }: { playerId: string }) {
+  const { data: rosters } = await axios.get(`${INDEXER_BASE_URL}/Rosters?rosterId.playerId=${playerId}`);
+
+  const suiRosters = await Promise.all(
+    rosters.map(async (roster: { id_: any }) => {
+      const suiData = await client.getObject({ id: roster.id_, options: { showContent: true } });
+      // @ts-ignore
+      const content = suiData.data?.content.fields;
+
+      // const suiRoster = {
+      //   id_: roster.id_,
+      // };
+
+      return content;
+    })
+  );
+
+  return suiRosters;
+}
+
 export async function getPlayerRosters({ playerId }: { playerId: string }) {
   const { data } = await axios.get(`${INDEXER_BASE_URL}/Rosters?rosterId.playerId=${playerId}`);
   return data;
