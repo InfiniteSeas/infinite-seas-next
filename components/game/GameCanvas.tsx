@@ -156,19 +156,21 @@ export default function GameCanvas({
     if (!htmlEleRef.current) return;
 
     if (isGrabbing.current) handleDragCanvas(e);
-    else {
-      const awayFromEdge = 10;
 
-      if (e.clientX < awayFromEdge) cameraMoveDirection.current.x = -1 + (e.clientX / awayFromEdge - 1);
-      else if (e.clientX > htmlEleRef.current.clientWidth - awayFromEdge)
-        cameraMoveDirection.current.x = 1 - ((htmlEleRef.current.clientWidth - e.clientX) / awayFromEdge - 1);
-      else cameraMoveDirection.current.x = 0;
+    // Edge scroll
+    // else {
+    //   const awayFromEdge = 10;
 
-      if (e.clientY < awayFromEdge) cameraMoveDirection.current.y = 1 - e.clientY / awayFromEdge;
-      else if (e.clientY > htmlEleRef.current.clientHeight - awayFromEdge)
-        cameraMoveDirection.current.y = -1 + (htmlEleRef.current.clientHeight - e.clientY) / awayFromEdge;
-      else cameraMoveDirection.current.y = 0;
-    }
+    //   if (e.clientX < awayFromEdge) cameraMoveDirection.current.x = -1 + (e.clientX / awayFromEdge - 1);
+    //   else if (e.clientX > htmlEleRef.current.clientWidth - awayFromEdge)
+    //     cameraMoveDirection.current.x = 1 - ((htmlEleRef.current.clientWidth - e.clientX) / awayFromEdge - 1);
+    //   else cameraMoveDirection.current.x = 0;
+
+    //   if (e.clientY < awayFromEdge) cameraMoveDirection.current.y = 1 - e.clientY / awayFromEdge;
+    //   else if (e.clientY > htmlEleRef.current.clientHeight - awayFromEdge)
+    //     cameraMoveDirection.current.y = -1 + (htmlEleRef.current.clientHeight - e.clientY) / awayFromEdge;
+    //   else cameraMoveDirection.current.y = 0;
+    // }
   }
 
   function handleScrollCanvas(e: any) {
