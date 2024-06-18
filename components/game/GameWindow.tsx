@@ -15,7 +15,7 @@ import CraftMenu from "@/components/menus/CraftMenu";
 import GameCanvas from "@/components/game/GameCanvas";
 import ClaimIslandForm from "@/components/form/ClaimIslandForm";
 
-import { getPlayerRosters, suiPlayerInfo } from "@/actions/player.action";
+import { suiPlayerInfo } from "@/actions/player.action";
 import { useGlobalContext } from "@/context/GlobalContext";
 
 export default function GameWindow({
@@ -51,7 +51,6 @@ export default function GameWindow({
   const [islandFreeFlag, setIslandFreeFlag] = useState<boolean>(false);
 
   const [productType, setProductType] = useState<string>("ore");
-  const [unassignedRosterId, setUnassignedRosterId] = useState<string>("");
 
   const { currentPlayerId, currentPlayerInfo } = useGlobalContext();
 
@@ -124,12 +123,6 @@ export default function GameWindow({
       else if (inv.fields.item_id === 200) setLogLeft(inv.fields.quantity);
       else if (inv.fields.item_id === 102) setCottonLeft(inv.fields.quantity);
     });
-
-    // Get player's rosters
-    const rosters = await getPlayerRosters({ playerId: currentPlayerInfo.id.id });
-    console.log(rosters);
-
-    setUnassignedRosterId(rosters[0].id_);
   }
 
   // Click ships card
@@ -206,7 +199,7 @@ export default function GameWindow({
         </>
       )}
 
-      {actionQueueFlag && <ActionQueue unassignedRosterId={unassignedRosterId} />}
+      {actionQueueFlag && <ActionQueue />}
 
       {rankListFlag && <RankList />}
 

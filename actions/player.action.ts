@@ -57,11 +57,21 @@ export async function suiPlayerRosters({ playerId }: { playerId: string }) {
       // @ts-ignore
       const content = suiData.data?.content.fields;
 
-      // const suiRoster = {
-      //   id_: roster.id_,
-      // };
+      const suiRoster = {
+        id_: roster.id_,
+        coordinatesUpdatedAt: Number(content.coordinates_updated_at),
+        updatedCoordinates: content.updated_coordinates.fields,
+        targetCoordinates: content.target_coordinates,
+        shipIds: content.ship_ids,
+        shipsId: content.ships.fields.id.id,
+        shipsSize: Number(content.ships.fields.size),
+        energyVault: Number(content.energy_vault),
+        environmentOwned: content.environment_owned,
+        speed: Number(content.speed),
+        status: Number(content.status),
+      };
 
-      return content;
+      return suiRoster;
     })
   );
 

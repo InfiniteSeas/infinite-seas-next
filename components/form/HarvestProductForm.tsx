@@ -24,21 +24,19 @@ export default function HarvestProductForm({
   processCompleted,
   initialCount,
   startedAt,
-  unassignedRosterId,
 }: {
   processId: string;
   skillType: number;
   processCompleted: boolean;
   initialCount: number;
   startedAt: string;
-  unassignedRosterId: string;
 }) {
   const [count, setCount] = useState<number>(initialCount);
 
   const client = useSuiClient();
   const enokiFlow = useEnokiFlow();
 
-  const { currentPlayerId, refetchPlayer } = useGlobalContext();
+  const { currentPlayerId, playerRosters, refetchPlayer } = useGlobalContext();
 
   useEffect(() => {
     setCount(initialCount);
@@ -102,7 +100,7 @@ export default function HarvestProductForm({
           skillType === 6
             ? [
                 tx.object(processId),
-                tx.object(unassignedRosterId),
+                tx.object(playerRosters[0].id_),
                 tx.object(currentPlayerId),
                 tx.object(itemFormulaId),
                 tx.object(EXPERIENCE_TABLE),

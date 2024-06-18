@@ -47,8 +47,6 @@ export default function GlobalContextProvider({ children }: { children: React.Re
     const processes = await suiPlayerSkillProcesses({ playerId });
     const rosters = await suiPlayerRosters({ playerId });
 
-    console.log(rosters);
-
     setCurrentPlayerId(playerId);
     setCurrentPlayerInfo(playerInfo);
     setSkillProcesses(processes);

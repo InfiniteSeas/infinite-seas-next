@@ -1,6 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
+
+import { useGlobalContext } from "@/context/GlobalContext";
 
 export default function IslandTopbar({
   islandOwnerName,
@@ -17,11 +20,23 @@ export default function IslandTopbar({
   woodLeft: number;
   seedsLeft: number;
 }) {
+  const [shipsCount, setShipsCount] = useState<number>(0);
+
+  const { playerRosters } = useGlobalContext();
+
+  useEffect(() => {
+    let count = 0;
+
+    playerRosters.forEach((roster) => (count += roster.shipsSize));
+
+    setShipsCount(count);
+  }, [playerRosters]);
+
   const resources = [
     { id: 1, title: "Ore", count: oreLeft, iconUrl: "/image/topbar/ore.png" },
     { id: 0, title: "Wood", count: woodLeft, iconUrl: "/image/topbar/wood.png" },
     { id: 2, title: "Seeds", count: seedsLeft, iconUrl: "/image/topbar/seeds.png" },
-    { id: 3, title: "Boats", count: 0, iconUrl: "/image/topbar/boat.png" },
+    { id: 3, title: "Boats", count: shipsCount, iconUrl: "/image/topbar/boat.png" },
   ];
 
   return (

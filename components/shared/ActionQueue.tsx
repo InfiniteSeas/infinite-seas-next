@@ -7,7 +7,7 @@ import Countdown from "@/components/queue/Countdown";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { calculateTimeRemainingInSec } from "@/utils/tools";
 
-export default function ActionQueue({ unassignedRosterId }: { unassignedRosterId: string }) {
+export default function ActionQueue() {
   const [queueData, setQueueData] = useState<any[]>([]);
 
   const { skillProcesses } = useGlobalContext();
@@ -66,7 +66,6 @@ export default function ActionQueue({ unassignedRosterId }: { unassignedRosterId
                   processCompleted={data.completed}
                   initialCount={data.timeLeft}
                   startedAt={data.startedAt}
-                  unassignedRosterId={unassignedRosterId}
                 />
               </div>
             ))}
