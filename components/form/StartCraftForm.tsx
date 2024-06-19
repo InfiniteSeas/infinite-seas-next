@@ -39,9 +39,9 @@ export default function StartCraftForm({
   async function startCraftAction() {
     if (!currentPlayerId) return toast.error("Please login first!");
 
-    if (inventoryCopper <= 0) return toast.error("Not enough copper in your inventory!");
-    if (inventoryLog < 3) return toast.error("Not enough log in your inventory!");
-    if (inventoryCotton < 3) return toast.error("Not enough cotton in your inventory!");
+    if (inventoryCopper < 0) return toast.error("Not enough copper in your inventory!");
+    if (inventoryLog < 0) return toast.error("Not enough log in your inventory!");
+    if (inventoryCotton < 0) return toast.error("Not enough cotton in your inventory!");
     if (shipCopper + shipLog + shipCotton !== 15) return toast.error("The total resources added must be 15!");
 
     const processId = skillProcesses.filter((process) => process.skillType === 6)[0].id_;

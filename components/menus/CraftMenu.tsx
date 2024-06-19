@@ -5,7 +5,6 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 
 import StartCraftForm from "@/components/form/StartCraftForm";
-import { useGlobalContext } from "@/context/GlobalContext";
 
 export default function CraftMenu({
   copperLeft,
@@ -29,8 +28,6 @@ export default function CraftMenu({
   const [inventoryCotton, setInventoryCotton] = useState<number>(cottonLeft - 3);
 
   const [modalFlag, setModalFlag] = useState<boolean>(false);
-
-  const { currentPlayerInfo } = useGlobalContext();
 
   // Rerender ui related to the current player's info
   useEffect(() => {
