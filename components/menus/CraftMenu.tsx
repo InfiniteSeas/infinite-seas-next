@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 
 import StartCraftForm from "@/components/form/StartCraftForm";
+import { useGlobalContext } from "@/context/GlobalContext";
 
 export default function CraftMenu({
   copperLeft,
@@ -18,14 +19,33 @@ export default function CraftMenu({
   const [shipCopper, setShipCopper] = useState<number>(3);
   const [shipLog, setShipLog] = useState<number>(3);
   const [shipCotton, setShipCotton] = useState<number>(3);
+
   const [attack, setAttack] = useState<number>(3);
   const [protection, setProtection] = useState<number>(3);
   const [speed, setSpeed] = useState<number>(3);
+
   const [inventoryCopper, setInventoryCopper] = useState<number>(copperLeft - 3);
   const [inventoryLog, setInventoryLog] = useState<number>(logLeft - 3);
   const [inventoryCotton, setInventoryCotton] = useState<number>(cottonLeft - 3);
 
   const [modalFlag, setModalFlag] = useState<boolean>(false);
+
+  const { currentPlayerInfo } = useGlobalContext();
+
+  // Rerender ui related to the current player's info
+  useEffect(() => {
+    setShipCopper(3);
+    setShipLog(3);
+    setShipCotton(3);
+
+    setAttack(3);
+    setProtection(3);
+    setSpeed(3);
+
+    setInventoryCopper(copperLeft - 3);
+    setInventoryLog(logLeft - 3);
+    setInventoryCotton(cottonLeft - 3);
+  }, [copperLeft, logLeft, cottonLeft]);
 
   const sidebarTitle = ["Small Ship", "Locked", "Locked", "Locked", "Locked", "Locked"];
 
@@ -46,7 +66,7 @@ export default function CraftMenu({
     setProtection((prev) => ++prev);
     setInventoryLog((prev) => --prev);
   }
-  
+
   function addCotton() {
     if (inventoryCotton <= 0) return toast.error("Not enough cotton in your inventory!");
     if (shipCopper + shipLog + shipCotton >= 15) return toast.error("You can add only 15 resources totally!");
