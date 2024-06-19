@@ -14,14 +14,20 @@ import { ITEM_PRODUCTION_CRAFTING, MAIN_PACKAGE_ID } from "@/constant";
 import { useGlobalContext } from "@/context/GlobalContext";
 
 export default function StartCraftForm({
-  copper,
-  log,
-  cotton,
+  shipCopper,
+  shipLog,
+  shipCotton,
+  inventoryCopper,
+  inventoryLog,
+  inventoryCotton,
   handleCloseModal,
 }: {
-  copper: number;
-  log: number;
-  cotton: number;
+  shipCopper: number;
+  shipLog: number;
+  shipCotton: number;
+  inventoryCopper: number;
+  inventoryLog: number;
+  inventoryCotton: number;
   handleCloseModal: () => void;
 }) {
   const client = useSuiClient();
@@ -33,10 +39,10 @@ export default function StartCraftForm({
   async function startCraftAction() {
     if (!currentPlayerId) return toast.error("Please login first!");
 
-    if (copper < 3) return toast.error("Please add 3 copper at least!");
-    if (log < 3) return toast.error("Please add 3 log at least!");
-    if (cotton < 3) return toast.error("Please add 3 cotton at least!");
-    if (copper + log + cotton !== 15) return toast.error("The total resource added must be 15!");
+    if (inventoryCopper <= 0) return toast.error("Not enough copper in your inventory!");
+    if (inventoryLog < 3) return toast.error("Not enough log in your inventory!");
+    if (inventoryCotton < 3) return toast.error("Not enough cotton in your inventory!");
+    if (shipCopper + shipLog + shipCotton !== 15) return toast.error("The total resources added must be 15!");
 
     const processId = skillProcesses.filter((process) => process.skillType === 6)[0].id_;
 
@@ -50,7 +56,7 @@ export default function StartCraftForm({
       if (energyObjectIds.length > 1) tx.mergeCoins(tx.object(energyObjectIds[0]), energyObjectIds.slice(1));
 
       const resources = bcs.vector(bcs.u32()).serialize([301, 200, 102]).toBytes();
-      const quantities = bcs.vector(bcs.u32()).serialize([copper, log, cotton]).toBytes();
+      const quantities = bcs.vector(bcs.u32()).serialize([shipCopper, shipLog, shipCotton]).toBytes();
 
       tx.moveCall({
         target: `${MAIN_PACKAGE_ID}::skill_process_service::start_ship_production`,

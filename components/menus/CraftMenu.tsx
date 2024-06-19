@@ -17,20 +17,20 @@ export default function CraftMenu({
 }) {
   const [modalFlag, setModalFlag] = useState<boolean>(false);
 
-  const [shipCopper, setShipCopper] = useState<number>(copperLeft < 3 ? copperLeft : 3);
-  const [shipLog, setShipLog] = useState<number>(logLeft < 3 ? logLeft : 3);
-  const [shipCotton, setShipCotton] = useState<number>(cottonLeft < 3 ? cottonLeft : 3);
-  const [attack, setAttack] = useState<number>(copperLeft < 3 ? copperLeft : 3);
-  const [protection, setProtection] = useState<number>(logLeft < 3 ? logLeft : 3);
-  const [speed, setSpeed] = useState<number>(cottonLeft < 3 ? cottonLeft : 3);
-  const [inventoryCopper, setInventoryCopper] = useState<number>(copperLeft < 3 ? 0 : copperLeft - 3);
-  const [inventoryLog, setInventoryLog] = useState<number>(logLeft < 3 ? 0 : logLeft - 3);
-  const [inventoryCotton, setInventoryCotton] = useState<number>(cottonLeft < 3 ? 0 : cottonLeft - 3);
+  const [shipCopper, setShipCopper] = useState<number>(3);
+  const [shipLog, setShipLog] = useState<number>(3);
+  const [shipCotton, setShipCotton] = useState<number>(3);
+  const [attack, setAttack] = useState<number>(3);
+  const [protection, setProtection] = useState<number>(3);
+  const [speed, setSpeed] = useState<number>(3);
+  const [inventoryCopper, setInventoryCopper] = useState<number>(copperLeft - 3);
+  const [inventoryLog, setInventoryLog] = useState<number>(logLeft - 3);
+  const [inventoryCotton, setInventoryCotton] = useState<number>(cottonLeft - 3);
 
   const sidebarTitle = ["Small Ship", "Locked", "Locked", "Locked", "Locked", "Locked"];
 
   function addCooper() {
-    if (inventoryCopper === 0) return toast.error("Not enough copper!");
+    if (inventoryCopper <= 0) return toast.error("Not enough copper in your inventory!");
     if (shipCopper + shipLog + shipCotton >= 15) return toast.error("You can add only 15 resources totally!");
 
     setShipCopper((prev) => ++prev);
@@ -39,7 +39,7 @@ export default function CraftMenu({
   }
 
   function addLog() {
-    if (inventoryLog === 0) return toast.error("Not enough copper!");
+    if (inventoryLog <= 0) return toast.error("Not enough log in your inventory!");
     if (shipCopper + shipLog + shipCotton >= 15) return toast.error("You can add only 15 resources totally!");
 
     setShipLog((prev) => ++prev);
@@ -47,7 +47,7 @@ export default function CraftMenu({
     setInventoryLog((prev) => --prev);
   }
   function addCotton() {
-    if (inventoryCotton === 0) return toast.error("Not enough copper!");
+    if (inventoryCotton <= 0) return toast.error("Not enough cotton in your inventory!");
     if (shipCopper + shipLog + shipCotton >= 15) return toast.error("You can add only 15 resources totally!");
 
     setShipCotton((prev) => ++prev);
@@ -170,9 +170,12 @@ export default function CraftMenu({
 
         {modalFlag && (
           <StartCraftForm
-            copper={shipCopper}
-            log={shipLog}
-            cotton={shipCotton}
+            shipCopper={shipCopper}
+            shipLog={shipLog}
+            shipCotton={shipCotton}
+            inventoryCopper={inventoryCopper}
+            inventoryLog={inventoryLog}
+            inventoryCotton={inventoryCotton}
             handleCloseModal={() => setModalFlag(false)}
           />
         )}
