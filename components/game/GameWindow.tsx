@@ -52,14 +52,14 @@ export default function GameWindow({
 
   const [productType, setProductType] = useState<string>("ore");
 
-  const { currentPlayerId, currentPlayerInfo } = useGlobalContext();
+  const { currentPlayerId, currentPlayerInfo, skillProcesses } = useGlobalContext();
 
   // Rerender menus related to the current player's info
   useEffect(() => {
     getCurrentPlayerResources();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlayerInfo]);
+  }, [skillProcesses]);
 
   // Menu toggle
   useEffect(() => {
