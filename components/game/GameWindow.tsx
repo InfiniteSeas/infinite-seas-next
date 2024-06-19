@@ -115,7 +115,7 @@ export default function GameWindow({
 
   // Click island card can display not only topbar but also other menus of the current player
   function handleIslandCardClicked() {
-    if (!currentPlayerId) return toast.error("Please login first!");
+    if (!currentPlayerId) return toast.error("Please login first or wait for the login process to end!");
     if (!currentPlayerInfo.claimed_island) return toast.error("Please select an island and claim it first!");
 
     setIslandMenuFlag((prev) => !prev);
@@ -130,6 +130,8 @@ export default function GameWindow({
   }
 
   function getCurrentPlayerResources() {
+    if (!currentPlayerInfo) return;
+
     currentPlayerInfo.inventory.forEach((inv: any) => {
       if (inv.fields.item_id === 2000000003) setOreLeft(inv.fields.quantity);
       else if (inv.fields.item_id === 2000000001) setWoodLeft(inv.fields.quantity);
