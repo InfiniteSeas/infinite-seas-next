@@ -33,7 +33,7 @@ export default function IslandTopbar({
   }, [playerRosters]);
 
   const resources = [
-    { id: 1, title: "Ore", count: oreLeft, iconUrl: "/image/topbar/ore.png" },
+    { id: 1, title: "Ore", count: oreLeft, iconUrl: "/image/topbar/ore.png" },  
     { id: 0, title: "Wood", count: woodLeft, iconUrl: "/image/topbar/wood.png" },
     { id: 2, title: "Seeds", count: seedsLeft, iconUrl: "/image/topbar/seeds.png" },
     { id: 3, title: "Boats", count: shipsCount, iconUrl: "/image/topbar/boat.png" },

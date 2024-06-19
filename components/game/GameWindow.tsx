@@ -54,6 +54,14 @@ export default function GameWindow({
 
   const { currentPlayerId, currentPlayerInfo } = useGlobalContext();
 
+  // Rerender menus related to the current player's info
+  useEffect(() => {
+    getCurrentPlayerResources();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPlayerInfo]);
+
+  // Menu toggle
   useEffect(() => {
     if (!islandMenuFlag && !shipsMenuFlag) {
       setActionQueueFlag(true);
@@ -64,7 +72,7 @@ export default function GameWindow({
     }
   }, [islandMenuFlag, shipsMenuFlag]);
 
-  // Click island on the game canvas
+  // Click island on the game canvas only display the topbar
   async function handleIslandClicked(x: number, y: number) {
     setIslandTopbarFlag(true);
     setIslandMenuFlag(false);
@@ -74,6 +82,7 @@ export default function GameWindow({
     setIslandCoordinateX(islands[0].coordinates.x);
     setIslandCoordinateY(islands[0].coordinates.y);
 
+    // Get island resources
     if (islands[0].resources.length > 0)
       islands[0].resources.forEach((inv) => {
         if (inv.fields.item_id === 2000000003) setOreLeft(inv.fields.quantity);
@@ -87,7 +96,9 @@ export default function GameWindow({
     }
 
     if (islands[0].occupiedBy) {
+      // Get other island owner's info so make a call
       const player = await suiPlayerInfo({ playerId: islands[0].occupiedBy });
+
       setIslandOwnerName(player.name);
       setIslandOwnerExp(player.experience);
       setIslandOwnerLevel(player.level);
@@ -102,8 +113,8 @@ export default function GameWindow({
     }
   }
 
-  // Click island card
-  async function handleIslandCardClicked() {
+  // Click island card can display not only topbar but also other menus of the current player
+  function handleIslandCardClicked() {
     if (!currentPlayerId) return toast.error("Please login first!");
     if (!currentPlayerInfo.claimed_island) return toast.error("Please select an island and claim it first!");
 
@@ -115,6 +126,10 @@ export default function GameWindow({
     setIslandOwnerExp(currentPlayerInfo.experience);
     setIslandOwnerLevel(currentPlayerInfo.level);
 
+    getCurrentPlayerResources();
+  }
+
+  function getCurrentPlayerResources() {
     currentPlayerInfo.inventory.forEach((inv: any) => {
       if (inv.fields.item_id === 2000000003) setOreLeft(inv.fields.quantity);
       else if (inv.fields.item_id === 2000000001) setWoodLeft(inv.fields.quantity);

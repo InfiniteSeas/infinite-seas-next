@@ -15,8 +15,6 @@ export default function CraftMenu({
   logLeft: number;
   cottonLeft: number;
 }) {
-  const [modalFlag, setModalFlag] = useState<boolean>(false);
-
   const [shipCopper, setShipCopper] = useState<number>(3);
   const [shipLog, setShipLog] = useState<number>(3);
   const [shipCotton, setShipCotton] = useState<number>(3);
@@ -26,6 +24,8 @@ export default function CraftMenu({
   const [inventoryCopper, setInventoryCopper] = useState<number>(copperLeft - 3);
   const [inventoryLog, setInventoryLog] = useState<number>(logLeft - 3);
   const [inventoryCotton, setInventoryCotton] = useState<number>(cottonLeft - 3);
+
+  const [modalFlag, setModalFlag] = useState<boolean>(false);
 
   const sidebarTitle = ["Small Ship", "Locked", "Locked", "Locked", "Locked", "Locked"];
 
@@ -46,6 +46,7 @@ export default function CraftMenu({
     setProtection((prev) => ++prev);
     setInventoryLog((prev) => --prev);
   }
+  
   function addCotton() {
     if (inventoryCotton <= 0) return toast.error("Not enough cotton in your inventory!");
     if (shipCopper + shipLog + shipCotton >= 15) return toast.error("You can add only 15 resources totally!");
