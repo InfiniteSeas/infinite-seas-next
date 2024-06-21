@@ -220,6 +220,32 @@ The styling of this project is done using **Tailwindcss**. You can configure cus
 
 Tailwindcss official docs: [https://tailwindcss.com/docs](https://tailwindcss.com/docs).
 
+## Localhost https dev mode
+
+You need to establish a https mode to make your localhost use zkLogin / OAuth. If you use a macOS, please follow the steps bellow.
+
+Step 1, install mkcert:
+
+```bash
+$ brew install mkcert
+$ brew install nss # if use FireFox
+```
+
+Step 2, generate local cert:
+
+```bash
+$ mkcert -install
+$ mkcert localhost
+```
+
+Step 3, run dev mode:
+
+```bash
+$ yarn dev:https
+```
+
+You can check out **package.json** to find out other command.
+
 ## Deployment
 
 ### Deploy with a node.js server on Ubuntu22.04 Server
