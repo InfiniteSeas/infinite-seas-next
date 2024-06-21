@@ -56,6 +56,8 @@ export default function GameWindow({
 
   // Rerender menus related to the current player's info
   useEffect(() => {
+    console.log(123);
+
     getCurrentPlayerResources();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,6 +133,8 @@ export default function GameWindow({
 
   function getCurrentPlayerResources() {
     if (!currentPlayerInfo) return;
+
+    console.log(234);
 
     currentPlayerInfo.inventory.forEach((inv: any) => {
       if (inv.fields.item_id === 2000000003) setOreLeft(inv.fields.quantity);

@@ -73,6 +73,7 @@ export default function ZkLoginForm() {
         network: "testnet",
         clientId: GOOGLE_OAUTH_CLIENT_ID,
         redirectUrl: REDIRECT_URL,
+        // redirectUrl: "https://localhost:3000", // For dev mode
         extraParams: { scope: ["openid", "email", "profile"] },
       });
 
