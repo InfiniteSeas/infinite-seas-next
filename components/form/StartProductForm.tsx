@@ -98,8 +98,6 @@ export default function StartProductForm({
     try {
       const tx = new Transaction();
 
-      console.log(energyObjectIds);
-
       if (energyObjectIds.length > 1) tx.mergeCoins(tx.object(energyObjectIds[0]), energyObjectIds.slice(1));
 
       tx.moveCall({

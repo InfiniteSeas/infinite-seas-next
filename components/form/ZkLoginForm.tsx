@@ -32,7 +32,7 @@ export default function ZkLoginForm() {
 
   useEffect(() => {
     async function handleZkStatus() {
-      if (currentPlayerId || !handled || !enokiFlow.$zkLoginState.value?.address) return;
+      if (!handled || !enokiFlow.$zkLoginState.value?.address) return;
 
       toast.loading("Checking zero-knowledge proof status...");
 
@@ -54,7 +54,7 @@ export default function ZkLoginForm() {
     }
 
     handleZkStatus();
-  }, [handled, enokiFlow.$zkLoginState, currentPlayerId, refetchPlayer, refetchEnergy]);
+  }, [handled, enokiFlow.$zkLoginState, refetchPlayer, refetchEnergy]);
 
   async function handleUserStatusAction() {
     if (currentPlayerId) {
@@ -72,8 +72,8 @@ export default function ZkLoginForm() {
         provider: "google",
         network: "testnet",
         clientId: GOOGLE_OAUTH_CLIENT_ID,
-        redirectUrl: REDIRECT_URL,
-        // redirectUrl: "https://localhost:3000", // For dev mode
+        // redirectUrl: REDIRECT_URL,
+        redirectUrl: "https://localhost:3000", // For dev mode
         extraParams: { scope: ["openid", "email", "profile"] },
       });
 

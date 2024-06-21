@@ -44,7 +44,10 @@ export default function StartCraftForm({
     if (inventoryCotton < 0) return toast.error("Not enough cotton in your inventory!");
     if (shipCopper + shipLog + shipCotton !== 15) return toast.error("The total resources added must be 15!");
 
-    const processId = skillProcesses.filter((process) => process.skillType === 6)[0].id_;
+    const craftingProcess = skillProcesses.filter((process) => process.skillType === 6)[0];
+    if (!craftingProcess.completed)
+      return toast.error("Please wait for the end of the crafting process and harvest first!");
+    const processId = craftingProcess.id_;
 
     if (energyBalance < 5) return toast.error("You don't have enough energy coin, please buy some first!");
 

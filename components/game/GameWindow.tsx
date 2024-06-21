@@ -56,9 +56,7 @@ export default function GameWindow({
 
   // Rerender menus related to the current player's info
   useEffect(() => {
-    console.log(123);
-
-    getCurrentPlayerResources();
+    setCurrentPlayerResources();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [skillProcesses]);
@@ -128,13 +126,11 @@ export default function GameWindow({
     setIslandOwnerExp(currentPlayerInfo.experience);
     setIslandOwnerLevel(currentPlayerInfo.level);
 
-    getCurrentPlayerResources();
+    setCurrentPlayerResources();
   }
 
-  function getCurrentPlayerResources() {
+  function setCurrentPlayerResources() {
     if (!currentPlayerInfo) return;
-
-    console.log(234);
 
     currentPlayerInfo.inventory.forEach((inv: any) => {
       if (inv.fields.item_id === 2000000003) setOreLeft(inv.fields.quantity);
