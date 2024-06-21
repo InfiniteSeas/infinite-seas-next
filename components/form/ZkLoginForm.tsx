@@ -32,7 +32,7 @@ export default function ZkLoginForm() {
 
   useEffect(() => {
     async function handleZkStatus() {
-      if (!handled || !enokiFlow.$zkLoginState.value?.address) return;
+      if (!handled || !enokiFlow.$zkLoginState.value?.address || currentPlayerId) return;
 
       toast.loading("Checking zero-knowledge proof status...");
 
@@ -54,7 +54,7 @@ export default function ZkLoginForm() {
     }
 
     handleZkStatus();
-  }, [handled, enokiFlow.$zkLoginState, refetchPlayer, refetchEnergy]);
+  }, [handled, enokiFlow.$zkLoginState, currentPlayerId, refetchPlayer, refetchEnergy]);
 
   async function handleUserStatusAction() {
     if (currentPlayerId) {
