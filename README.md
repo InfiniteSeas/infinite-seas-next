@@ -6,7 +6,7 @@ We are creating a maritime trading, managing, and battling diplomatic fully on-c
 we believe the best fully onchain games should be fun and infinite (define by games that are non-session and infinitely large map) with an open economy design.
 ![image](https://hackmd.io/_uploads/H1yiNQVkA.jpg)
 
-### why open economy?
+### Why open economy?
 
 - blockchain offers a great environment for microtransactions between players. We aim to create a game that players are encouraged to trade game assets with each other just like real world maritime trading between ports and ports. Ports trading are building with our AMM infrastructure.
 - players are required to stake chain native coins to get ownership of islands. Players can make diplomatic treaty with others to join the alliance. Winners take the orignal stakes of the loser stakes. and game continues.
@@ -14,7 +14,7 @@ we believe the best fully onchain games should be fun and infinite (define by ga
 
 ![WechatIMG189-2](https://hackmd.io/_uploads/Hk2vS7V1R.jpg)
 
-### why infnite game?
+### Why infnite game?
 
 - non-session: blockchain as a autonomous backend should be used to create games that are running continously and in a trustless way.
 - infinitely big map: infinite big map works like cross-sever games in traditional gaming. Infinitely big map is the cornerstone of creating a new-comer friendly open world pvp game. New-comers are able to join games anywhere on the map. they can choose a island coordinates that they feel secure to start the journey.
@@ -212,7 +212,7 @@ animate();
 
 ### Decentralized wallet connection
 
-You may find a component named **ConnectWalletBtn** in the **components/wallet/** directory. It is also a client-side component capable of accessing the browser-injected provider, checking connection status, and invoking methods for connecting and disconnecting.
+You may find a component named **ConnectWalletForm** in the **components/form/** directory. It is also a client-side component capable of accessing the browser-injected provider, checking connection status, and invoking methods for connecting and disconnecting.
 
 ### Styling with Tailwindcss
 

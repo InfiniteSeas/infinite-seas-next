@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
-import { useSuiClient } from "@mysten/dapp-kit";
-import { useEnokiFlow } from "@mysten/enoki/react";
 import toast from "react-hot-toast";
 
 import AppModal from "@/components/ui/AppModal";
@@ -17,13 +16,13 @@ import { MAIN_PACKAGE_ID } from "@/constant";
 export default function CreatePlayerForm({ handleCloseModal }: { handleCloseModal: () => void }) {
   const [username, setUsername] = useState<string>("");
 
-  const client = useSuiClient();
-  const enokiFlow = useEnokiFlow();
+  const currentAccount = useCurrentAccount();
+  const { mutateAsync: signAndExecuteTransactionAsync } = useSignAndExecuteTransaction();
 
   const { refetchPlayer, refetchEnergy } = useGlobalContext();
 
   async function createAction() {
-    if (!enokiFlow.$zkLoginState.value?.address) return toast.error("Please login first!");
+    if (!currentAccount) return toast.error("Please connect your wallet first!");
 
     toast.loading("Creating a new player, it may take a while...");
 
@@ -35,10 +34,7 @@ export default function CreatePlayerForm({ handleCloseModal }: { handleCloseModa
         arguments: [tx.pure.string(username)],
       });
 
-      const { digest } = await client.signAndExecuteTransaction({
-        signer: await enokiFlow.getKeypair({ network: "testnet" }),
-        transaction: tx,
-      });
+      const { digest } = await signAndExecuteTransactionAsync({ transaction: tx });
       toast.loading("The transaction is sent to the blockchain, checking the result...");
 
       const { status, error } = await waitForReceipt({ digest });

@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { Transaction } from "@mysten/sui/transactions";
-import { useSuiClient } from "@mysten/dapp-kit";
-import { useEnokiFlow } from "@mysten/enoki/react";
+import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import toast from "react-hot-toast";
 
 import AppModal from "@/components/ui/AppModal";
@@ -28,8 +27,7 @@ export default function StartProductForm({
 }) {
   const [batchSize, setBatchSize] = useState<string>("0");
 
-  const client = useSuiClient();
-  const enokiFlow = useEnokiFlow();
+  const { mutateAsync: signAndExecuteTransactionAsync } = useSignAndExecuteTransaction();
 
   const { currentPlayerId, skillProcesses, energyObjectIds, energyBalance, refetchPlayer, refetchEnergy } =
     useGlobalContext();
@@ -112,10 +110,7 @@ export default function StartProductForm({
         ],
       });
 
-      const { digest } = await client.signAndExecuteTransaction({
-        signer: await enokiFlow.getKeypair({ network: "testnet" }),
-        transaction: tx,
-      });
+      const { digest } = await signAndExecuteTransactionAsync({ transaction: tx });
       toast.loading("The transaction is sent to the blockchain, checking the result...");
 
       const { status, error } = await waitForReceipt({ digest });

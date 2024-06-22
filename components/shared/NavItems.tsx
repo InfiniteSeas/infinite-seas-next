@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 
+import ConnectWalletForm from "@/components/form/ConnectWalletForm";
 import EnergyFaucetForm from "@/components/form/EnergyFaucetForm";
-import ZkLoginForm from "@/components/form/ZkLoginForm";
 
 import { useGlobalContext } from "@/context/GlobalContext";
 
@@ -41,7 +41,7 @@ export default function NavItems({
           priority
           onClick={handleSettingButton}
         />
-        <ZkLoginForm />
+        <ConnectWalletForm />
         <Image
           className="cursor-pointer"
           src="/image/home/points.png"

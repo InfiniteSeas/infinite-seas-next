@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import { Transaction } from "@mysten/sui/transactions";
-import { useSuiClient } from "@mysten/dapp-kit";
-import { useEnokiFlow } from "@mysten/enoki/react";
+import { useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import toast from "react-hot-toast";
 
 import AppModal from "@/components/ui/AppModal";
@@ -22,10 +21,9 @@ export default function ClaimIslandForm({
   coordinateY: number;
   handleCloseModal: () => void;
 }) {
-  const { currentPlayerId, refetchPlayer } = useGlobalContext();
+  const { mutateAsync: signAndExecuteTransactionAsync } = useSignAndExecuteTransaction();
 
-  const client = useSuiClient();
-  const enokiFlow = useEnokiFlow();
+  const { currentPlayerId, refetchPlayer } = useGlobalContext();
 
   async function claimIslandAction() {
     if (!currentPlayerId) return toast.error("Please login first!");
@@ -48,10 +46,7 @@ export default function ClaimIslandForm({
         ],
       });
 
-      const { digest } = await client.signAndExecuteTransaction({
-        signer: await enokiFlow.getKeypair({ network: "testnet" }),
-        transaction: tx,
-      });
+      const { digest } = await signAndExecuteTransactionAsync({ transaction: tx });
       toast.loading("The transaction is sent to the blockchain, checking the result...");
 
       const { status, error } = await waitForReceipt({ digest });

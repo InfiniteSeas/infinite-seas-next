@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useState, useContext } from "react";
-import { useEnokiFlow } from "@mysten/enoki/react";
+import { useCurrentAccount } from "@mysten/dapp-kit";
 
 import { getCurrentPlayerId, suiPlayerInfo, suiPlayerRosters, suiPlayerSkillProcesses } from "@/actions/player.action";
 import { suixEnergyCoins } from "@/actions/coin.action";
@@ -37,12 +37,12 @@ export default function GlobalContextProvider({ children }: { children: React.Re
   const [energyObjectIds, setEnergyObjectIds] = useState<string[]>([]);
   const [energyBalance, setEnergyBalance] = useState<number>(0);
 
-  const enokiFlow = useEnokiFlow();
+  const currentAccount = useCurrentAccount();
 
   async function refetchPlayer() {
-    if (!enokiFlow.$zkLoginState.value?.address) return;
+    if (!currentAccount) return;
 
-    const playerId = await getCurrentPlayerId({ owner: enokiFlow.$zkLoginState.value.address });
+    const playerId = await getCurrentPlayerId({ owner: currentAccount.address });
     const playerInfo = await suiPlayerInfo({ playerId });
     const processes = await suiPlayerSkillProcesses({ playerId });
     const rosters = await suiPlayerRosters({ playerId });
@@ -54,9 +54,9 @@ export default function GlobalContextProvider({ children }: { children: React.Re
   }
 
   async function refetchEnergy() {
-    if (!enokiFlow.$zkLoginState.value?.address) return;
+    if (!currentAccount) return;
 
-    const energyCoins = await suixEnergyCoins({ owner: enokiFlow.$zkLoginState.value.address });
+    const energyCoins = await suixEnergyCoins({ owner: currentAccount.address });
     if (energyCoins.length === 0) return;
 
     setEnergyObjectIds(energyCoins.map((coin) => coin.coinObjectId));

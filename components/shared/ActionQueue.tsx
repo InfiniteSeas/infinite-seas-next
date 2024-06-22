@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import HarvestProductForm from "@/components/form/HarvestProductForm";
-import Countdown from "@/components/queue/Countdown";
+import Countdown from "@/components/ui/Countdown";
 
 import { useGlobalContext } from "@/context/GlobalContext";
 import { calculateTimeRemainingInSec } from "@/utils/tools";
