@@ -210,9 +210,9 @@ function animate() {
 animate();
 ```
 
-### Decentralized wallet connection
+### Zero-knowledge login
 
-You may find a component named **ConnectWalletBtn** in the **components/wallet/** directory. It is also a client-side component capable of accessing the browser-injected provider, checking connection status, and invoking methods for connecting and disconnecting.
+You may find a component named **ZkLoginForm** in the **components/form/** directory. It is also a client-side component capable of accessing the OpenId (e.g. Google OAuth) provider, checking connection status, and invoking methods for loggin in, connecting and disconnecting.
 
 ### Styling with Tailwindcss
 
