@@ -82,6 +82,8 @@ export default function GameWindow({
     setIslandCoordinateX(islands[0].coordinates.x);
     setIslandCoordinateY(islands[0].coordinates.y);
 
+    const player = await suiPlayerInfo({ playerId: islands[0].occupiedBy });
+
     // Get island resources
     if (islands[0].resources.length > 0)
       islands[0].resources.forEach((inv) => {
@@ -89,21 +91,21 @@ export default function GameWindow({
         else if (inv.fields.item_id === 2000000001) setWoodLeft(inv.fields.quantity);
         else if (inv.fields.item_id === 2) setSeedsLeft(inv.fields.quantity);
       });
-    else {
-      setOreLeft(0);
-      setWoodLeft(0);
-      setSeedsLeft(0);
-    }
-
-    if (islands[0].occupiedBy) {
-      // Get other island owner's info so make a call
-      const player = await suiPlayerInfo({ playerId: islands[0].occupiedBy });
+    else if (islands[0].occupiedBy) {
+      player.inventory.forEach((inv: any) => {
+        if (inv.fields.item_id === 2000000003) setOreLeft(inv.fields.quantity);
+        else if (inv.fields.item_id === 2000000001) setWoodLeft(inv.fields.quantity);
+        else if (inv.fields.item_id === 2) setSeedsLeft(inv.fields.quantity);
+      });
 
       setIslandOwnerName(player.name);
       setIslandOwnerExp(player.experience);
       setIslandOwnerLevel(player.level);
+      
       setIslandFreeFlag(false);
-    } else {
+    }
+
+    if (!islands[0].occupiedBy) {
       setIslandOwnerName("");
       setIslandOwnerExp(0);
       setIslandOwnerLevel(0);
