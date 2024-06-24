@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import toast from "react-hot-toast";
 
 export default function GameCanvas({
   islandsInfo,
@@ -18,6 +19,7 @@ export default function GameCanvas({
   getIslandClicked: (x: number, y: number) => void;
 }) {
   const htmlEleRef = useRef<HTMLDivElement | null>(null);
+  const lastToastTime = useRef<number>(0);
 
   const scene = useRef<THREE.Scene | null>(null);
   const renderer = useRef<THREE.WebGLRenderer | null>(null);
@@ -49,6 +51,8 @@ export default function GameCanvas({
     if (islandClickedFlag) {
       camera.current.zoom = 0.05;
       camera.current.position.set(currentPlayerIsland.x, currentPlayerIsland.y, 10);
+      camera.current.updateProjectionMatrix();
+
       mouseSpeedFactor.current = 0;
     } else mouseSpeedFactor.current = 0.2;
 
@@ -70,8 +74,8 @@ export default function GameCanvas({
     // Camera
     const aspect = htmlEleRef.current.clientWidth / htmlEleRef.current.clientHeight;
     camera.current = new THREE.OrthographicCamera(-aspect / 2, aspect / 2, 0.5, -0.5, 1, 1000);
-    camera.current.zoom = 0.05;
-    camera.current.position.set(240, 250, 10);
+    camera.current.zoom = 0.003;
+    camera.current.position.set(-htmlEleRef.current.clientWidth / 3, -htmlEleRef.current.clientHeight / 3, 10);
     camera.current.updateProjectionMatrix();
     scene.current.add(camera.current);
 
@@ -88,12 +92,18 @@ export default function GameCanvas({
 
     // Generate Islands
     islandsInfo.map(({ coordinates }) => {
+      if (!htmlEleRef.current) return;
+
       const islandTexture = new THREE.TextureLoader().load("/image/ocean/Main_Island.png");
       islandTexture.colorSpace = "srgb";
       const islandMat = new THREE.MeshBasicMaterial({ map: islandTexture, transparent: false, alphaTest: 0.8 });
       const islandGeo = new THREE.PlaneGeometry(10, 10);
       const islandPlain = new THREE.Mesh(islandGeo, islandMat);
-      islandPlain.position.set(coordinates.x, coordinates.y, 0);
+      islandPlain.position.set(
+        coordinates.x - htmlEleRef.current.clientWidth / 2,
+        coordinates.y - htmlEleRef.current.clientHeight / 2,
+        0
+      );
       islandPlains.current.push(islandPlain);
       scene.current?.add(islandPlain);
     });
@@ -145,11 +155,23 @@ export default function GameCanvas({
     const deltaX = e.clientX - cursorStartPosition.current.x;
     const deltaY = e.clientY - cursorStartPosition.current.y;
 
-    camera.current.position.x -= (deltaX * 30) / htmlEleRef.current.clientWidth;
-    camera.current.position.y += (deltaY * 30) / htmlEleRef.current.clientHeight;
-
     cursorStartPosition.current.x = e.clientX;
     cursorStartPosition.current.y = e.clientY;
+
+    const newX = camera.current.position.x - (deltaX * 1.5) / (camera.current.zoom * htmlEleRef.current.clientWidth);
+    const newY = camera.current.position.y + (deltaY * 1.5) / (camera.current.zoom * htmlEleRef.current.clientHeight);
+
+    if (Math.abs(newX) >= htmlEleRef.current.clientWidth / 3 || Math.abs(newY) >= htmlEleRef.current.clientHeight / 3) {
+      const now = Date.now();
+      if (now - lastToastTime.current >= 5000) {
+        toast.error("Boundary reached!");
+        lastToastTime.current = now;
+      }
+      return;
+    }
+
+    camera.current.position.x = newX;
+    camera.current.position.y = newY;
   }
 
   function handleMouseMove(e: any) {
