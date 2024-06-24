@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import SuiKit from "@/components/wallet/SuiKit";
+import SuiKit from "@/context/SuiKit";
 import AppToaster from "@/components/shared/AppToaster";
 
 import GlobalContextProvider from "@/context/GlobalContext";
