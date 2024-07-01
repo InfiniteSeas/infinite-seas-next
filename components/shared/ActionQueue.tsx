@@ -48,7 +48,7 @@ export default function ActionQueue() {
   return (
     <>
       {queueData.length > 0 && (
-        <div className="fixed top-1/2 left-2 -translate-y-1/2 w-64 bg-center bg-no-repeat bg-frame-lg bg-[length:100%_100%] py-6 z-0">
+        <div className="fixed top-1/2 left-2 -translate-y-1/2 w-64 bg-center bg-no-repeat bg-frame-lg bg-[length:100%_100%] py-6 z-30">
           <div className="flex flex-col items-center gap-4">
             <h1 className="text-xl text-white font-bold">Action Queue</h1>
 

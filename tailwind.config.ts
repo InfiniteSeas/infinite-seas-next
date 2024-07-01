@@ -24,6 +24,7 @@ const config: Config = {
         "frame-claim": "url('/image/frame/claim-frame.png')",
         "frame-btn": "url('/image/frame/btn-frame.png')",
         "frame-prod": "url('/image/frame/prod-frame.png')",
+        "frame-progress": "url('/image/frame/progress-frame.png')",
       },
     },
   },

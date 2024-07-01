@@ -12,7 +12,7 @@ export default function ActionButtons({ handleActionClick }: { handleActionClick
   ];
 
   return (
-    <div className="fixed bottom-2 left-1/2 -translate-x-1/2 w-3/5 flex justify-end items-center gap-3">
+    <div className="fixed bottom-2 left-1/2 -translate-x-1/2 w-3/5 flex justify-end items-center gap-3 z-40">
       {buttonData.map((data) => (
         <div
           key={data.id}

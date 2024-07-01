@@ -31,7 +31,7 @@ export default function NavItems({
   return (
     <>
       {/* Top-left buttons */}
-      <div className="fixed top-6 left-6 flex flex-col gap-3">
+      <div className="fixed top-6 left-6 flex flex-col gap-3 z-40">
         <Image
           className="cursor-pointer"
           src="/image/home/settings.png"
@@ -54,7 +54,7 @@ export default function NavItems({
       </div>
 
       {/* Energy bar */}
-      <div className="fixed top-4 right-4 cursor-pointer">
+      <div className="fixed top-4 right-4 cursor-pointer z-40">
         <Image
           src="/image/home/energy-bar.png"
           alt="energy-bar"
@@ -70,7 +70,7 @@ export default function NavItems({
       <EnergyFaucetForm />
 
       {/* Bottom-right cards */}
-      <div className="flex items-center fixed bottom-2 right-6 gap-1">
+      <div className="flex items-center fixed bottom-2 right-6 gap-1 z-40">
         <Image
           className="cursor-pointer"
           src="/image/home/island-card.png"

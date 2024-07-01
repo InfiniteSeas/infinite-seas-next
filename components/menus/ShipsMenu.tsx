@@ -28,7 +28,7 @@ export default function ShipsMenu({ closeShipsMenu }: { closeShipsMenu: () => vo
   ];
 
   return (
-    <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 flex justify-center items-center">
+    <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 flex justify-center items-center z-40">
       {!shipsBagBackg && (
         <div className="w-full relative flex flex-col bg-paper-row bg-center bg-no-repeat bg-[length:100%_100%] p-12">
           <div className="absolute top-0 right-4 text-6xl text-white cursor-pointer" onClick={closeShipsMenu}>

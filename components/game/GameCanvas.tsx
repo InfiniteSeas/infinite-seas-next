@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import * as THREE from "three";
 import toast from "react-hot-toast";
 
@@ -18,6 +19,11 @@ export default function GameCanvas({
   currentPlayerIsland: { x: number; y: number };
   getIslandClicked: (x: number, y: number) => void;
 }) {
+  const [progress, setProgress] = useState<number>(0);
+  const [itemsLoaded, setItemsLoaded] = useState<number>(0);
+  const [itemsTotal, setItemsTotal] = useState<number>(1);
+  const [loadingFlag, setLoadingFlag] = useState<boolean>(false);
+
   const htmlEleRef = useRef<HTMLDivElement | null>(null);
   const lastToastTime = useRef<number>(0);
 
@@ -79,8 +85,21 @@ export default function GameCanvas({
     camera.current.updateProjectionMatrix();
     scene.current.add(camera.current);
 
+    // Loading manager
+    const manager = new THREE.LoadingManager();
+    manager.onProgress = (_url, loaded, total) => {
+      setProgress((loaded / total) * 100);
+      setItemsLoaded(loaded);
+      setItemsTotal(total);
+
+      if (loaded / total === 1)
+        setTimeout(() => {
+          setLoadingFlag(true);
+        }, 1000);
+    };
+
     // Generate Ocean
-    const oceanTexture = new THREE.TextureLoader().load("/image/ocean/ocean.png");
+    const oceanTexture = new THREE.TextureLoader(manager).load("/image/ocean/ocean.png");
     oceanTexture.colorSpace = "srgb";
     oceanTexture.wrapS = THREE.RepeatWrapping;
     oceanTexture.wrapT = THREE.RepeatWrapping;
@@ -94,7 +113,7 @@ export default function GameCanvas({
     islandsInfo.map(({ coordinates }) => {
       if (!htmlEleRef.current) return;
 
-      const islandTexture = new THREE.TextureLoader().load("/image/ocean/Main_Island.png");
+      const islandTexture = new THREE.TextureLoader(manager).load("/image/ocean/Main_Island.png");
       islandTexture.colorSpace = "srgb";
       const islandMat = new THREE.MeshBasicMaterial({ map: islandTexture, transparent: false, alphaTest: 0.8 });
       const islandGeo = new THREE.PlaneGeometry(10, 10);
@@ -208,7 +227,9 @@ export default function GameCanvas({
 
   return (
     <div
-      className="w-screen h-screen cursor-grab active:cursor-grabbing"
+      className={`w-screen h-screen relative cursor-grab active:cursor-grabbing ${
+        !(progress === 100 && loadingFlag) ? "z-40" : "z-0"
+      }`}
       ref={htmlEleRef}
       onClick={handleClickCanvas}
       onMouseDown={(e) => {
@@ -219,6 +240,33 @@ export default function GameCanvas({
       onMouseMove={handleMouseMove}
       onMouseUp={() => (isGrabbing.current = false)}
       onWheel={handleScrollCanvas}
-    />
+    >
+      {/* Progress curtain */}
+      {!(progress === 100 && loadingFlag) && (
+        <div className="absolute w-screen h-screen bg-[url('https://hackmd.io/_uploads/H1yiNQVkA.jpg')] bg-center bg-no-repeat bg-[length:100%_100%] flex justify-center items-center">
+          <div className="absolute w-screen h-screen top-0 left-0 bg-black/50 z-0" />
+
+          <div className="relative w-1/2 text-center z-40">
+            <p className="text-lg text-white mb-2">
+              Loading... {itemsLoaded} / {itemsTotal}
+            </p>
+
+            <div className="flex justify-center items-center bg-frame-progress bg-center bg-no-repeat bg-[length:100%_100%] h-12 overflow-hidden rounded-full overflow-hidden z-40">
+              <div className="w-[92%]">
+                <Image
+                  src="/image/progress/progress.png"
+                  alt="progress-bar"
+                  className="transition-[width] duration-1000 ease-in-out h-3"
+                  style={{ width: `${progress}%` }}
+                  width={1000}
+                  height={10}
+                  priority
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
